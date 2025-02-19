@@ -1,0 +1,6 @@
+events: 
+    clicked on leaderboard page 
+    clicked on systems page 
+    clicked on news item
+    click on news item 
+    
