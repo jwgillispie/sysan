@@ -136,20 +136,20 @@ class SystemsTabView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildActionButton(
-                context, 
-                Icons.share, 
+                context,
+                Icons.share,
                 'Share',
                 () => socialBloc.add(ShareSystem(system.name)),
               ),
               _buildActionButton(
-                context, 
-                Icons.star_border, 
+                context,
+                Icons.star_border,
                 'Follow',
                 () => socialBloc.add(FollowSystem(system.name)),
               ),
               _buildActionButton(
-                context, 
-                Icons.message_outlined, 
+                context,
+                Icons.message_outlined,
                 'Message',
                 () {}, // TODO: Implement messaging
               ),
@@ -160,7 +160,8 @@ class SystemsTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(BuildContext context, IconData icon, String label, VoidCallback onTap) {
+  Widget _buildActionButton(
+      BuildContext context, IconData icon, String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

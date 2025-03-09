@@ -19,7 +19,7 @@ class ProfileStats extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'PERFORMANCE',
@@ -95,8 +95,9 @@ class ProfileStats extends StatelessWidget {
     IconData icon, {
     bool isGreen = false,
   }) {
-    final color = isGreen ? Colors.green : Theme.of(context).colorScheme.primary;
-    
+    final color =
+        isGreen ? Colors.green : Theme.of(context).colorScheme.primary;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -171,7 +172,7 @@ class ProfileStats extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       activity['description'],
@@ -192,7 +193,8 @@ class ProfileStats extends StatelessWidget {
               ),
               if (activity['result'] != null)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: activity['result'] == 'win'
                         ? Colors.green.withOpacity(0.1)
@@ -202,7 +204,9 @@ class ProfileStats extends StatelessWidget {
                   child: Text(
                     activity['result'].toUpperCase(),
                     style: TextStyle(
-                      color: activity['result'] == 'win' ? Colors.green : Colors.red,
+                      color: activity['result'] == 'win'
+                          ? Colors.green
+                          : Colors.red,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),

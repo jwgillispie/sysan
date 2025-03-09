@@ -35,7 +35,7 @@ class SystemsOverviewSection extends StatelessWidget {
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'ACTIVE SYSTEMS',

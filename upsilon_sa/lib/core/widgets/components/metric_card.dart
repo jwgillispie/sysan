@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -45,7 +44,7 @@ class MetricCard extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 label,

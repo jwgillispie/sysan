@@ -51,7 +51,7 @@ abstract class CyberBox extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     final primaryColor = accentColor ?? Theme.of(context).colorScheme.primary;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -64,6 +64,7 @@ abstract class CyberBox extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(6),

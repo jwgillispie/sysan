@@ -32,7 +32,7 @@ class ROIChartSection extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'ROI ANALYTICS',
@@ -52,13 +52,19 @@ class ROIChartSection extends StatelessWidget {
                   drawVerticalLine: true,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.1),
                       strokeWidth: 1,
                     );
                   },
                   getDrawingVerticalLine: (value) {
                     return FlLine(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -94,8 +100,10 @@ class ROIChartSection extends StatelessWidget {
                       },
                     ),
                   ),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false)),
                 ),
                 borderData: FlBorderData(show: false),
                 lineBarsData: [
@@ -108,7 +116,10 @@ class ROIChartSection extends StatelessWidget {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.1),
                     ),
                   ),
                 ],

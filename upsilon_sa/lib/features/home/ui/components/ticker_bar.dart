@@ -22,13 +22,28 @@ class TickerBar extends StatelessWidget {
     return Container(
       height: 40,
       margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+      ),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         controller: scrollController,
-        itemCount: bettingLines.length * 2,
+        itemCount: bettingLines.length * 10, // Repeat items for continuous scroll
         itemBuilder: (context, index) {
           final itemIndex = index % bettingLines.length;
-          return TickerItem(text: tickerLines[itemIndex]);
+          return TickerItem(
+            sport: bettingLines[itemIndex]['sport'],
+            teams: bettingLines[itemIndex]['teams'],
+            pick: bettingLines[itemIndex]['prediction']['pick'],
+            confidence: bettingLines[itemIndex]['prediction']['confidence'],
+          );
         },
       ),
     );
@@ -36,18 +51,24 @@ class TickerBar extends StatelessWidget {
 }
 
 class TickerItem extends StatelessWidget {
-  final String text;
+  final String sport;
+  final String teams;
+  final String pick;
+  final String confidence;
 
   const TickerItem({
     Key? key,
-    required this.text,
+    required this.sport,
+    required this.teams,
+    required this.pick,
+    required this.confidence,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
@@ -58,18 +79,42 @@ class TickerItem extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.trending_up,
-            size: 16,
-            color: Theme.of(context).colorScheme.primary,
+          Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.red,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.red.withOpacity(0.3),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
           ),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+              children: [
+                TextSpan(text: sport),
+                const TextSpan(text: ' | '),
+                TextSpan(text: teams),
+                const TextSpan(text: ' | '),
+                TextSpan(text: pick),
+                TextSpan(
+                  text: ' ($confidence)',
+                  style: const TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

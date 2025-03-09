@@ -42,7 +42,7 @@ class NewsBox extends CyberBox {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 children: [

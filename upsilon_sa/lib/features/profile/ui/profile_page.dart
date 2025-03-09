@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
+import 'package:upsilon_sa/core/widgets/cyber_grid_painter.dart';
 import 'package:upsilon_sa/features/profile/bloc/profile_bloc.dart';
 import 'components/profile_header.dart';
-import 'components/profile_systems.dart';
 import 'components/profile_stats.dart';
+import 'components/profile_subscription.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,20 +17,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ProfileBloc _profileBloc = ProfileBloc();
-  bool _isInitialLoad = true;
+  late final ProfileBloc _profileBloc;
 
   @override
   void initState() {
     super.initState();
-    _loadProfileData();
+    _profileBloc = ProfileBloc();
+    _loadData();
   }
 
-  void _loadProfileData() {
+  void _loadData() {
     _profileBloc
       ..add(LoadProfileEvent())
-      ..add(LoadProfileSystemsEvent())
-      ..add(LoadProfileStatsEvent());
+      ..add(LoadProfileStatsEvent())
+      ..add(LoadSubscriptionEvent());
   }
 
   @override
@@ -77,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 color: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () {
-                // TODO: Implement settings navigation
+                // Navigate to settings
               },
             ),
           ],
@@ -93,53 +94,107 @@ class _ProfilePageState extends State<ProfilePage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(state.message)),
                       );
+                    } else if (state is SubscriptionUpdated) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Subscription updated successfully')),
+                      );
+                    } else if (state is SubscriptionCancelled) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Subscription cancelled')),
+                      );
                     }
                   },
                 ),
               ],
-              child: RefreshIndicator(
-                onRefresh: () async => _loadProfileData(),
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        BlocBuilder<ProfileBloc, ProfileState>(
-                          builder: (context, state) {
-                            if (state is ProfileLoading && _isInitialLoad) {
-                              return const Center(child: CircularProgressIndicator());
-                            }
-                            if (state is ProfileLoaded || _profileBloc.profileData != null) {
-                              _isInitialLoad = false;
-                              return ProfileHeader(userData: _profileBloc.profileData!);
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
-                        // const SizedBox(height: 24),
-                        // BlocBuilder<ProfileBloc, ProfileState>(
-                        //   builder: (context, state) {
-                        //     if (_profileBloc.systemsData != null) {
-                        //       return ProfileSystems(systems: _profileBloc.systemsData!);
-                        //     }
-                        //     return const SizedBox.shrink();
-                        //   },
-                        // ),
-                        const SizedBox(height: 24),
-                        BlocBuilder<ProfileBloc, ProfileState>(
-                          builder: (context, state) {
-                            if (_profileBloc.statsData != null) {
-                              return ProfileStats(stats: _profileBloc.statsData!);
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
-                        const SizedBox(height: 80),
-                      ],
+              child: Stack(
+                children: [
+                  // Add an additional subtle cyber grid overlay with different spacing
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: CyberGridPainter(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.03),
+                        gridSpacing: 40,
+                        lineWidth: 0.8,
+                      ),
                     ),
                   ),
-                ),
+                  
+                  // Content
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          // Profile Header
+                          BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, state) {
+                              if (state is ProfileLoaded || _profileBloc.profileData != null) {
+                                return ProfileHeader(userData: _profileBloc.profileData!);
+                              }
+                              return const SizedBox(
+                                height: 200,
+                                child: Center(child: CircularProgressIndicator()),
+                              );
+                            },
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Subscription Section (Condensed)
+                          BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, state) {
+                              if (state is SubscriptionLoaded || _profileBloc.subscriptionData != null) {
+                                return ProfileSubscription(subscriptionData: _profileBloc.subscriptionData!);
+                              }
+                              if (state is ProfileLoading) {
+                                return const SizedBox(
+                                  height: 100,
+                                  child: Center(child: CircularProgressIndicator()),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Stats Section
+                          BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, state) {
+                              if (state is ProfileStatsLoaded || _profileBloc.statsData != null) {
+                                return ProfileStats(stats: _profileBloc.statsData!);
+                              }
+                              if (state is ProfileLoading) {
+                                return const SizedBox(
+                                  height: 150,
+                                  child: Center(child: CircularProgressIndicator()),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          
+                          const SizedBox(height: 80),
+                        ],
+                      ),
+                    ),
+                  ),
+                  
+                  // Loading overlay
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, state) {
+                      if (state is ProfileLoading) {
+                        return Container(
+                          color: Colors.black.withOpacity(0.3),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ],
               ),
             ),
           ],

@@ -32,7 +32,7 @@ class NewsCard extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.network(
               imageUrl,
@@ -43,7 +43,7 @@ class NewsCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,

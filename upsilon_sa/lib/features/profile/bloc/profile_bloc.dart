@@ -12,12 +12,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Map<String, dynamic>? profileData;
   List<Map<String, dynamic>>? systemsData;
   Map<String, dynamic>? statsData;
+  Map<String, dynamic>? subscriptionData;
 
   ProfileBloc() : super(ProfileInitial()) {
     on<LoadProfileEvent>(_onLoadProfile);
     on<UpdateProfileEvent>(_onUpdateProfile);
     on<LoadProfileSystemsEvent>(_onLoadProfileSystems);
     on<LoadProfileStatsEvent>(_onLoadProfileStats);
+    on<LoadSubscriptionEvent>(_onLoadSubscription);
+    on<UpdateSubscriptionEvent>(_onUpdateSubscription);
+    on<CancelSubscriptionEvent>(_onCancelSubscription);
   }
 
   Future<void> _onLoadProfile(
@@ -57,6 +61,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
+  Future<void> _onLoadSubscription(
+    LoadSubscriptionEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      subscriptionData = await repository.getSubscription();
+      emit(SubscriptionLoaded(subscriptionData!));
+    } catch (e) {
+      emit(ProfileError('Failed to load subscription: $e'));
+    }
+  }
+
   Future<void> _onUpdateProfile(
     UpdateProfileEvent event,
     Emitter<ProfileState> emit,
@@ -68,6 +84,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       add(LoadProfileEvent()); // Reload profile
     } catch (e) {
       emit(ProfileError('Failed to update profile: $e'));
+    }
+  }
+
+  Future<void> _onUpdateSubscription(
+    UpdateSubscriptionEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLoading());
+      await repository.updateSubscription(event.planName);
+      subscriptionData = await repository.getSubscription();
+      emit(SubscriptionUpdated());
+      emit(SubscriptionLoaded(subscriptionData!));
+    } catch (e) {
+      emit(ProfileError('Failed to update subscription: $e'));
+    }
+  }
+
+  Future<void> _onCancelSubscription(
+    CancelSubscriptionEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLoading());
+      await repository.cancelSubscription();
+      subscriptionData = await repository.getSubscription();
+      emit(SubscriptionCancelled());
+      emit(SubscriptionLoaded(subscriptionData!));
+    } catch (e) {
+      emit(ProfileError('Failed to cancel subscription: $e'));
     }
   }
 }

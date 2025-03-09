@@ -1,4 +1,3 @@
-
 // lib/features/profile/bloc/profile_state.dart
 part of 'profile_bloc.dart';
 
@@ -25,6 +24,15 @@ class ProfileStatsLoaded extends ProfileState {
   final Map<String, dynamic> stats;
   ProfileStatsLoaded(this.stats);
 }
+
+class SubscriptionLoaded extends ProfileState {
+  final Map<String, dynamic> subscription;
+  SubscriptionLoaded(this.subscription);
+}
+
+class SubscriptionUpdated extends ProfileState {}
+
+class SubscriptionCancelled extends ProfileState {}
 
 class ProfileError extends ProfileState {
   final String message;

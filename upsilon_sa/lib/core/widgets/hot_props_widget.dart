@@ -56,7 +56,8 @@ class HotPropCard extends StatefulWidget {
   State<HotPropCard> createState() => _HotPropCardState();
 }
 
-class _HotPropCardState extends State<HotPropCard> with SingleTickerProviderStateMixin {
+class _HotPropCardState extends State<HotPropCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -101,7 +102,8 @@ class _HotPropCardState extends State<HotPropCard> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final heatColor = _getHeatColor();
-    _controller.duration = Duration(milliseconds: (1500 * _getAnimationSpeed()).toInt());
+    _controller.duration =
+        Duration(milliseconds: (1500 * _getAnimationSpeed()).toInt());
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -121,7 +123,7 @@ class _HotPropCardState extends State<HotPropCard> with SingleTickerProviderStat
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,7 +158,7 @@ class _HotPropCardState extends State<HotPropCard> with SingleTickerProviderStat
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Confidence',

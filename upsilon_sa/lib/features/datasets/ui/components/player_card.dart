@@ -25,7 +25,8 @@ class PlayerCard extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+          backgroundColor:
+              Theme.of(context).colorScheme.primary.withOpacity(0.2),
           child: Text(
             player.name.substring(0, 1).toUpperCase(),
             style: TextStyle(

@@ -164,7 +164,7 @@ Widget _buildPerformanceSection() {
       ],
     ),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           'PERFORMANCE METRICS',
@@ -245,7 +245,7 @@ Widget _buildMetricCard(String title, String value, IconData icon, Color accentC
       ],
     ),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           children: [
@@ -280,7 +280,7 @@ Widget _buildMetricCard(String title, String value, IconData icon, Color accentC
 
 Widget _buildRecentActivity() {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(
         'RECENT ACTIVITY',
@@ -340,7 +340,7 @@ Widget _buildActivityItem({
         const SizedBox(width: 12),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 title,
@@ -412,7 +412,7 @@ Widget _buildActivityItem({
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'ACTIVE SYSTEMS',
@@ -456,7 +456,7 @@ Widget _buildActivityItem({
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 systemItems[index],
@@ -538,7 +538,7 @@ Widget _buildActivityItem({
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'ROI ANALYTICS',
@@ -875,7 +875,7 @@ class _SystemsPageState extends State<SystemsPage> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'ROI Over Time',

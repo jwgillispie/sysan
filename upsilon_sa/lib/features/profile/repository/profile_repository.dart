@@ -80,12 +80,49 @@ class ProfileRepository {
     }
   }
 
+  Future<Map<String, dynamic>> getSubscription() async {
+    try {
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 1));
+      
+      return {
+        'currentPlan': 'Pro',
+        'startDate': '2024-01-15',
+        'expiryDate': '2025-01-15',
+        'autoRenew': true,
+        'paymentMethod': 'Credit Card (**** 1234)',
+      };
+    } catch (e) {
+      throw Exception('Failed to fetch subscription: $e');
+    }
+  }
+
   Future<void> updateProfile(Map<String, dynamic> userData) async {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 1));
     } catch (e) {
       throw Exception('Failed to update profile: $e');
+    }
+  }
+
+  Future<void> updateSubscription(String planName) async {
+    try {
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 1));
+      // In a real application, you would send the new plan name to the server
+    } catch (e) {
+      throw Exception('Failed to update subscription: $e');
+    }
+  }
+
+  Future<void> cancelSubscription() async {
+    try {
+      // Simulate API call
+      await Future.delayed(const Duration(seconds: 1));
+      // In a real application, you would send a cancellation request to the server
+    } catch (e) {
+      throw Exception('Failed to cancel subscription: $e');
     }
   }
 }

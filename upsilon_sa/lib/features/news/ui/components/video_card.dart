@@ -47,7 +47,7 @@ class VideoCard extends StatelessWidget {
               left: 16,
               right: 16,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     video['title']!,
@@ -61,7 +61,8 @@ class VideoCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),

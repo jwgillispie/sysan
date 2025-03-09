@@ -33,7 +33,7 @@ class PerformanceMetricsSection extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'PERFORMANCE METRICS',
@@ -105,7 +105,7 @@ class PerformanceMetricsSection extends StatelessWidget {
 
   Widget _buildRecentActivity() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
           'RECENT ACTIVITY',
@@ -181,7 +181,7 @@ class ActivityListItem extends StatelessWidget {
 
   Widget _buildActivityDetails() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           activity['title'],

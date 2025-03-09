@@ -1,4 +1,3 @@
-
 // lib/features/profile/ui/components/profile_systems.dart
 
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class ProfileSystems extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'MY SYSTEMS',
@@ -53,7 +52,7 @@ class ProfileSystems extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 system['name'],
@@ -71,7 +70,9 @@ class ProfileSystems extends StatelessWidget {
                     height: 8,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: system['status'] == 'active' ? Colors.green : Colors.orange,
+                      color: system['status'] == 'active'
+                          ? Colors.green
+                          : Colors.orange,
                     ),
                   ),
                   const SizedBox(width: 4),
@@ -105,4 +106,3 @@ class ProfileSystems extends StatelessWidget {
     );
   }
 }
-

@@ -14,3 +14,12 @@ class UpdateProfileEvent extends ProfileEvent {
 class LoadProfileSystemsEvent extends ProfileEvent {}
 
 class LoadProfileStatsEvent extends ProfileEvent {}
+
+class LoadSubscriptionEvent extends ProfileEvent {}
+
+class UpdateSubscriptionEvent extends ProfileEvent {
+  final String planName;
+  UpdateSubscriptionEvent(this.planName);
+}
+
+class CancelSubscriptionEvent extends ProfileEvent {}

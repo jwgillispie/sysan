@@ -1,3 +1,4 @@
+// Path: lib/features/home/ui/components/boxes/leaderboard_box.dart
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/widgets/boxes/cyber_box.dart';
 
@@ -44,39 +45,54 @@ class LeaderboardBox extends CyberBox {
               color: primaryColor.withOpacity(0.1),
             ),
           ),
-          child: Row(
+          child: Column(
             children: [
-              Text(
-                user['rank']!,
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  user['name']!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+              Row(
+                children: [
+                  Text(
+                    user['rank']!,
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  user['profit']!,
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      user['name']!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      user['profit']!,
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Progress indicator line that shows how good the system is
+              ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: LinearProgressIndicator(
+                  value: 1 - (index * 0.15), // Decreasing progress for each item
+                  backgroundColor: Colors.white.withOpacity(0.05),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green.withOpacity(0.3)),
+                  minHeight: 2,
                 ),
               ),
             ],
