@@ -8,7 +8,6 @@ import 'package:upsilon_sa/features/social/ui/social_page.dart';
 import 'package:upsilon_sa/features/systems/ui/systems_page.dart';
 import 'package:upsilon_sa/features/news/ui/news_page.dart';
 import '../../features/home/ui/home_page.dart';
-import '../../features/analytics/ui/analytics_page.dart';
 
 class NavBar {
   late PersistentTabController _controller;
@@ -18,7 +17,7 @@ class NavBar {
       const HomePage(),
       const NewsPage(),
       const SystemsPage(),
-      const AnalyticsPage(),
+      const SystemCreationPage(),
       const SocialPage(),
     ];
   }
