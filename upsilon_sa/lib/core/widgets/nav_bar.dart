@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:upsilon_sa/core/widgets/custom_navbar.dart';
+import 'package:upsilon_sa/features/analytics/ui/systems_creation_page.dart';
 import 'package:upsilon_sa/features/profile/ui/profile_page.dart';
 import 'package:upsilon_sa/features/social/ui/social_page.dart';
 import 'package:upsilon_sa/features/systems/ui/systems_page.dart';
@@ -54,7 +55,7 @@ class NavBar {
           ),
         ),
         PersistentTabConfig(
-          screen: const SystemsPage(),
+          screen: const SystemCreationPage(),
           item: ItemConfig(
             icon: SizedBox(
               width: 28.0, // Ideal size for nav-bar icons

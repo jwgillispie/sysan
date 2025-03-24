@@ -1,47 +1,21 @@
-import 'package:flutter/material.dart';
+// lib/features/analytics/ui/analytics_page.dart
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:upsilon_sa/features/analytics/bloc/analytics_bloc.dart';
+import 'package:upsilon_sa/features/analytics/ui/systems_creation_page.dart';
 
 class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({super.key});
+  const AnalyticsPage({Key? key}) : super(key: key);
+  
   @override
   State<AnalyticsPage> createState() => _AnalyticsPageState();
 }
 
-class _AnalyticsPageState extends State<AnalyticsPage>{
-
+class _AnalyticsPageState extends State<AnalyticsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("Analytics", style: TextStyle(color: Colors.lightGreenAccent)),
-        centerTitle: true,
-        backgroundColor: Colors.black87,
-      ),
-      body: Container(
-        child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [Column(
-          children: [
-            Card(
-              color: Colors.black87,
-              child: Text(
-                  "My Recent Systems",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.lightGreenAccent,
-                      fontWeight: FontWeight.bold
-                  )
-              ),
-            )
-          ],
-        ),]
-    ),
-      ),
-    );
-
+    // Simply return the system creation page
+    return const SystemCreationPage();
   }
-
 }
