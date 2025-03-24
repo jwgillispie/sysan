@@ -104,7 +104,7 @@ class _SystemsPageState extends State<SystemsPage> with SingleTickerProviderStat
           const PulsingDot(),
           const SizedBox(width: 10),
           Text(
-            "SYSTEMS",
+            "ANALYTICS",
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.bold,

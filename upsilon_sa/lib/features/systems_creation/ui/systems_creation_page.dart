@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:upsilon_sa/features/analytics/bloc/system_creation_bloc.dart';
-import 'package:upsilon_sa/features/analytics/bloc/system_creation_event.dart';
-import 'package:upsilon_sa/features/analytics/bloc/system_creation_state.dart';
+import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_bloc.dart';
+import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.dart';
+import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.dart';
 import '../models/factor_model.dart';
 
 class SystemCreationPage extends StatelessWidget {
