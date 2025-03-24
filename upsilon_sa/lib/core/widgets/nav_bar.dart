@@ -41,10 +41,10 @@ class NavBar {
           ),
         ),
         PersistentTabConfig(
-          screen: const NewsPage(),
+          screen: const SystemsPage(),
           item: ItemConfig(
-            icon: const Icon(Icons.newspaper_outlined),
-            title: "News",
+            icon: const Icon(Icons.abc),
+            title: "Analytics",
             activeForegroundColor: Theme.of(context).colorScheme.primary,
             inactiveForegroundColor:
                 Theme.of(context).brightness == Brightness.dark
@@ -71,7 +71,7 @@ class NavBar {
                 ),
               ),
             ),
-            title: "Systems",
+            title: "Create",
             activeForegroundColor: Theme.of(context).colorScheme.primary,
             inactiveForegroundColor:
                 Theme.of(context).brightness == Brightness.dark

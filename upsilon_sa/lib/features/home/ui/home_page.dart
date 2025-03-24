@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
+import 'package:upsilon_sa/core/widgets/containers/animated_border_container.dart';
 import 'package:upsilon_sa/features/home/bloc/home_bloc.dart';
 import 'package:upsilon_sa/features/home/ui/components/home_app_bar.dart';
 import 'package:upsilon_sa/features/home/ui/components/ticker_bar.dart';
+import 'package:upsilon_sa/core/widgets/hot_props_widget.dart';
+import 'package:upsilon_sa/features/news/ui/news_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -113,12 +116,21 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: const HomeAppBar(),
-      body: Stack(
+    return BlocListener<HomeBloc, HomeState>(
+      bloc: homeBloc,
+      listener: (context, state) {
+        if (state is SystemsNavigateToLeaderboard) {
+          Navigator.pushNamed(context, '/leaderboard');
+        } else if (state is SystemsNavigateToSystems) {
+          Navigator.pushNamed(context, '/systems');
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: const HomeAppBar(),
+        body: Stack(
         children: [
-          const CyberGrid(),
+          const CyberGrid(), // Cyber grid background
           Column(
             children: [
               // Ticker Bar
@@ -137,6 +149,7 @@ class _HomePageState extends State<HomePage>
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -149,6 +162,8 @@ class _HomePageState extends State<HomePage>
             _buildLeaderboardSection(context),
             const SizedBox(height: 20),
             _buildLiveGamesSection(context),
+            const SizedBox(height: 20),
+            _buildHotPropsSection(context),
             const SizedBox(height: 20),
             _buildUpdatesSection(context),
             const SizedBox(height: 80),
@@ -168,6 +183,8 @@ class _HomePageState extends State<HomePage>
             const SizedBox(height: 20),
             _buildLiveGamesSection(context),
             const SizedBox(height: 20),
+            _buildHotPropsSection(context),
+            const SizedBox(height: 20),
             _buildUpdatesSection(context),
             const SizedBox(height: 80),
           ],
@@ -177,43 +194,43 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildLeaderboardSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+    return GestureDetector(
+      onTap: () => homeBloc.add(LeaderboardClickedEvent()),
+      child: AnimatedBorderContainer(
+        borderColor: Theme.of(context).colorScheme.primary,
+        lightColor: Theme.of(context).colorScheme.primary,
+        duration: const Duration(seconds: 4),
+        child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.emoji_events_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'TOP PERFORMERS',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // List of top performers
+            _buildTopPerformersList(),
+          ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.emoji_events_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'TOP PERFORMERS',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // List of top performers
-          _buildTopPerformersList(),
-        ],
-      ),
-    );
+    ));
   }
 
   Widget _buildTopPerformersList() {
@@ -300,43 +317,43 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildSystemsSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+    return GestureDetector(
+      onTap: () => homeBloc.add(SystemsCickedEvent()),
+      child: AnimatedBorderContainer(
+        borderColor: Theme.of(context).colorScheme.primary,
+        lightColor: Theme.of(context).colorScheme.primary,
+        duration: const Duration(seconds: 4),
+        child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.memory,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'ACTIVE SYSTEMS',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // List of user's active systems
+            _buildActiveSystemsList(),
+          ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.memory,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'ACTIVE SYSTEMS',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // List of user's active systems
-          _buildActiveSystemsList(),
-        ],
-      ),
-    );
+    ));
   }
 
   Widget _buildActiveSystemsList() {
@@ -415,99 +432,97 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildLiveGamesSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.sports_basketball,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'CURRENT GAME',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.red.withOpacity(0.3),
-                  ),
-                ),
-                child: Row(
+    return AnimatedBorderContainer(
+      borderColor: Theme.of(context).colorScheme.primary,
+      lightColor: Theme.of(context).colorScheme.primary,
+      duration: const Duration(seconds: 4),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.red.withOpacity(0.3),
-                            blurRadius: 4,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
+                    Icon(
+                      Icons.sports_basketball,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 20,
                     ),
-                    const SizedBox(width: 6),
-                    const Text(
-                      'LIVE',
+                    const SizedBox(width: 8),
+                    Text(
+                      'CURRENT GAME',
                       style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // Using our simplified scoreboard UI here
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildTeamColumn('BOS', 108, true),
-              _buildVersusLabel(context),
-              _buildTeamColumn('GSW', 102, false),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildGameInfoItem(context, 'QUARTER', 'Q4'),
-              _buildGameInfoItem(context, 'TIME LEFT', '4:32'),
-            ],
-          ),
-        ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.red.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.red.withOpacity(0.3),
+                              blurRadius: 4,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'LIVE',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // Using our simplified scoreboard UI here
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildTeamColumn('BOS', 108, true),
+                _buildVersusLabel(context),
+                _buildTeamColumn('GSW', 102, false),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildGameInfoItem(context, 'QUARTER', 'Q4'),
+                _buildGameInfoItem(context, 'TIME LEFT', '4:32'),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -614,117 +629,183 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildUpdatesSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-        ),
+  Widget _buildHotPropsSection(BuildContext context) {
+    final hotProps = [
+      const HotProp(
+        name: "Steph Curry Over 28.5 Points",
+        confidence: 90.0,
+        odds: "-110",
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.article_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'LATEST UPDATES',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
+      const HotProp(
+        name: "LeBron James Triple Double",
+        confidence: 75.0,
+        odds: "+250",
+      ),
+      const HotProp(
+        name: "Luka Doncic Over 9.5 Assists",
+        confidence: 65.0,
+        odds: "-115",
+      ),
+    ];
+
+    return AnimatedBorderContainer(
+      borderColor: Colors.redAccent,
+      lightColor: Colors.redAccent,
+      duration: const Duration(seconds: 3),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.local_fire_department,
+                  color: Colors.redAccent,
+                  size: 20,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // News items
-          Column(
-            children: newsItems.map((news) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                const SizedBox(width: 8),
+                Text(
+                  'HOT PROPS',
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.article,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            news['title']!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          news['time'] ?? 'Just now',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 12,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              news['category']!,
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.7),
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 14,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 16),
+            ListView.builder(
+              padding: const EdgeInsets.all(8),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: hotProps.length,
+              itemBuilder: (context, index) {
+                return HotPropCard(prop: hotProps[index]);
+              },
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _buildUpdatesSection(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NewsPage()),
+      ),
+      child: AnimatedBorderContainer(
+        borderColor: Theme.of(context).colorScheme.primary,
+        lightColor: Theme.of(context).colorScheme.primary,
+        duration: const Duration(seconds: 4),
+        child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.article_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'LATEST UPDATES',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // News items
+            Column(
+              children: newsItems.map((news) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color:
+                          Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.article,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              news['title']!,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            news['time'] ?? 'Just now',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.5),
+                              fontSize: 12,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                news['category']!,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.7),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 14,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }
