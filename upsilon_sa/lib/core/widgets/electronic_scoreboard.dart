@@ -1,4 +1,4 @@
-// lib/core/widgets/simplified_scoreboard.dart
+// lib/core/widgets/electronic_scoreboard.dart
 
 import 'package:flutter/material.dart';
 
@@ -166,7 +166,7 @@ class SimplifiedScoreboard extends StatelessWidget {
           ),
           child: Text(
             team,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -176,7 +176,7 @@ class SimplifiedScoreboard extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           score.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -197,8 +197,16 @@ class SimplifiedScoreboard extends StatelessWidget {
   }
 
   Widget _buildScoreDivider(BuildContext context) {
+    // This is where the error was - primaryColor is declared but not used
+    // Fixed by using primaryColor in the widget or removing it if not needed
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: primaryColor.withOpacity(0.1),  // Using primaryColor here
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: const Text(
         'VS',
         style: TextStyle(
@@ -211,8 +219,6 @@ class SimplifiedScoreboard extends StatelessWidget {
   }
 
   Widget _buildGameInfo(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

@@ -74,14 +74,14 @@ class ROIChartSection extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 22,
-                      getTitlesWidget: (value, meta) {
-                        const style = TextStyle(
-                          color: Colors.white54,
-                          fontSize: 12,
-                        );
-                        return SideTitleWidget(
-                          axisSide: meta.axisSide,
-                          child: Text('${value.toInt()}M', style: style),
+                      // Using a simple Text widget directly instead of SideTitleWidget
+                      getTitlesWidget: (double value, TitleMeta meta) {
+                        return Text(
+                          '${value.toInt()}M',
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                          ),
                         );
                       },
                     ),
@@ -89,7 +89,7 @@ class ROIChartSection extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      getTitlesWidget: (value, meta) {
+                      getTitlesWidget: (double value, TitleMeta meta) {
                         return Text(
                           '${value.toInt()}%',
                           style: const TextStyle(

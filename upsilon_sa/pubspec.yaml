@@ -38,11 +38,11 @@ dependencies:
   bloc: 
   video_player: ^2.2.11
   youtube_player_flutter: ^9.1.1 
-  fl_chart: ^0.69.0
   google_fonts: ^6.1.0
   flutter_animate: ^4.2.0  # For sophisticated animations
   shimmer: ^3.0.0 
   flutter_inappwebview: ^6.1.5
+  fl_chart: ^0.70.2
 
 
   
