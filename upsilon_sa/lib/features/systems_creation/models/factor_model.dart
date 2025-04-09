@@ -1,34 +1,42 @@
 // lib/features/systems_creation/models/factor_model.dart
-
 class Factor {
   final int id;
-  String name;
-  double weight;
-  bool expanded;
-  int threshold;
-  int gamesBack;
+  final String name;
+  final String category;
+  final String unit; // Add this field
+  final bool expanded;
+  final double weight;
+  final int threshold;
+  final int gamesBack;
 
-  Factor({
+  const Factor({
     required this.id,
     required this.name,
-    this.weight = 50.0,
+    this.category = 'Uncategorized',
+    this.unit = '', // Default empty unit
     this.expanded = false,
-    this.threshold = 20,
-    this.gamesBack = 5,
+    this.weight = 50.0,
+    this.threshold = 5,
+    this.gamesBack = 10,
   });
 
   Factor copyWith({
+    int? id,
     String? name,
-    double? weight,
+    String? category,
+    String? unit,
     bool? expanded,
+    double? weight,
     int? threshold,
     int? gamesBack,
   }) {
     return Factor(
-      id: this.id,
+      id: id ?? this.id,
       name: name ?? this.name,
-      weight: weight ?? this.weight,
+      category: category ?? this.category,
+      unit: unit ?? this.unit,
       expanded: expanded ?? this.expanded,
+      weight: weight ?? this.weight,
       threshold: threshold ?? this.threshold,
       gamesBack: gamesBack ?? this.gamesBack,
     );

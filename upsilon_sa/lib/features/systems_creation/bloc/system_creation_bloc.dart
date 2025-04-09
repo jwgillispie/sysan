@@ -100,15 +100,18 @@ class SystemsCreationBloc
   }
 
   // New handler for updating factor name
-  void _onUpdateFactorName(
-      UpdateFactorName event, Emitter<SystemsCreationState> emit) {
-    final factors = List<Factor>.from(state.factors);
-    final index = factors.indexWhere((factor) => factor.id == event.factorId);
-    if (index != -1) {
-      factors[index] = factors[index].copyWith(name: event.name);
-      emit(state.copyWith(factors: factors));
-    }
+void _onUpdateFactorName(
+    UpdateFactorName event, Emitter<SystemsCreationState> emit) {
+  final factors = List<Factor>.from(state.factors);
+  final index = factors.indexWhere((factor) => factor.id == event.factorId);
+  if (index != -1) {
+    factors[index] = factors[index].copyWith(
+      name: event.name,
+      unit: event.unit, // Update unit
+    );
+    emit(state.copyWith(factors: factors));
   }
+}
 
   void _onCreateSystem(
       CreateSystem event, Emitter<SystemsCreationState> emit) {

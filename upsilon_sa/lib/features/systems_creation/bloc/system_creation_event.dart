@@ -93,13 +93,13 @@ class UpdateFactorGamesBack extends SystemsCreationEvent {
 class UpdateFactorName extends SystemsCreationEvent {
   final int factorId;
   final String name;
+  final String unit; // Add unit
 
-  const UpdateFactorName(this.factorId, this.name);
+  const UpdateFactorName(this.factorId, this.name, this.unit);
 
   @override
-  List<Object?> get props => [factorId, name];
+  List<Object?> get props => [factorId, name, unit];
 }
-
 class CreateSystem extends SystemsCreationEvent {
   const CreateSystem();
 }
