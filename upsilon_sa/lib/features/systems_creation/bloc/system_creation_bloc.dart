@@ -1,4 +1,4 @@
-// lib/features/analytics/bloc/systems_creation_bloc.dart
+// lib/features/systems_creation/bloc/system_creation_bloc.dart
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.dart';
@@ -18,6 +18,7 @@ class SystemsCreationBloc
     on<UpdateFactorWeight>(_onUpdateFactorWeight);
     on<UpdateFactorThreshold>(_onUpdateFactorThreshold);
     on<UpdateFactorGamesBack>(_onUpdateFactorGamesBack);
+    on<UpdateFactorName>(_onUpdateFactorName); // Add the new event handler
     on<CreateSystem>(_onCreateSystem);
     on<TestSystem>(_onTestSystem);
     
@@ -94,6 +95,17 @@ class SystemsCreationBloc
     final index = factors.indexWhere((factor) => factor.id == event.factorId);
     if (index != -1) {
       factors[index] = factors[index].copyWith(gamesBack: event.gamesBack);
+      emit(state.copyWith(factors: factors));
+    }
+  }
+
+  // New handler for updating factor name
+  void _onUpdateFactorName(
+      UpdateFactorName event, Emitter<SystemsCreationState> emit) {
+    final factors = List<Factor>.from(state.factors);
+    final index = factors.indexWhere((factor) => factor.id == event.factorId);
+    if (index != -1) {
+      factors[index] = factors[index].copyWith(name: event.name);
       emit(state.copyWith(factors: factors));
     }
   }

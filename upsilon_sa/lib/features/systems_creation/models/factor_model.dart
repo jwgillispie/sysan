@@ -1,4 +1,4 @@
-// lib/features/analytics/models/factor_model.dart
+// lib/features/systems_creation/models/factor_model.dart
 
 class Factor {
   final int id;

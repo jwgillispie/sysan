@@ -20,253 +20,6 @@ class SystemCreationPage extends StatelessWidget {
       child: const _SystemCreationView(),
     );
   }
-  
-  void _showFactorSearchDialog(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final TextEditingController searchController = TextEditingController();
-    
-    // Sample predefined factors - in a real app, this would come from a repository
-    final List<Map<String, dynamic>> availableFactors = [
-      {'id': 1, 'name': 'Points Per Game', 'category': 'Offense'},
-      {'id': 2, 'name': 'Field Goal %', 'category': 'Offense'},
-      {'id': 3, 'name': 'Three Point %', 'category': 'Offense'},
-      {'id': 4, 'name': 'Free Throw %', 'category': 'Offense'},
-      {'id': 5, 'name': 'Rebounds Per Game', 'category': 'Defense'},
-      {'id': 6, 'name': 'Assists Per Game', 'category': 'Offense'},
-      {'id': 7, 'name': 'Steals Per Game', 'category': 'Defense'},
-      {'id': 8, 'name': 'Blocks Per Game', 'category': 'Defense'},
-      {'id': 9, 'name': 'Turnovers Per Game', 'category': 'Offense'},
-      {'id': 10, 'name': 'Player Efficiency Rating', 'category': 'Advanced'},
-      {'id': 11, 'name': 'True Shooting %', 'category': 'Advanced'},
-      {'id': 12, 'name': 'Win Shares', 'category': 'Advanced'},
-      {'id': 13, 'name': 'Box Plus/Minus', 'category': 'Advanced'},
-      {'id': 14, 'name': 'Value Over Replacement', 'category': 'Advanced'},
-      {'id': 15, 'name': 'Team Pace', 'category': 'Team'},
-      {'id': 16, 'name': 'Team Offensive Rating', 'category': 'Team'},
-      {'id': 17, 'name': 'Team Defensive Rating', 'category': 'Team'},
-      {'id': 18, 'name': 'Net Rating', 'category': 'Team'},
-      {'id': 19, 'name': 'Home Court Advantage', 'category': 'Context'},
-      {'id': 20, 'name': 'Days of Rest', 'category': 'Context'},
-    ];
-    
-    List<Map<String, dynamic>> filteredFactors = [...availableFactors];
-    
-    showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: primaryColor.withOpacity(0.3),
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.search,
-                          color: primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'SEARCH FACTORS',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    // Search field
-                    TextField(
-                      controller: searchController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Search by name or category',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        filled: true,
-                        fillColor: Colors.black,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: primaryColor.withOpacity(0.3),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: primaryColor.withOpacity(0.3),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                            color: primaryColor,
-                          ),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: primaryColor,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            filteredFactors = [...availableFactors];
-                          } else {
-                            filteredFactors = availableFactors
-                                .where((factor) =>
-                                    factor['name'].toString().toLowerCase().contains(value.toLowerCase()) ||
-                                    factor['category'].toString().toLowerCase().contains(value.toLowerCase()))
-                                .toList();
-                          }
-                        });
-                      },
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Factors list
-                    SizedBox(
-                      height: 300,
-                      child: filteredFactors.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No factors found',
-                                style: TextStyle(color: Colors.grey[400]),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: filteredFactors.length,
-                              itemBuilder: (context, index) {
-                                final factor = filteredFactors[index];
-                                return InkWell(
-                                  onTap: () {
-                                    // Add the selected factor
-                                    context.read<SystemsCreationBloc>().add(const AddFactor());
-                                    // Close the dialog
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(bottom: 8),
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: primaryColor.withOpacity(0.3),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                factor['name'],
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                                decoration: BoxDecoration(
-                                                  color: _getCategoryColor(factor['category']).withOpacity(0.1),
-                                                  borderRadius: BorderRadius.circular(4),
-                                                ),
-                                                child: Text(
-                                                  factor['category'],
-                                                  style: TextStyle(
-                                                    color: _getCategoryColor(factor['category']),
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.add_circle_outline,
-                                          color: primaryColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Close button
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                        decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: primaryColor.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Text(
-                          'CLOSE',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Offense':
-        return Colors.blue;
-      case 'Defense':
-        return Colors.red;
-      case 'Advanced':
-        return Colors.purple;
-      case 'Team':
-        return Colors.green;
-      case 'Context':
-        return Colors.orange;
-      default:
-        return Colors.grey;
-    }
-  }
 }
 
 class _SystemCreationView extends StatefulWidget {
@@ -276,10 +29,35 @@ class _SystemCreationView extends StatefulWidget {
   State<_SystemCreationView> createState() => _SystemCreationViewState();
 }
 
-class _SystemCreationViewState extends State<_SystemCreationView> with SingleTickerProviderStateMixin {
+class _SystemCreationViewState extends State<_SystemCreationView>
+    with SingleTickerProviderStateMixin {
   final _systemNameController = TextEditingController();
   final List<String> _sports = ['NBA', 'NFL', 'MLB', 'NHL'];
-  
+
+  // Sample predefined factors - in a real app, this would come from a repository
+  static final List<Map<String, dynamic>> availableFactors = [
+    {'id': 1, 'name': 'Points Per Game', 'category': 'Offense'},
+    {'id': 2, 'name': 'Field Goal %', 'category': 'Offense'},
+    {'id': 3, 'name': 'Three Point %', 'category': 'Offense'},
+    {'id': 4, 'name': 'Free Throw %', 'category': 'Offense'},
+    {'id': 5, 'name': 'Rebounds Per Game', 'category': 'Defense'},
+    {'id': 6, 'name': 'Assists Per Game', 'category': 'Offense'},
+    {'id': 7, 'name': 'Steals Per Game', 'category': 'Defense'},
+    {'id': 8, 'name': 'Blocks Per Game', 'category': 'Defense'},
+    {'id': 9, 'name': 'Turnovers Per Game', 'category': 'Offense'},
+    {'id': 10, 'name': 'Player Efficiency Rating', 'category': 'Advanced'},
+    {'id': 11, 'name': 'True Shooting %', 'category': 'Advanced'},
+    {'id': 12, 'name': 'Win Shares', 'category': 'Advanced'},
+    {'id': 13, 'name': 'Box Plus/Minus', 'category': 'Advanced'},
+    {'id': 14, 'name': 'Value Over Replacement', 'category': 'Advanced'},
+    {'id': 15, 'name': 'Team Pace', 'category': 'Team'},
+    {'id': 16, 'name': 'Team Offensive Rating', 'category': 'Team'},
+    {'id': 17, 'name': 'Team Defensive Rating', 'category': 'Team'},
+    {'id': 18, 'name': 'Net Rating', 'category': 'Team'},
+    {'id': 19, 'name': 'Home Court Advantage', 'category': 'Context'},
+    {'id': 20, 'name': 'Days of Rest', 'category': 'Context'},
+  ];
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -290,7 +68,8 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
       duration: UIConstants.longAnimationDuration,
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _fadeAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _animationController.forward();
   }
 
@@ -304,7 +83,7 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return BlocConsumer<SystemsCreationBloc, SystemsCreationState>(
       listener: (context, state) {
         if (state.status == SystemsCreationStatus.success) {
@@ -370,22 +149,23 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
         children: [
           // System Configuration Section
           _buildConfigurationSection(context, state),
-          
+
           const SizedBox(height: 24),
-          
+
           // Factors Section
           _buildFactorsSection(context, state),
-          
+
           // Add space at the bottom for the floating create button
           const SizedBox(height: 80),
         ],
       ),
     );
   }
-  
-  Widget _buildConfigurationSection(BuildContext context, SystemsCreationState state) {
+
+  Widget _buildConfigurationSection(
+      BuildContext context, SystemsCreationState state) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return FadeTransition(
       opacity: _fadeAnimation,
       child: Container(
@@ -429,7 +209,7 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
               ],
             ),
             const SizedBox(height: 20),
-            
+
             // System Name Input
             TextField(
               controller: _systemNameController,
@@ -468,9 +248,9 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                     .add(SystemNameChanged(value));
               },
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Sport Selection Dropdown
             Container(
               decoration: BoxDecoration(
@@ -514,9 +294,10 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
     );
   }
 
-  Widget _buildFactorsSection(BuildContext context, SystemsCreationState state) {
+  Widget _buildFactorsSection(
+      BuildContext context, SystemsCreationState state) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -538,57 +319,38 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.psychology,
-                    color: primaryColor,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'SYSTEM FACTORS',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                ],
+              Icon(
+                Icons.psychology,
+                color: primaryColor,
+                size: 20,
               ),
-              // Search button
-              GestureDetector(
-                onTap: () {
-                  _showFactorSearchDialog(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: primaryColor.withOpacity(0.3),
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.search,
-                    color: primaryColor,
-                    size: 20,
-                  ),
+              const SizedBox(width: 8),
+              Text(
+                'SYSTEM FACTORS',
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          
+
           // Factors list
-          ...state.factors.map((factor) => _buildFactorCard(context, factor)).toList(),
-          
+          state.factors.isEmpty
+              ? _buildEmptyFactorsPrompt(context)
+              : Column(
+                  children: state.factors
+                      .map((factor) => _buildFactorCard(context, factor))
+                      .toList(),
+                ),
+
           const SizedBox(height: 16),
-          
+
           // Add Factor Button
           GestureDetector(
             onTap: () {
@@ -628,9 +390,64 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
     );
   }
 
+  Widget _buildEmptyFactorsPrompt(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: primaryColor.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: primaryColor.withOpacity(0.2),
+          style: BorderStyle.solid,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.psychology_outlined,
+            color: primaryColor.withOpacity(0.7),
+            size: 48,
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Add factors to your system',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Factors determine which statistics are used to make predictions',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildFactorCard(BuildContext context, Factor factor) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
+    // Find the category for the current factor
+    String currentCategory = 'Unknown';
+    for (var f in availableFactors) {
+      if (f['name'] == factor.name) {
+        currentCategory = f['category'];
+        break;
+      }
+    }
+
+    final categoryColor = _getCategoryColor(currentCategory);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
@@ -642,59 +459,117 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
       ),
       child: Column(
         children: [
-          // Factor header - always visible
-          InkWell(
-            onTap: () {
-              context
-                  .read<SystemsCreationBloc>()
-                  .add(ToggleFactorExpansion(factor.id));
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
-                ),
+          // Factor header with search capability
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: primaryColor.withOpacity(0.1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
               ),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      context
-                          .read<SystemsCreationBloc>()
-                          .add(RemoveFactor(factor.id));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                        size: 16,
-                      ),
+            ),
+            child: Row(
+              children: [
+                // Remove button
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<SystemsCreationBloc>()
+                        .add(RemoveFactor(factor.id));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 16,
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      factor.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(width: 8),
+
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Factor name with category badge
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            _showFactorSelectorForFactor(context, factor);
+                          },
+                          child: Row(
+                            children: [
+                              // Category indicator
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                margin: const EdgeInsets.only(right: 8),
+                                decoration: BoxDecoration(
+                                  color: categoryColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: categoryColor.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Text(
+                                  currentCategory,
+                                  style: TextStyle(
+                                    color: categoryColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              // Factor name
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        factor.name,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Icon(
+                                      Icons.search,
+                                      color: primaryColor,
+                                      size: 16,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Icon(
-                    factor.expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<SystemsCreationBloc>()
+                        .add(ToggleFactorExpansion(factor.id));
+                  },
+                  child: Icon(
+                    factor.expanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
                     color: primaryColor,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
@@ -739,7 +614,8 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(4),
@@ -877,35 +753,21 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
       ),
     );
   }
-  void _showFactorSearchDialog(BuildContext context) {
+void _showFactorSelectorForFactor(BuildContext context, Factor currentFactor) {
   final primaryColor = Theme.of(context).colorScheme.primary;
   final TextEditingController searchController = TextEditingController();
-  
-  // Sample predefined factors - in a real app, this would come from a repository
-  final List<Map<String, dynamic>> availableFactors = [
-    {'id': 1, 'name': 'Points Per Game', 'category': 'Offense'},
-    {'id': 2, 'name': 'Field Goal %', 'category': 'Offense'},
-    {'id': 3, 'name': 'Three Point %', 'category': 'Offense'},
-    {'id': 4, 'name': 'Free Throw %', 'category': 'Offense'},
-    {'id': 5, 'name': 'Rebounds Per Game', 'category': 'Defense'},
-    {'id': 6, 'name': 'Assists Per Game', 'category': 'Offense'},
-    {'id': 7, 'name': 'Steals Per Game', 'category': 'Defense'},
-    {'id': 8, 'name': 'Blocks Per Game', 'category': 'Defense'},
-    {'id': 9, 'name': 'Turnovers Per Game', 'category': 'Offense'},
-    {'id': 10, 'name': 'Player Efficiency Rating', 'category': 'Advanced'},
-    {'id': 11, 'name': 'True Shooting %', 'category': 'Advanced'},
-    {'id': 12, 'name': 'Win Shares', 'category': 'Advanced'},
-    {'id': 13, 'name': 'Box Plus/Minus', 'category': 'Advanced'},
-    {'id': 14, 'name': 'Value Over Replacement', 'category': 'Advanced'},
-    {'id': 15, 'name': 'Team Pace', 'category': 'Team'},
-    {'id': 16, 'name': 'Team Offensive Rating', 'category': 'Team'},
-    {'id': 17, 'name': 'Team Defensive Rating', 'category': 'Team'},
-    {'id': 18, 'name': 'Net Rating', 'category': 'Team'},
-    {'id': 19, 'name': 'Home Court Advantage', 'category': 'Context'},
-    {'id': 20, 'name': 'Days of Rest', 'category': 'Context'},
-  ];
-  
   List<Map<String, dynamic>> filteredFactors = [...availableFactors];
+  final bloc = context.read<SystemsCreationBloc>(); // Get the bloc here
+  
+  // Group factors by category for better organization
+  Map<String, List<Map<String, dynamic>>> groupedFactors = {};
+  for (var factor in availableFactors) {
+    String category = factor['category'] as String;
+    if (!groupedFactors.containsKey(category)) {
+      groupedFactors[category] = [];
+    }
+    groupedFactors[category]!.add(factor);
+  }
   
   showDialog(
     context: context,
@@ -933,13 +795,13 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.search,
+                        Icons.psychology,
                         color: primaryColor,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'SEARCH FACTORS',
+                        'SELECT FACTOR',
                         style: TextStyle(
                           color: primaryColor,
                           fontSize: 16,
@@ -956,7 +818,7 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                     controller: searchController,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
-                      hintText: 'Search by name or category',
+                      hintText: 'Search factors',
                       hintStyle: TextStyle(color: Colors.grey[400]),
                       filled: true,
                       fillColor: Colors.black,
@@ -1003,80 +865,71 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                   // Factors list
                   SizedBox(
                     height: 300,
-                    child: filteredFactors.isEmpty
-                        ? Center(
-                            child: Text(
-                              'No factors found',
-                              style: TextStyle(color: Colors.grey[400]),
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: filteredFactors.length,
-                            itemBuilder: (context, index) {
-                              final factor = filteredFactors[index];
-                              return InkWell(
-                                onTap: () {
-                                  // Add the selected factor
-                                  context.read<SystemsCreationBloc>().add(const AddFactor());
-                                  // Close the dialog
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  margin: const EdgeInsets.only(bottom: 8),
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                      color: primaryColor.withOpacity(0.3),
+                    child: searchController.text.isEmpty
+                        // Organized by category when not searching
+                        ? ListView.builder(
+                            itemCount: groupedFactors.keys.length,
+                            itemBuilder: (context, categoryIndex) {
+                              String category = groupedFactors.keys.elementAt(categoryIndex);
+                              List<Map<String, dynamic>> categoryFactors = groupedFactors[category]!;
+                              Color categoryColor = _getCategoryColor(category);
+                              
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Category header
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 8, top: 8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: categoryColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      category.toUpperCase(),
+                                      style: TextStyle(
+                                        color: categoryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              factor['name'],
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                              decoration: BoxDecoration(
-                                                color: _getCategoryColor(factor['category']).withOpacity(0.1),
-                                                borderRadius: BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                factor['category'],
-                                                style: TextStyle(
-                                                  color: _getCategoryColor(factor['category']),
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.add_circle_outline,
-                                        color: primaryColor,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                  // Category factors
+                                  ...categoryFactors.map((factor) => _buildFactorItem(
+                                    context, 
+                                    factor, 
+                                    currentFactor, 
+                                    primaryColor,
+                                    bloc, // Pass the bloc here
+                                  )),
+                                ],
                               );
-                            },
-                          ),
+                            })
+                        // Flat list when searching
+                        : filteredFactors.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No factors found',
+                                  style: TextStyle(color: Colors.grey[400]),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: filteredFactors.length,
+                                itemBuilder: (context, index) {
+                                  return _buildFactorItem(
+                                    context, 
+                                    filteredFactors[index], 
+                                    currentFactor, 
+                                    primaryColor,
+                                    bloc, // Pass the bloc here
+                                  );
+                                },
+                              ),
                   ),
                   
                   const SizedBox(height: 16),
                   
-                  // Close button
+                  // Cancel button
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: Container(
@@ -1089,7 +942,7 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
                         ),
                       ),
                       child: Text(
-                        'CLOSE',
+                        'CANCEL',
                         style: TextStyle(
                           color: primaryColor,
                           fontWeight: FontWeight.bold,
@@ -1106,25 +959,110 @@ class _SystemCreationViewState extends State<_SystemCreationView> with SingleTic
     },
   );
 }
-Color _getCategoryColor(String category) {
-  switch (category) {
-    case 'Offense':
-      return Colors.blue;
-    case 'Defense':
-      return Colors.red;
-    case 'Advanced':
-      return Colors.purple;
-    case 'Team':
-      return Colors.green;
-    case 'Context':
-      return Colors.orange;
-    default:
-      return Colors.grey;
+  Widget _buildFactorItem(
+    BuildContext context,
+    Map<String, dynamic> factor,
+    Factor currentFactor,
+    Color primaryColor,
+    SystemsCreationBloc bloc, // Add bloc parameter
+  ) {
+    final String factorName = factor['name'];
+    final bool isSelected = currentFactor.name == factorName;
+    final categoryColor = _getCategoryColor(factor['category']);
+
+    return InkWell(
+      onTap: () {
+        // Use the bloc directly instead of context.read
+        bloc.add(
+          UpdateFactorName(
+            currentFactor.id,
+            factorName,
+          ),
+        );
+        Navigator.of(context).pop();
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected ? primaryColor.withOpacity(0.1) : Colors.black,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected ? primaryColor : primaryColor.withOpacity(0.3),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: categoryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      factor['category'],
+                      style: TextStyle(
+                        color: categoryColor,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      factorName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected)
+              Icon(
+                Icons.check_circle,
+                color: primaryColor,
+                size: 20,
+              )
+            else
+              Icon(
+                Icons.add_circle_outline,
+                color: primaryColor,
+                size: 20,
+              ),
+          ],
+        ),
+      ),
+    );
   }
-}
+
+  Color _getCategoryColor(String category) {
+    switch (category) {
+      case 'Offense':
+        return Colors.blue;
+      case 'Defense':
+        return Colors.red;
+      case 'Advanced':
+        return Colors.purple;
+      case 'Team':
+        return Colors.green;
+      case 'Context':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
   Widget _buildCreateButton(BuildContext context, SystemsCreationState state) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return Positioned(
       bottom: 20,
       right: 20,
@@ -1143,9 +1081,9 @@ Color _getCategoryColor(String category) {
             ),
             const SizedBox(width: 8),
             Text(
-              state.status == SystemsCreationStatus.loading 
-                ? 'CREATING...' 
-                : 'CREATE SYSTEM',
+              state.status == SystemsCreationStatus.loading
+                  ? 'CREATING...'
+                  : 'CREATE SYSTEM',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1,

@@ -1,4 +1,4 @@
-// lib/features/analytics/bloc/systems_creation_event.dart
+// lib/features/systems_creation/bloc/system_creation_event.dart
 
 import 'package:equatable/equatable.dart';
 import '../models/factor_model.dart';
@@ -87,6 +87,17 @@ class UpdateFactorGamesBack extends SystemsCreationEvent {
 
   @override
   List<Object?> get props => [factorId, gamesBack];
+}
+
+// New event for updating factor name
+class UpdateFactorName extends SystemsCreationEvent {
+  final int factorId;
+  final String name;
+
+  const UpdateFactorName(this.factorId, this.name);
+
+  @override
+  List<Object?> get props => [factorId, name];
 }
 
 class CreateSystem extends SystemsCreationEvent {
