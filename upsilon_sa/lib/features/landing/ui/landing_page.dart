@@ -72,6 +72,9 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isWideScreen = screenWidth > 1000;
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -89,62 +92,48 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
             physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
-                const SizedBox(height: 60),
+                const SizedBox(height: 40),
                 
                 // Logo section
-                Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xFF09BF30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF09BF30).withOpacity(0.5),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      const Text(
-                        "SYSTEMS ANALYTICS",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          letterSpacing: 3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                const SizedBox(height: 50),
-                
-                // Main heading
-                Container(
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: const Text(
-                    'Pro-Level Sports Prediction Without The Coding',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
+                  child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: const Color(0xFF09BF30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF09BF30).withOpacity(0.5),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        const Text(
+                          "SYSTEMS ANALYTICS",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            letterSpacing: 3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 
                 const SizedBox(height: 30),
                 
+                          
                 // Mission statement
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -154,12 +143,19 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 28,
                       fontWeight: FontWeight.w500,
                       height: 1.5,
                     ),
                   ),
                 ),
+                
+                const SizedBox(height: 40),
+                
+                // Hero section with signup form prominently displayed at the top
+                isWideScreen
+                    ? _buildWideScreenHeroSection()
+                    : _buildNarrowScreenHeroSection(),
                 
                 const SizedBox(height: 60),
                 
@@ -197,7 +193,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                           _buildValueCard(
                             icon: Icons.trending_up,
                             title: 'Make Money Smarter',
-                            description: 'Let the data guide you to easy money',
+                            description: 'Use data-driven decisions for more confident betting',
                           ),
                         ],
                       ),
@@ -278,7 +274,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                       _buildFeatureRow(
                         title: 'Low Barrier to Entry',
                         description: 'Systems reduces the barrier to entry of conventional betting research through its low user cost and ease of use.',
-                        icon: Icons.construction,
+                        icon: Icons.accessibility_new,
                         isReversed: true,
                       ),
                       const SizedBox(height: 40),
@@ -289,212 +285,6 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                         isReversed: false,
                       ),
                     ],
-                  ),
-                ),
-                
-                const SizedBox(height: 60),
-                
-                // Waitlist form
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFF09BF30).withOpacity(0.5),
-                      width: 2,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF09BF30).withOpacity(0.2),
-                        blurRadius: 15,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(30),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (_isSuccess)
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            margin: const EdgeInsets.only(bottom: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.green.withOpacity(0.3),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.check_circle, color: Colors.green),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    'Thanks for joining! We\'ll notify you when we launch.',
-                                    style: TextStyle(color: Colors.green.shade300),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        
-                        const Center(
-                          child: Text(
-                            'JOIN THE WAITLIST',
-                            style: TextStyle(
-                              color: Color(0xFF09BF30),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        
-                        // Name field
-                        const Text(
-                          'FULL NAME',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _nameController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: 'Enter your name',
-                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
-                            filled: true,
-                            fillColor: Colors.black,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: const Color(0xFF09BF30).withOpacity(0.3),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: const Color(0xFF09BF30).withOpacity(0.3),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                color: Color(0xFF09BF30),
-                              ),
-                            ),
-                            prefixIcon: const Icon(
-                              Icons.person,
-                              color: Color(0xFF09BF30),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your name';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        
-                        // Email field
-                        const Text(
-                          'EMAIL ADDRESS',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _emailController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: 'Enter your email',
-                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
-                            filled: true,
-                            fillColor: Colors.black,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: const Color(0xFF09BF30).withOpacity(0.3),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: const Color(0xFF09BF30).withOpacity(0.3),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(
-                                color: Color(0xFF09BF30),
-                              ),
-                            ),
-                            prefixIcon: const Icon(
-                              Icons.email,
-                              color: Color(0xFF09BF30),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 30),
-                        
-                        // Submit button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: _isSubmitting ? null : _submitForm,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF09BF30),
-                              foregroundColor: Colors.black,
-                              disabledBackgroundColor: const Color(0xFF09BF30).withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: _isSubmitting
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : const Text(
-                                    'GET EARLY ACCESS',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
                 
@@ -530,6 +320,370 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Two-column layout for wide screens
+  Widget _buildWideScreenHeroSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      constraints: const BoxConstraints(maxWidth: 1200),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left column with promotional content
+          Expanded(
+            flex: 5,
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: const Color(0xFF09BF30).withOpacity(0.2),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'GET STARTED TODAY',
+                    style: TextStyle(
+                      color: Color(0xFF09BF30),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Join thousands of sports bettors already using Systems Analytics',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      _buildFeaturePoint('No coding required'),
+                      const SizedBox(width: 20),
+                      _buildFeaturePoint('Easy to use'),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      _buildFeaturePoint('Data-driven decisions'),
+                      const SizedBox(width: 20),
+                      _buildFeaturePoint('Affordable'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          const SizedBox(width: 30),
+          
+          // Right column with signup form
+          Expanded(
+            flex: 4,
+            child: _buildSignupForm(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Single column layout for narrow screens
+  Widget _buildNarrowScreenHeroSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          // Signup form on top for mobile
+          _buildSignupForm(),
+          
+          const SizedBox(height: 30),
+          
+          // Promotional content below
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: const Color(0xFF09BF30).withOpacity(0.2),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  'GET STARTED TODAY',
+                  style: TextStyle(
+                    color: Color(0xFF09BF30),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Join thousands of sports bettors already using Systems Analytics',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    height: 1.3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _buildFeaturePoint('No coding required'),
+                    _buildFeaturePoint('Easy to use'),
+                    _buildFeaturePoint('Data-driven decisions'),
+                    _buildFeaturePoint('Affordable'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeaturePoint(String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.check_circle,
+          color: const Color(0xFF09BF30),
+          size: 18,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSignupForm() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF09BF30),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF09BF30).withOpacity(0.3),
+            blurRadius: 20,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(30),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (_isSuccess)
+              Container(
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: Colors.green.withOpacity(0.3),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle, color: Colors.green),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Thanks for joining! We\'ll notify you when we launch.',
+                        style: TextStyle(color: Colors.green.shade300),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            
+            const Center(
+              child: Text(
+                'JOIN THE WAITLIST',
+                style: TextStyle(
+                  color: Color(0xFF09BF30),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            
+            // Name field
+            const Text(
+              'FULL NAME',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                letterSpacing: 1,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _nameController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'Enter your name',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                filled: true,
+                fillColor: Colors.black,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF09BF30),
+                  ),
+                ),
+                prefixIcon: const Icon(
+                  Icons.person,
+                  color: Color(0xFF09BF30),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your name';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 20),
+            
+            // Email field
+            const Text(
+              'EMAIL ADDRESS',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                letterSpacing: 1,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _emailController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'Enter your email',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                filled: true,
+                fillColor: Colors.black,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF09BF30),
+                  ),
+                ),
+                prefixIcon: const Icon(
+                  Icons.email,
+                  color: Color(0xFF09BF30),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 30),
+            
+            // Submit button
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: _isSubmitting ? null : _submitForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF09BF30),
+                  foregroundColor: Colors.black,
+                  disabledBackgroundColor: const Color(0xFF09BF30).withOpacity(0.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: _isSubmitting
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        'GET EARLY ACCESS',
+                        
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
