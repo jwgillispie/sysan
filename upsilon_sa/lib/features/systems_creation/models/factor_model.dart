@@ -8,6 +8,7 @@ class Factor {
   final double weight;
   final int threshold;
   final int gamesBack;
+  final bool isAboveThreshold; // Default to above
 
   const Factor({
     required this.id,
@@ -18,6 +19,7 @@ class Factor {
     this.weight = 50.0,
     this.threshold = 5,
     this.gamesBack = 10,
+    this.isAboveThreshold = true
   });
 
   Factor copyWith({
@@ -29,6 +31,7 @@ class Factor {
     double? weight,
     int? threshold,
     int? gamesBack,
+    bool? isAboveThreshold,
   }) {
     return Factor(
       id: id ?? this.id,
@@ -39,6 +42,7 @@ class Factor {
       weight: weight ?? this.weight,
       threshold: threshold ?? this.threshold,
       gamesBack: gamesBack ?? this.gamesBack,
+      isAboveThreshold: isAboveThreshold ?? this.isAboveThreshold
     );
   }
 

@@ -5,7 +5,6 @@ import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.dart';
 import '../models/factor_model.dart';
 
-
 class SystemsCreationBloc
     extends Bloc<SystemsCreationEvent, SystemsCreationState> {
   SystemsCreationBloc() : super(const SystemsCreationState()) {
@@ -21,7 +20,8 @@ class SystemsCreationBloc
     on<UpdateFactorName>(_onUpdateFactorName); // Add the new event handler
     on<CreateSystem>(_onCreateSystem);
     on<TestSystem>(_onTestSystem);
-    
+    on<ToggleFactorThresholdDirection>(_onToggleThresholdDirection);
+
     // Initialize with default factors
     add(const AddFactor());
     add(const AddFactor());
@@ -36,8 +36,7 @@ class SystemsCreationBloc
     emit(state.copyWith(selectedSport: event.sport));
   }
 
-  void _onPropSelected(
-      PropSelected event, Emitter<SystemsCreationState> emit) {
+  void _onPropSelected(PropSelected event, Emitter<SystemsCreationState> emit) {
     emit(state.copyWith(selectedPropId: event.propId));
   }
 
@@ -52,8 +51,7 @@ class SystemsCreationBloc
     emit(state.copyWith(factors: factors));
   }
 
-  void _onRemoveFactor(
-      RemoveFactor event, Emitter<SystemsCreationState> emit) {
+  void _onRemoveFactor(RemoveFactor event, Emitter<SystemsCreationState> emit) {
     final factors = List<Factor>.from(state.factors);
     factors.removeWhere((factor) => factor.id == event.factorId);
     emit(state.copyWith(factors: factors));
@@ -64,7 +62,8 @@ class SystemsCreationBloc
     final factors = List<Factor>.from(state.factors);
     final index = factors.indexWhere((factor) => factor.id == event.factorId);
     if (index != -1) {
-      factors[index] = factors[index].copyWith(expanded: !factors[index].expanded);
+      factors[index] =
+          factors[index].copyWith(expanded: !factors[index].expanded);
       emit(state.copyWith(factors: factors));
     }
   }
@@ -100,24 +99,35 @@ class SystemsCreationBloc
   }
 
   // New handler for updating factor name
-void _onUpdateFactorName(
-    UpdateFactorName event, Emitter<SystemsCreationState> emit) {
-  final factors = List<Factor>.from(state.factors);
-  final index = factors.indexWhere((factor) => factor.id == event.factorId);
-  if (index != -1) {
-    factors[index] = factors[index].copyWith(
-      name: event.name,
-      unit: event.unit, // Update unit
-    );
-    emit(state.copyWith(factors: factors));
+  void _onUpdateFactorName(
+      UpdateFactorName event, Emitter<SystemsCreationState> emit) {
+    final factors = List<Factor>.from(state.factors);
+    final index = factors.indexWhere((factor) => factor.id == event.factorId);
+    if (index != -1) {
+      factors[index] = factors[index].copyWith(
+        name: event.name,
+        unit: event.unit, // Update unit
+      );
+      emit(state.copyWith(factors: factors));
+    }
   }
-}
 
-  void _onCreateSystem(
-      CreateSystem event, Emitter<SystemsCreationState> emit) {
+  void _onToggleThresholdDirection(ToggleFactorThresholdDirection event,
+      Emitter<SystemsCreationState> emit) {
+    final factors = List<Factor>.from(state.factors);
+    final index = factors.indexWhere((f) => f.id == event.factorId);
+    if (index != -1) {
+      factors[index] = factors[index].copyWith(
+        isAboveThreshold: !factors[index].isAboveThreshold,
+      );
+      emit(state.copyWith(factors: factors));
+    }
+  }
+
+  void _onCreateSystem(CreateSystem event, Emitter<SystemsCreationState> emit) {
     // In a real implementation, you would save the system to a repository or API
     emit(state.copyWith(status: SystemsCreationStatus.loading));
-    
+
     try {
       // Simulate a delay
       Future.delayed(const Duration(seconds: 1), () {
@@ -134,13 +144,14 @@ void _onUpdateFactorName(
   void _onTestSystem(TestSystem event, Emitter<SystemsCreationState> emit) {
     // Calculate a confidence score based on factors
     double confidence = 0.0;
-    
+
     // Simple algorithm: average of all factor weights
     if (state.factors.isNotEmpty) {
-      double total = state.factors.fold(0.0, (sum, factor) => sum + factor.weight);
+      double total =
+          state.factors.fold(0.0, (sum, factor) => sum + factor.weight);
       confidence = total / state.factors.length;
     }
-    
+
     emit(state.copyWith(systemConfidence: confidence));
   }
 }

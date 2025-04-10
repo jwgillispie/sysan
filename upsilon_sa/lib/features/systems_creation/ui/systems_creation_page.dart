@@ -503,7 +503,9 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
   }
   
   final categoryColor = _getCategoryColor(currentCategory);
-  
+  final thresholdDirection = factor.isAboveThreshold ? 'ABOVE' : 'BELOW';
+  final directionColor = factor.isAboveThreshold ? Colors.green : Colors.red;
+
   return Container(
     margin: const EdgeInsets.only(bottom: 12),
     decoration: BoxDecoration(
@@ -530,9 +532,7 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
               // Remove button
               GestureDetector(
                 onTap: () {
-                  context
-                      .read<SystemsCreationBloc>()
-                      .add(RemoveFactor(factor.id));
+                  context.read<SystemsCreationBloc>().add(RemoveFactor(factor.id));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(4),
@@ -544,6 +544,27 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
                     Icons.close,
                     color: Colors.red,
                     size: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              
+              // Threshold direction indicator (new)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: directionColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: directionColor.withOpacity(0.3),
+                  ),
+                ),
+                child: Text(
+                  thresholdDirection,
+                  style: TextStyle(
+                    color: directionColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -613,9 +634,7 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  context
-                      .read<SystemsCreationBloc>()
-                      .add(ToggleFactorExpansion(factor.id));
+                  context.read<SystemsCreationBloc>().add(ToggleFactorExpansion(factor.id));
                 },
                 child: Icon(
                   factor.expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
@@ -626,64 +645,69 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
           ),
         ),
 
-        // Expanded content - only visible if expanded
+        // Expanded content
         if (factor.expanded)
           Container(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'FACTOR WEIGHT',
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
+                // Threshold direction toggle (new)
                 Row(
                   children: [
-                    Expanded(
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          activeTrackColor: primaryColor,
-                          inactiveTrackColor: primaryColor.withOpacity(0.2),
-                          thumbColor: primaryColor,
-                          overlayColor: primaryColor.withOpacity(0.1),
-                        ),
-                        child: Slider(
-                          value: factor.weight,
-                          min: 1,
-                          max: 100,
-                          divisions: 99,
-                          onChanged: (value) {
-                            context
-                                .read<SystemsCreationBloc>()
-                                .add(UpdateFactorWeight(factor.id, value));
-                          },
-                        ),
+                    Text(
+                      'COMPARISON:',
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        '${factor.weight.toInt()}%',
-                        style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<SystemsCreationBloc>().add(
+                          ToggleFactorThresholdDirection(factor.id),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: directionColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: directionColor.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              factor.isAboveThreshold 
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward,
+                              color: directionColor,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              thresholdDirection,
+                              style: TextStyle(
+                                color: directionColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
+                
+                // Threshold and Games Back inputs
                 Row(
                   children: [
                     Expanded(
@@ -692,11 +716,11 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
                         label: 'THRESHOLD',
                         value: factor.threshold,
                         onChanged: (value) {
-                          context
-                              .read<SystemsCreationBloc>()
-                              .add(UpdateFactorThreshold(factor.id, value));
+                          context.read<SystemsCreationBloc>().add(
+                            UpdateFactorThreshold(factor.id, value),
+                          );
                         },
-                        unit: currentUnit, // Only show unit for threshold
+                        unit: currentUnit,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -706,11 +730,10 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
                         label: 'GAMES BACK',
                         value: factor.gamesBack,
                         onChanged: (value) {
-                          context
-                              .read<SystemsCreationBloc>()
-                              .add(UpdateFactorGamesBack(factor.id, value));
+                          context.read<SystemsCreationBloc>().add(
+                            UpdateFactorGamesBack(factor.id, value),
+                          );
                         },
-                        // No unit for games back
                       ),
                     ),
                   ],
@@ -723,104 +746,105 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
   );
 }
   Widget _buildParameterInput(
-  BuildContext context, {
-  required String label,
-  required int value,
-  required Function(int) onChanged,
-  String? unit, // Make unit optional
-}) {
-  final primaryColor = Theme.of(context).colorScheme.primary;
-  final controller = TextEditingController(text: value.toString());
+    BuildContext context, {
+    required String label,
+    required int value,
+    required Function(int) onChanged,
+    String? unit, // Make unit optional
+  }) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final controller = TextEditingController(text: value.toString());
 
-  return Container(
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: Colors.black,
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(
-        color: primaryColor.withOpacity(0.3),
-      ),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: primaryColor,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-              ),
-            ),
-            if (unit != null && unit.isNotEmpty) ...[
-              const SizedBox(width: 4),
-              Text(
-                '($unit)',
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 10,
-                ),
-              ),
-            ],
-          ],
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: primaryColor.withOpacity(0.3),
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
                 ),
-                onChanged: (text) {
-                  final newValue = int.tryParse(text);
-                  if (newValue != null) {
-                    onChanged(newValue);
-                  }
-                },
               ),
-            ),
-            Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    final newValue = value + 1;
-                    controller.text = newValue.toString();
-                    onChanged(newValue);
-                  },
-                  child: Icon(
-                    Icons.arrow_drop_up,
-                    color: primaryColor,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    if (value > 1) {
-                      final newValue = value - 1;
-                      controller.text = newValue.toString();
-                      onChanged(newValue);
-                    }
-                  },
-                  child: Icon(
-                    Icons.arrow_drop_down,
-                    color: primaryColor,
+              if (unit != null && unit.isNotEmpty) ...[
+                const SizedBox(width: 4),
+                Text(
+                  '($unit)',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 10,
                   ),
                 ),
               ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  onChanged: (text) {
+                    final newValue = int.tryParse(text);
+                    if (newValue != null) {
+                      onChanged(newValue);
+                    }
+                  },
+                ),
+              ),
+              Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      final newValue = value + 1;
+                      controller.text = newValue.toString();
+                      onChanged(newValue);
+                    },
+                    child: Icon(
+                      Icons.arrow_drop_up,
+                      color: primaryColor,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (value > 1) {
+                        final newValue = value - 1;
+                        controller.text = newValue.toString();
+                        onChanged(newValue);
+                      }
+                    },
+                    child: Icon(
+                      Icons.arrow_drop_down,
+                      color: primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showFactorSelectorForFactor(
       BuildContext context, Factor currentFactor) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -1146,11 +1170,14 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
 
   Widget _buildCreateButton(BuildContext context, SystemsCreationState state) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final mediaQuery = MediaQuery.of(context);
+    final bottomPadding = mediaQuery.padding.bottom;
 
     return Positioned(
-      bottom: 20,
-      right: 20,
+      bottom: 20 +
+          bottomPadding, // Add bottom padding to account for navigation bar
       left: 20,
+      right: 20,
       child: GlowingActionButton(
         onPressed: () {
           context.read<SystemsCreationBloc>().add(const CreateSystem());
@@ -1158,7 +1185,7 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.sync_alt,
               color: Colors.white,
               size: 20,
@@ -1168,9 +1195,10 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
               state.status == SystemsCreationStatus.loading
                   ? 'CREATING...'
                   : 'CREATE SYSTEM',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1,
+                color: Colors.black,
               ),
             ),
           ],

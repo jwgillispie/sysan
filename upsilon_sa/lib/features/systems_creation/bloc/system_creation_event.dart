@@ -89,6 +89,12 @@ class UpdateFactorGamesBack extends SystemsCreationEvent {
   List<Object?> get props => [factorId, gamesBack];
 }
 
+class ToggleFactorThresholdDirection extends SystemsCreationEvent {
+  final int factorId;
+  const ToggleFactorThresholdDirection(this.factorId);
+  @override List<Object?> get props => [factorId];
+}
+
 // New event for updating factor name
 class UpdateFactorName extends SystemsCreationEvent {
   final int factorId;
