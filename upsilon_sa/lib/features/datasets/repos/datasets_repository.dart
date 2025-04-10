@@ -32,8 +32,8 @@ class DatasetsRepository {
       log('Exception while fetching players: $e');
       // Optionally provide fallback data during development
       return [
-        Player(name: "John Doe", age: 25, experience: 5, position: "Forward"),
-        Player(name: "Jane Smith", age: 28, experience: 7, position: "Guard"),
+        Player(name: "Lebron James", age: 95, experience: 5, position: "Forward"),
+        Player(name: "Trae Young", age: 666, experience: 7, position: "Guard"),
       ];
     }
   }

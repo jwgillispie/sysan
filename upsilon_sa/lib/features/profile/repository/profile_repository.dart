@@ -12,8 +12,8 @@ class ProfileRepository {
       await Future.delayed(const Duration(seconds: 1));
       
       return {
-        'username': '@john_doe',
-        'displayName': 'John Doe',
+        'username': '@your_mom',
+        'displayName': 'Your mom',
         'role': 'Analyst',
         'joinDate': '2024-01-15',
         'activeSystems': 3,

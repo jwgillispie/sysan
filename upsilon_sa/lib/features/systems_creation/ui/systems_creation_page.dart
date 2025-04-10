@@ -503,7 +503,7 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
   }
   
   final categoryColor = _getCategoryColor(currentCategory);
-  final thresholdDirection = factor.isAboveThreshold ? 'ABOVE' : 'BELOW';
+  final thresholdDirection = factor.isAboveThreshold ? 'OVER' : 'UNDER';
   final directionColor = factor.isAboveThreshold ? Colors.green : Colors.red;
 
   return Container(
