@@ -17,21 +17,26 @@ import 'core/config/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase - Only needed for web in this context
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: String.fromEnvironment('FIREBASE_API_KEY', defaultValue: ''),
-        authDomain: String.fromEnvironment('FIREBASE_AUTH_DOMAIN', defaultValue: 'upsilon-sa.firebaseapp.com'),
-        projectId: String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: 'upsilon-sa'),
-        storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: 'upsilon-sa.appspot.com'),
-        messagingSenderId: String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: ''),
-        appId: String.fromEnvironment('FIREBASE_APP_ID', defaultValue: ''),
-      ),
-    );
-  }
-  
+
+  // // Initialize Firebase - Only needed for web in this context
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //       apiKey: String.fromEnvironment('FIREBASE_API_KEY', defaultValue: ''),
+  //       authDomain: String.fromEnvironment('FIREBASE_AUTH_DOMAIN',
+  //           defaultValue: 'upsilon-sa.firebaseapp.com'),
+  //       projectId: String.fromEnvironment('FIREBASE_PROJECT_ID',
+  //           defaultValue: 'upsilon-sa'),
+  //       storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET',
+  //           defaultValue: 'upsilon-sa.appspot.com'),
+  //       messagingSenderId: String.fromEnvironment(
+  //           'FIREBASE_MESSAGING_SENDER_ID',
+  //           defaultValue: ''),
+  //       appId: String.fromEnvironment('FIREBASE_APP_ID', defaultValue: ''),
+  //     ),
+  //   );
+  // }
+
   runApp(const SystemsAnalyticsApp());
 }
 
@@ -41,15 +46,15 @@ class SystemsAnalyticsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // If we're on web, only show the landing page
-    // if (kIsWeb) {
-    //   return MaterialApp(
-    //     title: "Systems Analytics",
-    //     debugShowCheckedModeBanner: false,
-    //     theme: SystemsThemes.darkTheme,
-    //     home: const LandingPage(),
-    //   );
-    // }
-    
+    if (kIsWeb) {
+      return MaterialApp(
+        title: "Systems Analytics",
+        debugShowCheckedModeBanner: false,
+        theme: SystemsThemes.darkTheme,
+        home: const LandingPage(),
+      );
+    }
+
     // Otherwise, show the full mobile app with BLoC providers
     return MultiBlocProvider(
       providers: [

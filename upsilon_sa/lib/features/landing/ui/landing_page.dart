@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -8,15 +9,26 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingPageState extends State<LandingPage> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   bool _isSubmitting = false;
   bool _isSuccess = false;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    )..repeat();
+  }
 
   @override
   void dispose() {
+    _animationController.dispose();
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();
@@ -29,7 +41,6 @@ class _LandingPageState extends State<LandingPage> {
       });
 
       try {
-        // Save to Firestore
         await FirebaseFirestore.instance.collection('waitlist').add({
           'name': _nameController.text,
           'email': _emailController.text,
@@ -41,7 +52,6 @@ class _LandingPageState extends State<LandingPage> {
           _isSuccess = true;
         });
 
-        // Reset form
         _nameController.clear();
         _emailController.clear();
       } catch (e) {
@@ -49,11 +59,11 @@ class _LandingPageState extends State<LandingPage> {
           _isSubmitting = false;
         });
         
-        // Show error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error submitting form: $e'),
             backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -65,30 +75,47 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
-          CustomPaint(
-            painter: CyberGridPainter(
-              color: const Color(0xFF09BF30).withOpacity(0.05),
+          // Background with simple cyber grid
+          Positioned.fill(
+            child: CustomPaint(
+              painter: CyberGridPainter(
+                color: const Color(0xFF09BF30).withOpacity(0.05),
+              ),
             ),
-            child: Container(),
           ),
           
-          // Content
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+          // Main content
+          SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                
+                // Logo section
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const PulsingDot(),
-                      const SizedBox(width: 10),
-                      Text(
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF09BF30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF09BF30).withOpacity(0.5),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      const Text(
                         "SYSTEMS ANALYTICS",
                         style: TextStyle(
-                          color: const Color(0xFF09BF30),
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 24,
                           letterSpacing: 3,
@@ -96,215 +123,548 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
-                  
-                  // Heading
-                  Text(
-                    'Advanced Sports Prediction Platform',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                
+                const SizedBox(height: 50),
+                
+                // Main heading
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: const Text(
+                    'Pro-Level Sports Prediction Without The Coding',
                     textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  
-                  // Description
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 600),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'Join the waitlist to get early access to our AI-powered sports prediction platform.',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white70,
-                      ),
-                      textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 50),
-                  
-                  // Signup Form
-                  Container(
-                    width: 400,
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFF09BF30).withOpacity(0.3),
-                      ),
+                ),
+                
+                const SizedBox(height: 30),
+                
+                // Mission statement
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 700),
+                  child: const Text(
+                    'Our mission is to make every sports bettor feel like a pro by being able to use analytical tools to make confident bets.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      height: 1.5,
                     ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Core values
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'OUR VALUES',
+                        style: TextStyle(
+                          color: Color(0xFF09BF30),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 3,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Wrap(
+                        spacing: 20,
+                        runSpacing: 20,
+                        alignment: WrapAlignment.center,
                         children: [
-                          // Success message
-                          if (_isSuccess)
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              margin: const EdgeInsets.only(bottom: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: Colors.green.withOpacity(0.3),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.check_circle, color: Colors.green),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      'Thanks for signing up! We\'ll notify you when we launch.',
-                                      style: TextStyle(color: Colors.green.shade300),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            
-                          // Name field
-                          const Text(
-                            'Full Name',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          _buildValueCard(
+                            icon: Icons.bar_chart,
+                            title: 'Low Barrier to High-End Tools',
+                            description: 'Access advanced analytical tools with no coding required',
                           ),
-                          const SizedBox(height: 8),
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your full name',
-                              filled: true,
-                              fillColor: Colors.black,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: const Color(0xFF09BF30).withOpacity(0.3),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: const Color(0xFF09BF30).withOpacity(0.3),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF09BF30),
-                                ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-                              return null;
-                            },
+                          _buildValueCard(
+                            icon: Icons.person,
+                            title: 'Make Everyone Feel Like a Pro',
+                            description: 'Analyze games and track your bets like the professionals do',
                           ),
-                          const SizedBox(height: 20),
-                          
-                          // Email field
-                          const Text(
-                            'Email Address',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your email address',
-                              filled: true,
-                              fillColor: Colors.black,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: const Color(0xFF09BF30).withOpacity(0.3),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                  color: const Color(0xFF09BF30).withOpacity(0.3),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF09BF30),
-                                ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 30),
-                          
-                          // Submit button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: _isSubmitting ? null : _submitForm,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF09BF30),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: _isSubmitting
-                                  ? const SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Sign Up for Early Access',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black
-                                      ),
-                                    ),
-                            ),
+                          _buildValueCard(
+                            icon: Icons.trending_up,
+                            title: 'Make Money Smarter',
+                            description: 'Let the data guide you to easy money',
                           ),
                         ],
                       ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Customer testimonial
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  padding: const EdgeInsets.all(30),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFF09BF30).withOpacity(0.3),
                     ),
                   ),
-                  
-                  // Footer
-                  const SizedBox(height: 40),
-                  Text(
-                    '© 2025 Systems Analytics',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
-                      fontSize: 14,
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.format_quote,
+                        color: Color(0xFF09BF30),
+                        size: 40,
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        '"Systems allowed me to avoid reading articles and analyzing what other people said by allowing me to run an analysis on what I think is important for determining what will happen in a game. Being able to use data to analyze games and track my bets makes me feel like I\'m putting my money into stocks when I\'m sports betting!"',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                          height: 1.6,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        '— Systems User',
+                        style: TextStyle(
+                          color: Color(0xFF09BF30),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Feature highlights
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'KEY FEATURES',
+                        style: TextStyle(
+                          color: Color(0xFF09BF30),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 3,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      _buildFeatureRow(
+                        title: 'Click and Choose Factors',
+                        description: 'Easily select your preferred factors for analyzing and predicting sports outcomes without any prior coding knowledge.',
+                        icon: Icons.touch_app,
+                        isReversed: false,
+                      ),
+                      const SizedBox(height: 40),
+                      _buildFeatureRow(
+                        title: 'Low Barrier to Entry',
+                        description: 'Systems reduces the barrier to entry of conventional betting research through its low user cost and ease of use.',
+                        icon: Icons.construction,
+                        isReversed: true,
+                      ),
+                      const SizedBox(height: 40),
+                      _buildFeatureRow(
+                        title: 'Feel Like a Pro',
+                        description: 'Our tools give you the confidence to make data-driven betting decisions just like professional analysts.',
+                        icon: Icons.psychology,
+                        isReversed: false,
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Waitlist form
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFF09BF30).withOpacity(0.5),
+                      width: 2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF09BF30).withOpacity(0.2),
+                        blurRadius: 15,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(30),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_isSuccess)
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            margin: const EdgeInsets.only(bottom: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.green.withOpacity(0.3),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.check_circle, color: Colors.green),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    'Thanks for joining! We\'ll notify you when we launch.',
+                                    style: TextStyle(color: Colors.green.shade300),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        
+                        const Center(
+                          child: Text(
+                            'JOIN THE WAITLIST',
+                            style: TextStyle(
+                              color: Color(0xFF09BF30),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        // Name field
+                        const Text(
+                          'FULL NAME',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: _nameController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            hintText: 'Enter your name',
+                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                            filled: true,
+                            fillColor: Colors.black,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF09BF30).withOpacity(0.3),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF09BF30).withOpacity(0.3),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF09BF30),
+                              ),
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.person,
+                              color: Color(0xFF09BF30),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        
+                        // Email field
+                        const Text(
+                          'EMAIL ADDRESS',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: _emailController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            hintText: 'Enter your email',
+                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                            filled: true,
+                            fillColor: Colors.black,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF09BF30).withOpacity(0.3),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF09BF30).withOpacity(0.3),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF09BF30),
+                              ),
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: Color(0xFF09BF30),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        
+                        // Submit button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _isSubmitting ? null : _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF09BF30),
+                              foregroundColor: Colors.black,
+                              disabledBackgroundColor: const Color(0xFF09BF30).withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: _isSubmitting
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Text(
+                                    'GET EARLY ACCESS',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Footer
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  color: Colors.black,
+                  child: Column(
+                    children: [
+                      Text(
+                        '© 2025 SYSTEMS ANALYTICS. ALL RIGHTS RESERVED.',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 12,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Sports betting should be approached responsibly.',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.3),
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildValueCard({
+    required IconData icon,
+    required String title,
+    required String description,
+  }) {
+    return Container(
+      width: 300,
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF09BF30).withOpacity(0.3),
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF09BF30).withOpacity(0.1),
+              border: Border.all(
+                color: const Color(0xFF09BF30).withOpacity(0.5),
+              ),
+            ),
+            child: Icon(
+              icon,
+              color: const Color(0xFF09BF30),
+              size: 30,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            description,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              fontSize: 14,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureRow({
+    required String title,
+    required String description,
+    required IconData icon,
+    required bool isReversed,
+  }) {
+    Widget iconSection = Container(
+      height: 200,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF09BF30).withOpacity(0.3),
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          color: const Color(0xFF09BF30),
+          size: 70,
+        ),
+      ),
+    );
+
+    Widget textSection = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          description,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: 16,
+            height: 1.5,
+          ),
+        ),
+      ],
+    );
+    
+    // For smaller screens, we'll use a column layout
+    if (MediaQuery.of(context).size.width < 800) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          iconSection,
+          const SizedBox(height: 20),
+          textSection,
+        ],
+      );
+    }
+
+    // For larger screens, use row layout with direction based on isReversed
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: isReversed
+          ? [
+              Expanded(flex: 5, child: textSection),
+              const SizedBox(width: 30),
+              Expanded(flex: 4, child: iconSection),
+            ]
+          : [
+              Expanded(flex: 4, child: iconSection),
+              const SizedBox(width: 30),
+              Expanded(flex: 5, child: textSection),
+            ],
     );
   }
 }
@@ -316,7 +676,7 @@ class CyberGridPainter extends CustomPainter {
 
   CyberGridPainter({
     required this.color,
-    this.gridSpacing = 20,
+    this.gridSpacing = 25,
     this.lineWidth = 0.5,
   });
 
@@ -342,57 +702,4 @@ class CyberGridPainter extends CustomPainter {
       color != oldDelegate.color ||
       gridSpacing != oldDelegate.gridSpacing ||
       lineWidth != oldDelegate.lineWidth;
-}
-
-class PulsingDot extends StatefulWidget {
-  const PulsingDot({Key? key}) : super(key: key);
-
-  @override
-  State<PulsingDot> createState() => _PulsingDotState();
-}
-
-class _PulsingDotState extends State<PulsingDot> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    )..repeat(reverse: true);
-    
-    _animation = Tween<double>(begin: 0.5, end: 1.0).animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF09BF30).withOpacity(_animation.value),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF09BF30).withOpacity(0.5 * _animation.value),
-                blurRadius: 6,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }

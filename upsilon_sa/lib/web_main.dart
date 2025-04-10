@@ -5,18 +5,22 @@ import 'package:upsilon_sa/features/landing/ui/landing_page.dart';
 // This is the entry point for web specifically
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: String.fromEnvironment('FIREBASE_API_KEY'),
-      authDomain: String.fromEnvironment('FIREBASE_AUTH_DOMAIN', defaultValue: 'upsilon-sa.firebaseapp.com'),
-      projectId: String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: 'upsilon-sa'),
-      storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: 'upsilon-sa.appspot.com'),
-      messagingSenderId: String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID'),
-      appId: String.fromEnvironment('FIREBASE_APP_ID'),
+      apiKey: String.fromEnvironment('FIREBASE_API_KEY', defaultValue: ''),
+      authDomain: String.fromEnvironment('FIREBASE_AUTH_DOMAIN',
+          defaultValue: 'upsilon-sa.firebaseapp.com'),
+      projectId: String.fromEnvironment('FIREBASE_PROJECT_ID',
+          defaultValue: 'upsilon-sa'),
+      storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET',
+          defaultValue: 'upsilon-sa.appspot.com'),
+      messagingSenderId: String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID',
+          defaultValue: ''),
+      appId: String.fromEnvironment('FIREBASE_APP_ID', defaultValue: ''),
     ),
   );
-  
+
   runApp(const LandingPageApp());
 }
 
