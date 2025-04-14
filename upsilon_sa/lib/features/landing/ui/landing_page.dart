@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -9,10 +10,12 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> with SingleTickerProviderStateMixin {
+class _LandingPageState extends State<LandingPage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   bool _isSubmitting = false;
   bool _isSuccess = false;
   late AnimationController _animationController;
@@ -31,9 +34,11 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
     _animationController.dispose();
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
+// Update the _submitForm method to use this formatter
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -44,6 +49,8 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
         await FirebaseFirestore.instance.collection('waitlist').add({
           'name': _nameController.text,
           'email': _emailController.text,
+          'phone': _formatPhoneForStorage(
+              _phoneController.text), // Format before storing
           'timestamp': FieldValue.serverTimestamp(),
         });
 
@@ -54,11 +61,12 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
 
         _nameController.clear();
         _emailController.clear();
+        _phoneController.clear();
       } catch (e) {
         setState(() {
           _isSubmitting = false;
         });
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error submitting form: $e'),
@@ -74,7 +82,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isWideScreen = screenWidth > 1000;
-    
+
     return Scaffold(
       body: Stack(
         children: [
@@ -86,14 +94,14 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
               ),
             ),
           ),
-          
+
           // Main content
           SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                
+
                 // Logo section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -130,10 +138,9 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 30),
-                
-                          
+
                 // Mission statement
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -149,16 +156,16 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // Hero section with signup form prominently displayed at the top
                 isWideScreen
                     ? _buildWideScreenHeroSection()
                     : _buildNarrowScreenHeroSection(),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Core values
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -183,26 +190,29 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                           _buildValueCard(
                             icon: Icons.bar_chart,
                             title: 'Low Barrier to High-End Tools',
-                            description: 'Access advanced analytical tools with no coding required',
+                            description:
+                                'Access advanced analytical tools with no coding required',
                           ),
                           _buildValueCard(
                             icon: Icons.person,
                             title: 'Make Everyone Feel Like a Pro',
-                            description: 'Analyze games and track your bets like the professionals do',
+                            description:
+                                'Analyze games and track your bets like the professionals do',
                           ),
                           _buildValueCard(
                             icon: Icons.trending_up,
                             title: 'Make Money Smarter',
-                            description: 'Use data-driven decisions for more confident betting',
+                            description:
+                                'Use data-driven decisions for more confident betting',
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Customer testimonial
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -245,9 +255,9 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Feature highlights
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -266,30 +276,33 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                       const SizedBox(height: 30),
                       _buildFeatureRow(
                         title: 'Click and Choose Factors',
-                        description: 'Easily select your preferred factors for analyzing and predicting sports outcomes without any prior coding knowledge.',
+                        description:
+                            'Easily select your preferred factors for analyzing and predicting sports outcomes without any prior coding knowledge.',
                         icon: Icons.touch_app,
                         isReversed: false,
                       ),
                       const SizedBox(height: 40),
                       _buildFeatureRow(
                         title: 'Low Barrier to Entry',
-                        description: 'Systems reduces the barrier to entry of conventional betting research through its low user cost and ease of use.',
+                        description:
+                            'Systems reduces the barrier to entry of conventional betting research through its low user cost and ease of use.',
                         icon: Icons.accessibility_new,
                         isReversed: true,
                       ),
                       const SizedBox(height: 40),
                       _buildFeatureRow(
                         title: 'Feel Like a Pro',
-                        description: 'Our tools give you the confidence to make data-driven betting decisions just like professional analysts.',
+                        description:
+                            'Our tools give you the confidence to make data-driven betting decisions just like professional analysts.',
                         icon: Icons.psychology,
                         isReversed: false,
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 60),
-                
+
                 // Footer
                 Container(
                   width: double.infinity,
@@ -322,6 +335,20 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
         ],
       ),
     );
+  }
+
+// Add this helper function to your _LandingPageState class
+  String _formatPhoneForStorage(String input) {
+    // Remove all non-digit characters
+    final digitsOnly = input.replaceAll(RegExp(r'[^\d]'), '');
+
+    // If we have a 10-digit number, format it as +1XXXXXXXXXX
+    if (digitsOnly.length == 10) {
+      return '+1$digitsOnly';
+    }
+
+    // Return the digits as-is
+    return digitsOnly;
   }
 
   // Two-column layout for wide screens
@@ -386,13 +413,13 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
               ),
             ),
           ),
-          
+
           const SizedBox(width: 30),
-          
+
           // Right column with signup form
           Expanded(
             flex: 4,
-            child: _buildSignupForm(),
+            child: _buildSignupForm(isWeb: true),
           ),
         ],
       ),
@@ -406,10 +433,10 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
       child: Column(
         children: [
           // Signup form on top for mobile
-          _buildSignupForm(),
-          
+          _buildSignupForm(isWeb: false),
+
           const SizedBox(height: 30),
-          
+
           // Promotional content below
           Container(
             padding: const EdgeInsets.all(20),
@@ -484,7 +511,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
     );
   }
 
-  Widget _buildSignupForm() {
+  Widget _buildSignupForm({required bool isWeb}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
@@ -502,9 +529,14 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
         ],
       ),
       padding: const EdgeInsets.all(30),
+      // Add constraints based on platform
+      constraints: BoxConstraints(
+        maxWidth: isWeb ? 500 : double.infinity,
+      ),
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (_isSuccess)
@@ -531,7 +563,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   ],
                 ),
               ),
-            
+
             const Center(
               child: Text(
                 'JOIN THE WAITLIST',
@@ -544,7 +576,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
               ),
             ),
             const SizedBox(height: 20),
-            
+
             // Name field
             const Text(
               'FULL NAME',
@@ -585,6 +617,8 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   Icons.person,
                   color: Color(0xFF09BF30),
                 ),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -594,7 +628,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
               },
             ),
             const SizedBox(height: 20),
-            
+
             // Email field
             const Text(
               'EMAIL ADDRESS',
@@ -635,19 +669,118 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   Icons.email,
                   color: Color(0xFF09BF30),
                 ),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                    .hasMatch(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;
               },
             ),
+            const SizedBox(height: 20),
+
+            // Phone Number field - New addition
+            const Text(
+              'PHONE NUMBER',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                letterSpacing: 1,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextFormField(
+              controller: _phoneController,
+              style: const TextStyle(color: Colors.white),
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                hintText: '(123) 456-7890',
+                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                filled: true,
+                fillColor: Colors.black,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(
+                    color: Color(0xFF09BF30),
+                  ),
+                ),
+                prefixIcon: const Icon(
+                  Icons.phone,
+                  color: Color(0xFF09BF30),
+                ),
+                helperText: 'Format: (123) 456-7890',
+                helperStyle: TextStyle(color: Colors.grey[400], fontSize: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              ),
+              // Format the phone number as the user types
+              onChanged: (value) {
+                // Skip formatting if deleting text
+                if (value.length < _phoneController.text.length) return;
+
+                // Remove all non-digit characters
+                final digits = value.replaceAll(RegExp(r'[^\d]'), '');
+
+                // Format the number as (XXX) XXX-XXXX
+                if (digits.length <= 3) {
+                  _phoneController.value = TextEditingValue(
+                    text: digits,
+                    selection: TextSelection.collapsed(offset: digits.length),
+                  );
+                } else if (digits.length <= 6) {
+                  _phoneController.value = TextEditingValue(
+                    text: '(${digits.substring(0, 3)}) ${digits.substring(3)}',
+                    selection:
+                        TextSelection.collapsed(offset: digits.length + 3),
+                  );
+                } else if (digits.length <= 10) {
+                  _phoneController.value = TextEditingValue(
+                    text:
+                        '(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6)}',
+                    selection:
+                        TextSelection.collapsed(offset: digits.length + 4),
+                  );
+                }
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your phone number';
+                }
+
+                // Check if the number has the right number of digits
+                final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+
+                if (digitsOnly.length < 10) {
+                  return 'Please enter a complete phone number';
+                }
+
+                if (digitsOnly.length > 10) {
+                  return 'Please enter a 10-digit US phone number';
+                }
+
+                return null;
+              },
+            ),
             const SizedBox(height: 30),
-            
+
             // Submit button
             SizedBox(
               width: double.infinity,
@@ -657,7 +790,8 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF09BF30),
                   foregroundColor: Colors.black,
-                  disabledBackgroundColor: const Color(0xFF09BF30).withOpacity(0.5),
+                  disabledBackgroundColor:
+                      const Color(0xFF09BF30).withOpacity(0.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -673,7 +807,6 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                       )
                     : const Text(
                         'GET EARLY ACCESS',
-                        
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -792,7 +925,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
         ),
       ],
     );
-    
+
     // For smaller screens, we'll use a column layout
     if (MediaQuery.of(context).size.width < 800) {
       return Column(

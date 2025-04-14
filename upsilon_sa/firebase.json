@@ -1,4 +1,25 @@
 {
+  "flutter": {
+    "platforms": {
+      "ios": {
+        "default": {
+          "projectId": "upsilon-sa",
+          "appId": "1:694609044168:ios:2fb87f49a58b8157efbbfd",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "upsilon-sa",
+          "configurations": {
+            "ios": "1:694609044168:ios:2fb87f49a58b8157efbbfd",
+            "web": "1:694609044168:web:490d48906d85927cefbbfd"
+          }
+        }
+      }
+    }
+  },
   "hosting": {
     "public": "build/web",
     "ignore": [
