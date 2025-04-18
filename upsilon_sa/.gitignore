@@ -12,6 +12,10 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+*/.plist
+**firebase.json
+**/.firebaserc
+/GoogleService-Info.plist
 *.plist
 # IntelliJ related
 *.iml

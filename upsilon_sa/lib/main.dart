@@ -33,14 +33,14 @@ class SystemsAnalyticsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // If we're on web, only show the landing page
-    if (kIsWeb) {
-      return MaterialApp(
-        title: "Systems Analytics",
-        debugShowCheckedModeBanner: false,
-        theme: SystemsThemes.darkTheme,
-        home: const LandingPage(),
-      );
-    }
+    // if (kIsWeb) {
+    //   return MaterialApp(
+    //     title: "Systems Analytics",
+    //     debugShowCheckedModeBanner: false,
+    //     theme: SystemsThemes.darkTheme,
+    //     home: const LandingPage(),
+    //   );
+    // }
 
     // Otherwise, show the full mobile app with BLoC providers
     return MultiBlocProvider(

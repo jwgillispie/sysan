@@ -146,7 +146,7 @@ class _LandingPageState extends State<LandingPage>
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   constraints: const BoxConstraints(maxWidth: 700),
                   child: const Text(
-                    'Our mission is to make every sports bettor feel like a pro by being able to use analytical tools to make confident bets.',
+                    'Our mission is to make every sports bettor feel like a professional.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -375,7 +375,7 @@ class _LandingPageState extends State<LandingPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'GET STARTED TODAY',
+                    'SIGN UP TODAY',
                     style: TextStyle(
                       color: Color(0xFF09BF30),
                       fontSize: 16,
@@ -385,7 +385,7 @@ class _LandingPageState extends State<LandingPage>
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Join thousands of sports bettors already using Systems Analytics',
+                    'Use the market to your advantage',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
