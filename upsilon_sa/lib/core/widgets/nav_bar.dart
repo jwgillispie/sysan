@@ -15,10 +15,11 @@ class NavBar {
   List<Widget> _buildScreens() {
     return [
       const HomePage(),
-      const NewsPage(),
-      const SystemsPage(),
+      // const NewsPage(),
+      // const SystemsPage(),
       const SystemCreationPage(),
-      const SocialPage(),
+      // const SocialPage(),
+      const SocialPage()
     ];
   }
 
@@ -40,19 +41,19 @@ class NavBar {
             activeColorSecondary: Theme.of(context).colorScheme.primary,
           ),
         ),
-        PersistentTabConfig(
-          screen: const SystemsPage(),
-          item: ItemConfig(
-            icon: const Icon(Icons.abc),
-            title: "Analytics",
-            activeForegroundColor: Theme.of(context).colorScheme.primary,
-            inactiveForegroundColor:
-                Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
-            activeColorSecondary: Theme.of(context).colorScheme.primary,
-          ),
-        ),
+        // PersistentTabConfig(
+        //   screen: const SystemsPage(),
+        //   item: ItemConfig(
+        //     icon: const Icon(Icons.abc),
+        //     title: "Analytics",
+        //     activeForegroundColor: Theme.of(context).colorScheme.primary,
+        //     inactiveForegroundColor:
+        //         Theme.of(context).brightness == Brightness.dark
+        //             ? Colors.white
+        //             : Colors.black,
+        //     activeColorSecondary: Theme.of(context).colorScheme.primary,
+        //   ),
+        // ),
         PersistentTabConfig(
           screen: const SystemCreationPage(),
           item: ItemConfig(
@@ -80,18 +81,18 @@ class NavBar {
             activeColorSecondary: Theme.of(context).colorScheme.primary,
           ),
         ),
-        PersistentTabConfig(
-          screen: const SocialPage(),
-          item: ItemConfig(
-            icon: const Icon(Icons.people_outline_outlined),
-            title: "Social",
-            activeForegroundColor: Theme.of(context).colorScheme.primary,
-            inactiveForegroundColor:
-                Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
-          ),
-        ),
+        // PersistentTabConfig(
+        //   screen: const SocialPage(),
+        //   item: ItemConfig(
+        //     icon: const Icon(Icons.people_outline_outlined),
+        //     title: "Social",
+        //     activeForegroundColor: Theme.of(context).colorScheme.primary,
+        //     inactiveForegroundColor:
+        //         Theme.of(context).brightness == Brightness.dark
+        //             ? Colors.white
+        //             : Colors.black,
+        //   ),
+        // ),
         PersistentTabConfig(
           screen: const ProfilePage(),
           item: ItemConfig(

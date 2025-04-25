@@ -1,8 +1,11 @@
 // lib/main.dart
+// Update the main function to load environment variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:upsilon_sa/core/widgets/nav_bar.dart';
 import 'package:upsilon_sa/features/landing/ui/landing_page.dart';
 import 'package:upsilon_sa/features/leaderboard/ui/leaderboard_page.dart';
@@ -13,11 +16,17 @@ import 'package:upsilon_sa/features/home/bloc/home_bloc.dart';
 import 'package:upsilon_sa/features/datasets/bloc/datasets_bloc.dart';
 import 'package:upsilon_sa/features/social/bloc/social_bloc.dart';
 import 'package:upsilon_sa/features/home/ui/home_page.dart';
+import 'package:upsilon_sa/features/bets/ui/bets_page.dart';
+import 'package:upsilon_sa/features/bets/bloc/bets_bloc.dart';
+import 'package:upsilon_sa/features/bets/repository/bets_repository.dart';
 import 'core/config/themes.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
   
   // Initialize Firebase using the generated options
   await Firebase.initializeApp(
@@ -57,6 +66,11 @@ class SystemsAnalyticsApp extends StatelessWidget {
         BlocProvider<SocialBloc>(
           create: (context) => SocialBloc(),
         ),
+        BlocProvider<BetsBloc>(
+          create: (context) => BetsBloc(
+            repository: BetsRepository(),
+          ),
+        ),
       ],
       child: MaterialApp(
         title: "Systems Analytics",
@@ -70,6 +84,7 @@ class SystemsAnalyticsApp extends StatelessWidget {
           '/leaderboard': (context) => const LeaderboardPage(),
           '/systems': (context) => const SystemsPage(),
           '/datasets': (context) => DatasetsPage(),
+          '/bets': (context) => const BetsPage(),
         },
       ),
     );

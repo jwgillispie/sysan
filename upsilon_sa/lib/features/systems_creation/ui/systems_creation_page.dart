@@ -1167,43 +1167,92 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
         return Colors.grey;
     }
   }
+Widget _buildCreateButton(BuildContext context, SystemsCreationState state) {
+  final primaryColor = Theme.of(context).colorScheme.primary;
+  final mediaQuery = MediaQuery.of(context);
+  final bottomPadding = mediaQuery.padding.bottom;
 
-  Widget _buildCreateButton(BuildContext context, SystemsCreationState state) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final mediaQuery = MediaQuery.of(context);
-    final bottomPadding = mediaQuery.padding.bottom;
-
-    return Positioned(
-      bottom: 20 +
-          bottomPadding, // Add bottom padding to account for navigation bar
-      left: 20,
-      right: 20,
-      child: GlowingActionButton(
-        onPressed: () {
-          context.read<SystemsCreationBloc>().add(const CreateSystem());
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.sync_alt,
-              color: Colors.white,
-              size: 20,
+  return Positioned(
+    bottom: 20 + bottomPadding,
+    left: 20,
+    right: 20,
+    child: Row(
+      children: [
+        // First button - CREATE SYSTEM
+        Expanded(
+          flex: 1,
+          child: GlowingActionButton(
+            onPressed: () {
+              context.read<SystemsCreationBloc>().add(const CreateSystem());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.sync_alt,
+                  color: Colors.white,
+                  size: 16, // Slightly smaller icon
+                ),
+                const SizedBox(width: 4), // Smaller spacing
+                Flexible(
+                  child: Text(
+                    state.status == SystemsCreationStatus.loading
+                        ? 'CREATING...'
+                        : 'CREATE',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12, // Smaller text
+                      letterSpacing: 0.5, // Less letter spacing
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Text(
-              state.status == SystemsCreationStatus.loading
-                  ? 'CREATING...'
-                  : 'CREATE SYSTEM',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-                color: Colors.black,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
+        
+        const SizedBox(width: 10),
+        
+        // Second button - TEST ON BETS
+        Expanded(
+          flex: 1,
+          child: GlowingActionButton(
+            onPressed: () {
+              // Navigate to the bets page
+              Navigator.pushNamed(context, '/bets');
+            },
+            color: Colors.blue, // Different color to distinguish
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center, 
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.white,
+                  size: 16, // Slightly smaller icon
+                ),
+                SizedBox(width: 4), // Smaller spacing
+                Flexible(
+                  child: Text(
+                    'TEST BETS',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12, // Smaller text
+                      letterSpacing: 0.5, // Less letter spacing
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 }

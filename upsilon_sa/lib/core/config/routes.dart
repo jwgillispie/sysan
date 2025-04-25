@@ -6,4 +6,5 @@ class Routes{
   static const routeLeaderboard = '/leaderboard';
   static const routeSystems = '/systems';
   static const routeDatasets = '/datasets';
+  static const routeBets = '/bets'; // New route for bets page
 }
