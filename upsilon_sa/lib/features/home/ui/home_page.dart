@@ -6,10 +6,14 @@ import 'dart:async';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/containers/animated_border_container.dart';
 import 'package:upsilon_sa/features/home/bloc/home_bloc.dart';
+import 'package:upsilon_sa/features/home/repos/live_game_repository.dart';
 import 'package:upsilon_sa/features/home/ui/components/home_app_bar.dart';
 import 'package:upsilon_sa/features/home/ui/components/ticker_bar.dart';
 import 'package:upsilon_sa/core/widgets/hot_props_widget.dart';
 import 'package:upsilon_sa/features/news/ui/news_page.dart';
+import 'package:upsilon_sa/features/home/repos/home_repository.dart';
+import 'package:upsilon_sa/features/home/repos/hot_props_repository.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,7 +29,13 @@ class _HomePageState extends State<HomePage>
   Timer? _scrollTimer;
   late TabController _tabController;
   int _selectedTab = 0;
+  
+  // Repositories for fetching data
+  final HomeRepository _repository = HomeRepository();
+  final HotPropsRepository _hotPropsRepository = HotPropsRepository();
+  final LiveGamesRepository _liveGamesRepository = LiveGamesRepository();
 
+  // System data
   final List<String> systemItems = [
     'Infinite Money Glitch',
     'Quantum β',
@@ -33,6 +43,7 @@ class _HomePageState extends State<HomePage>
   ];
   final List<double> systemValues = [99.8, 92.3, 88.5];
 
+  // News data
   final List<Map<String, String>> newsItems = [
     {
       'title': 'AI System Predicts Major Playoff Upset',
@@ -54,24 +65,20 @@ class _HomePageState extends State<HomePage>
     },
   ];
 
-  final List<Map<String, dynamic>> bettingLines = [
-    {
-      'sport': 'NBA',
-      'teams': 'Lakers vs Warriors',
-      'spread': 'LAL -4.5',
-      'total': 'O/U 224.5',
-      'moneyline': {'home': '+165', 'away': '-185'},
-      'prediction': {'confidence': '87%', 'pick': 'Lakers -4.5'}
-    },
-    {
-      'sport': 'NFL',
-      'teams': 'Chiefs vs Ravens',
-      'spread': 'BAL -3.0',
-      'total': 'O/U 47.5',
-      'moneyline': {'home': '-150', 'away': '+130'},
-      'prediction': {'confidence': '92%', 'pick': 'Over 47.5'}
-    },
-  ];
+  // Live betting lines state
+  List<Map<String, dynamic>> bettingLines = [];
+  bool isLoadingBettingLines = true;
+  
+  // Hot props state
+  List<HotProp> hotProps = [];
+  bool isLoadingHotProps = true;
+  
+  // Live game state
+  LiveGame? liveGame;
+  bool isLoadingLiveGame = true;
+  
+  // Timer for updating live game data
+  Timer? _liveGameUpdateTimer;
 
   @override
   void initState() {
@@ -79,8 +86,99 @@ class _HomePageState extends State<HomePage>
     _scrollController = ScrollController();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
-    _startScrolling();
+    
+    // Load data
+    _loadBettingLines();
+    _loadHotProps();
+    _loadLiveGame();
+    
     homeBloc.add(NewsLoadedEvent());
+  }
+  
+  // Method to load live game data from the API
+  Future<void> _loadLiveGame() async {
+    setState(() {
+      isLoadingLiveGame = true;
+    });
+    
+    try {
+      final game = await _liveGamesRepository.getLiveGame();
+      
+      setState(() {
+        liveGame = game;
+        isLoadingLiveGame = false;
+      });
+      
+      // Set up timer to refresh the live game data periodically
+      _startLiveGameUpdates();
+    } catch (e) {
+      print('Error loading live game: $e');
+      setState(() {
+        liveGame = null;
+        isLoadingLiveGame = false;
+      });
+    }
+  }
+  
+  // Method to update live game data periodically
+  void _startLiveGameUpdates() {
+    // Cancel existing timer if it exists
+    _liveGameUpdateTimer?.cancel();
+    
+    // Set up a timer to refresh the live game data every 60 seconds
+    _liveGameUpdateTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
+      _loadLiveGame();
+    });
+  }
+  
+  // Method to load hot props
+  Future<void> _loadHotProps() async {
+    setState(() {
+      isLoadingHotProps = true;
+    });
+    
+    try {
+      final props = await _hotPropsRepository.getHotProps();
+      
+      setState(() {
+        hotProps = props;
+        isLoadingHotProps = false;
+      });
+    } catch (e) {
+      print('Error loading hot props: $e');
+      setState(() {
+        hotProps = [];
+        isLoadingHotProps = false;
+      });
+    }
+  }
+
+  // Method to load betting lines
+  Future<void> _loadBettingLines() async {
+    setState(() {
+      isLoadingBettingLines = true;
+    });
+    
+    try {
+      final lines = await _repository.getBettingLines();
+      
+      setState(() {
+        bettingLines = lines;
+        isLoadingBettingLines = false;
+      });
+      
+      // Start scrolling once we have the data
+      _startScrolling();
+    } catch (e) {
+      print('Error loading betting lines: $e');
+      setState(() {
+        bettingLines = [];
+        isLoadingBettingLines = false;
+      });
+      
+      // Still start scrolling even if we had an error
+      _startScrolling();
+    }
   }
 
   void _handleTabSelection() {
@@ -94,15 +192,22 @@ class _HomePageState extends State<HomePage>
   @override
   void dispose() {
     _scrollTimer?.cancel();
+    _liveGameUpdateTimer?.cancel();
     _scrollController.dispose();
     _tabController.dispose();
     super.dispose();
   }
 
   void _startScrolling() {
-    _scrollTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      _scrollTickerItems();
-    });
+    // Cancel existing timer if it exists
+    _scrollTimer?.cancel();
+    
+    // Only start scrolling if we have betting lines
+    if (bettingLines.isNotEmpty) {
+      _scrollTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+        _scrollTickerItems();
+      });
+    }
   }
 
   void _scrollTickerItems() {
@@ -129,27 +234,71 @@ class _HomePageState extends State<HomePage>
         backgroundColor: Colors.black,
         appBar: const HomeAppBar(),
         body: Stack(
-        children: [
-          const CyberGrid(), // Cyber grid background
-          Column(
-            children: [
-              // Ticker Bar
-              TickerBar(
-                scrollController: _scrollController,
-                bettingLines: bettingLines,
-              ),
-              
-              // Main Content
-              Expanded(
-                child: _selectedTab == 0
-                    ? _buildLeaderboardContent()
-                    : _buildSystemsContent(),
-              ),
-            ],
-          ),
-        ],
+          children: [
+            const CyberGrid(), // Cyber grid background
+            Column(
+              children: [
+                // Ticker Bar with loading state
+                isLoadingBettingLines
+                    ? _buildLoadingTickerBar()
+                    : TickerBar(
+                        scrollController: _scrollController,
+                        bettingLines: bettingLines,
+                      ),
+                
+                // Main Content
+                Expanded(
+                  child: _selectedTab == 0
+                      ? _buildLeaderboardContent()
+                      : _buildSystemsContent(),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
+    );
+  }
+
+  // Widget to show while betting lines are loading
+  Widget _buildLoadingTickerBar() {
+    return Container(
+      height: 40,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'LOADING BETTING LINES...',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -316,6 +465,86 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  // Updated Hot Props Section with real data
+  Widget _buildHotPropsSection(BuildContext context) {
+    return AnimatedBorderContainer(
+      borderColor: Colors.redAccent,
+      lightColor: Colors.redAccent,
+      duration: const Duration(seconds: 3),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.local_fire_department,
+                  color: Colors.redAccent,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'HOT PROPS',
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Show loading indicator or props
+            isLoadingHotProps 
+                ? _buildLoadingHotProps()
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: hotProps.length,
+                    itemBuilder: (context, index) {
+                      return HotPropCard(prop: hotProps[index]);
+                    },
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  // Widget to show while hot props are loading
+  Widget _buildLoadingHotProps() {
+    return Container(
+      height: 200,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(
+                color: Colors.redAccent,
+                strokeWidth: 2,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'LOADING HOT PROPS...',
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildSystemsSection(BuildContext context) {
     return GestureDetector(
       onTap: () => homeBloc.add(SystemsCickedEvent()),
@@ -431,6 +660,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+  // Updated Live Games Section with real data
   Widget _buildLiveGamesSection(BuildContext context) {
     return AnimatedBorderContainer(
       borderColor: Theme.of(context).colorScheme.primary,
@@ -438,88 +668,141 @@ class _HomePageState extends State<HomePage>
       duration: const Duration(seconds: 4),
       child: Container(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.sports_basketball,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'CURRENT GAME',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.red.withOpacity(0.3),
-                    ),
-                  ),
-                  child: Row(
+        child: isLoadingLiveGame 
+            ? _buildLoadingLiveGame() 
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.sports_basketball,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'CURRENT GAME',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                        ],
+                      ),
                       Container(
-                        width: 6,
-                        height: 6,
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.red,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.red.withOpacity(0.3),
-                              blurRadius: 4,
-                              spreadRadius: 1,
+                          color: Colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.red.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.red,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.red.withOpacity(0.3),
+                                    blurRadius: 4,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              liveGame?.status ?? 'LIVE',
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 6),
-                      const Text(
-                        'LIVE',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  
+                  // Live game scoreboard
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildTeamColumn(
+                        liveGame?.homeTeam ?? 'Home', 
+                        liveGame?.homeScore ?? 0, 
+                        liveGame?.possession == 'home'
+                      ),
+                      _buildVersusLabel(context),
+                      _buildTeamColumn(
+                        liveGame?.awayTeam ?? 'Away', 
+                        liveGame?.awayScore ?? 0, 
+                        liveGame?.possession == 'away'
                       ),
                     ],
                   ),
-                ),
-              ],
+                  
+                  const SizedBox(height: 20),
+                  
+                  // Game info (period, time)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildGameInfoItem(
+                        context, 
+                        'QUARTER', 
+                        liveGame?.period ?? 'Q1'
+                      ),
+                      _buildGameInfoItem(
+                        context, 
+                        'TIME LEFT', 
+                        liveGame?.timeRemaining ?? '--:--'
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+
+  // Widget to show while live game is loading
+  Widget _buildLoadingLiveGame() {
+    return Container(
+      height: 200,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+                strokeWidth: 2,
+              ),
             ),
-            const SizedBox(height: 20),
-            // Using our simplified scoreboard UI here
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildTeamColumn('BOS', 108, true),
-                _buildVersusLabel(context),
-                _buildTeamColumn('GSW', 102, false),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildGameInfoItem(context, 'QUARTER', 'Q4'),
-                _buildGameInfoItem(context, 'TIME LEFT', '4:32'),
-              ],
+            const SizedBox(height: 16),
+            Text(
+              'LOADING LIVE GAME...',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -626,69 +909,6 @@ class _HomePageState extends State<HomePage>
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildHotPropsSection(BuildContext context) {
-    final hotProps = [
-      const HotProp(
-        name: "Steph Curry Over 28.5 Points",
-        confidence: 90.0,
-        odds: "-110",
-      ),
-      const HotProp(
-        name: "LeBron James Triple Double",
-        confidence: 75.0,
-        odds: "+250",
-      ),
-      const HotProp(
-        name: "Luka Doncic Over 9.5 Assists",
-        confidence: 65.0,
-        odds: "-115",
-      ),
-    ];
-
-    return AnimatedBorderContainer(
-      borderColor: Colors.redAccent,
-      lightColor: Colors.redAccent,
-      duration: const Duration(seconds: 3),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.local_fire_department,
-                  color: Colors.redAccent,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'HOT PROPS',
-                  style: TextStyle(
-                    color: Colors.redAccent,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ListView.builder(
-              padding: const EdgeInsets.all(8),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: hotProps.length,
-              itemBuilder: (context, index) {
-                return HotPropCard(prop: hotProps[index]);
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 

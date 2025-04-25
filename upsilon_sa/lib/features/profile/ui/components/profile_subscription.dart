@@ -344,97 +344,246 @@ class ProfileSubscription extends StatelessWidget {
       ),
     );
   }
-
-  void _showExtendOptions(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.black,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+void _showExtendOptions(BuildContext context) {
+  final primaryColor = Theme.of(context).colorScheme.primary;
+  
+  // Get screen dimensions to ensure dialog fits properly
+  final screenHeight = MediaQuery.of(context).size.height;
+  final bottomPadding = MediaQuery.of(context).padding.bottom;
+  
+  // Calculate maximum height for the dialog
+  final maxHeight = screenHeight * 0.7;
+  
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.black,
+    isScrollControlled: true, // This allows the sheet to be sized based on content
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (context) => Container(
+      constraints: BoxConstraints(
+        maxHeight: maxHeight,
       ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'EXTEND SUBSCRIPTION',
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: 16,
+        bottom: 16 + bottomPadding, // Account for bottom safe area
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Take minimum height needed
+        children: [
+          // Handle for the bottom sheet
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.grey[600],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          
+          Text(
+            'EXTEND SUBSCRIPTION',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Make this part scrollable
+          Flexible(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildExtendOption(
+                    context,
+                    duration: '3 Months',
+                    discount: '10% discount',
+                    price: '\$53.97',
+                    originalPrice: '\$59.97',
+                    primaryColor: primaryColor,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildExtendOption(
+                    context,
+                    duration: '6 Months',
+                    discount: '15% discount',
+                    price: '\$101.94',
+                    originalPrice: '\$119.94',
+                    primaryColor: primaryColor,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildExtendOption(
+                    context,
+                    duration: '12 Months',
+                    discount: '20% discount',
+                    price: '\$191.90',
+                    originalPrice: '\$239.88',
+                    recommended: true,
+                    primaryColor: primaryColor,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Cancel button
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'CANCEL',
               style: TextStyle(
                 color: primaryColor,
-                fontSize: 16,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 2,
               ),
             ),
-            const SizedBox(height: 16),
-            ListTile(
-              title: const Text('3 Months', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('10% discount', style: TextStyle(color: Colors.green)),
-              trailing: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Handle extend subscription
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Colors.black, // Text color for visibility
-                ),
-                child: const Text(
-                  'SELECT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('6 Months', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('15% discount', style: TextStyle(color: Colors.green)),
-              trailing: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Handle extend subscription
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Colors.black, // Text color for visibility
-                ),
-                child: const Text(
-                  'SELECT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('12 Months', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('20% discount', style: TextStyle(color: Colors.green)),
-              trailing: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Handle extend subscription
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: Colors.black, // Text color for visibility
-                ),
-                child: const Text(
-                  'SELECT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
+// Helper method to build each extension option
+Widget _buildExtendOption(
+  BuildContext context, {
+  required String duration,
+  required String discount,
+  required String price,
+  required String originalPrice,
+  required Color primaryColor,
+  bool recommended = false,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: recommended 
+            ? primaryColor 
+            : primaryColor.withOpacity(0.3),
+        width: recommended ? 2 : 1,
+      ),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    color: primaryColor,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    duration,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              if (recommended)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: primaryColor,
+                      width: 1,
+                    ),
+                  ),
+                  child: Text(
+                    'BEST VALUE',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Text(
+                discount,
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                originalPrice,
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 14,
+                  decoration: TextDecoration.lineThrough,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                price,
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  // Handle subscription extension
+                  final bloc = context.read<ProfileBloc>();
+                  // For now, just update the expiry date
+                  final currentPlan = bloc.subscriptionData!['currentPlan'];
+                  bloc.add(UpdateSubscriptionEvent(currentPlan));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                ),
+                child: const Text(
+                  'SELECT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
   void _showCancelConfirmation(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     

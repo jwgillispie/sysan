@@ -1,4 +1,4 @@
-// Path: lib/features/home/ui/components/ticker_bar.dart
+// lib/features/home/ui/components/ticker_bar.dart
 
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/config/constants.dart';
@@ -13,8 +13,15 @@ class TickerBar extends StatelessWidget {
     required this.bettingLines,
   }) : super(key: key);
 
+  // Format the betting lines for display
   List<String> get tickerLines => bettingLines.map((line) {
-    return '${line['sport']} | ${line['teams']} | ${line['prediction']['pick']} (${line['prediction']['confidence']})';
+    // Extract prediction for easier access
+    final prediction = line['prediction'];
+    final confidence = prediction['confidence'] ?? '';
+    final pick = prediction['pick'] ?? '';
+    
+    // Format the ticker line
+    return '${line['sport']} | ${line['teams']} | $pick ($confidence)';
   }).toList();
 
   @override
@@ -37,12 +44,21 @@ class TickerBar extends StatelessWidget {
         controller: scrollController,
         itemCount: bettingLines.length * 10, // Repeat items for continuous scroll
         itemBuilder: (context, index) {
+          // Use modulo to cycle through the available betting lines
           final itemIndex = index % bettingLines.length;
+          final line = bettingLines[itemIndex];
+          
+          // Extract values from the betting line
+          final sport = line['sport'] ?? '';
+          final teams = line['teams'] ?? '';
+          final pick = line['prediction']?['pick'] ?? '';
+          final confidence = line['prediction']?['confidence'] ?? '';
+          
           return TickerItem(
-            sport: bettingLines[itemIndex]['sport'],
-            teams: bettingLines[itemIndex]['teams'],
-            pick: bettingLines[itemIndex]['prediction']['pick'],
-            confidence: bettingLines[itemIndex]['prediction']['confidence'],
+            sport: sport,
+            teams: teams,
+            pick: pick,
+            confidence: confidence,
           );
         },
       ),
@@ -66,59 +82,118 @@ class TickerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final confidenceColor = _getConfidenceColor(confidence);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+        color: primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: primaryColor.withOpacity(0.3),
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Sport indicator
           Container(
-            width: 6,
-            height: 6,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.red,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.red.withOpacity(0.3),
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                ),
-              ],
+              color: _getSportColor(sport).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: _getSportColor(sport).withOpacity(0.3),
+              ),
+            ),
+            child: Text(
+              sport,
+              style: TextStyle(
+                color: _getSportColor(sport),
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(width: 8),
-          RichText(
-            text: TextSpan(
+          // Teams
+          Text(
+            teams,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Prediction pick
+          Text(
+            pick,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.9),
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(width: 4),
+          // Confidence
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: confidenceColor.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: confidenceColor.withOpacity(0.3),
+              ),
+            ),
+            child: Text(
+              confidence,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: 12,
+                color: confidenceColor,
+                fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
-              children: [
-                TextSpan(text: sport),
-                const TextSpan(text: ' | '),
-                TextSpan(text: teams),
-                const TextSpan(text: ' | '),
-                TextSpan(text: pick),
-                TextSpan(
-                  text: ' ($confidence)',
-                  style: const TextStyle(
-                    color: Colors.green,
-                  ),
-                ),
-              ],
             ),
           ),
         ],
       ),
     );
+  }
+  
+  // Helper method to get color for different sports
+  Color _getSportColor(String sport) {
+    switch (sport.toUpperCase()) {
+      case 'NBA':
+        return Colors.orange;
+      case 'NFL':
+        return Colors.blue;
+      case 'MLB':
+        return Colors.red;
+      case 'NHL':
+        return Colors.lightBlue;
+      default:
+        return Colors.green;
+    }
+  }
+  
+  // Helper method to get color based on confidence level
+  Color _getConfidenceColor(String confidence) {
+    // Parse the confidence percentage
+    final confidenceValue = double.tryParse(
+      confidence.replaceAll('%', '').trim()
+    ) ?? 0.0;
+    
+    if (confidenceValue >= 90) {
+      return Colors.green;
+    } else if (confidenceValue >= 80) {
+      return Colors.lightGreen;
+    } else if (confidenceValue >= 70) {
+      return Colors.yellow;
+    } else if (confidenceValue >= 60) {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
   }
 }
