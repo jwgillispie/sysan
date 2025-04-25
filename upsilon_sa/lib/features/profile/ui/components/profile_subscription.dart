@@ -263,6 +263,8 @@ class ProfileSubscription extends StatelessWidget {
   }
 
   void _showUpgradeOptions(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     final plans = [
       {
         'name': 'Pro',
@@ -290,7 +292,7 @@ class ProfileSubscription extends StatelessWidget {
             Text(
               'UPGRADE PLAN',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: primaryColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
@@ -323,9 +325,15 @@ class ProfileSubscription extends StatelessWidget {
                             );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: primaryColor,
+                        foregroundColor: Colors.black, // Text color for visibility
                       ),
-                      child: const Text('SELECT'),
+                      child: const Text(
+                        'SELECT',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -338,6 +346,8 @@ class ProfileSubscription extends StatelessWidget {
   }
 
   void _showExtendOptions(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.black,
@@ -352,7 +362,7 @@ class ProfileSubscription extends StatelessWidget {
             Text(
               'EXTEND SUBSCRIPTION',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: primaryColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
@@ -368,9 +378,15 @@ class ProfileSubscription extends StatelessWidget {
                   // Handle extend subscription
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.black, // Text color for visibility
                 ),
-                child: const Text('SELECT'),
+                child: const Text(
+                  'SELECT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
             ListTile(
@@ -382,9 +398,15 @@ class ProfileSubscription extends StatelessWidget {
                   // Handle extend subscription
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.black, // Text color for visibility
                 ),
-                child: const Text('SELECT'),
+                child: const Text(
+                  'SELECT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
             ListTile(
@@ -396,9 +418,15 @@ class ProfileSubscription extends StatelessWidget {
                   // Handle extend subscription
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: primaryColor,
+                  foregroundColor: Colors.black, // Text color for visibility
                 ),
-                child: const Text('SELECT'),
+                child: const Text(
+                  'SELECT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
@@ -408,6 +436,8 @@ class ProfileSubscription extends StatelessWidget {
   }
 
   void _showCancelConfirmation(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -425,7 +455,7 @@ class ProfileSubscription extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'NO, KEEP IT',
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              style: TextStyle(color: primaryColor),
             ),
           ),
           TextButton(

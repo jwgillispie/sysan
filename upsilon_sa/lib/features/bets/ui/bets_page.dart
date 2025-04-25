@@ -220,7 +220,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.add, size: 20),
+                const Icon(Icons.add, size: 20, color: Colors.black),
                 const SizedBox(width: 8),
                 Text(
                   state.appliedSystem == null
@@ -229,6 +229,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
+                    color: Colors.black,  // Make sure the text is visible against green
                   ),
                 ),
               ],
@@ -241,6 +242,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   void _showBetDetailsDialog(Bet bet) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     // Implement a dialog to show more details about the bet
     showDialog(
       context: context,
@@ -249,7 +252,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         title: Text(
           '${bet.homeTeam} vs ${bet.awayTeam}',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -287,20 +290,23 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             child: Text(
               'CLOSE',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: primaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               // Implement logic to place a bet
             },
-            child: Text(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+              foregroundColor: Colors.black, // Text color on the green button
+            ),
+            child: const Text(
               'PLACE BET',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -311,6 +317,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   void _showSystemsDialog() {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     // Mock data for available systems
     final systems = [
       {'id': 'system1', 'name': 'Neural Alpha'},
@@ -325,7 +333,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         title: Text(
           'APPLY SYSTEM',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -343,7 +351,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                 ),
                 leading: Icon(
                   Icons.memory,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: primaryColor,
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -360,7 +368,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             child: Text(
               'CANCEL',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: primaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
