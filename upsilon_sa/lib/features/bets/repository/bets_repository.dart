@@ -15,14 +15,14 @@ class BetsRepository {
   String get apiKey {
     // First check if we have it in the global map (for web)
     final webApiKey = environmentVariables['ODDS_API_KEY'];
-    if (webApiKey != null && webApiKey.isNotEmpty && webApiKey != 'YOUR_ODDS_API_KEY') {
+    if (webApiKey != null && webApiKey.isNotEmpty) {
       return webApiKey;
     }
-    
+
     // Then try the environment helper (for mobile)
     return EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
   }
-  
+
   final String baseUrl = 'https://api.the-odds-api.com/v4';
 
   Future<List<Bet>> getUpcomingBets({
@@ -35,19 +35,20 @@ class BetsRepository {
       // If we have a valid API key, use live data
       if (apiKey.isNotEmpty && apiKey != 'YOUR_ODDS_API_KEY') {
         // Only show first few characters for security
-        String maskedKey = apiKey.length > 5 
-            ? '${apiKey.substring(0, 3)}...${apiKey.substring(apiKey.length - 2)}' 
+        String maskedKey = apiKey.length > 5
+            ? '${apiKey.substring(0, 3)}...${apiKey.substring(apiKey.length - 2)}'
             : '***';
         print('🔑 Using Odds API key: $maskedKey');
-        
+
         final Uri requestUri = Uri.parse(
           '$baseUrl/sports/$sport/odds/?apiKey=$apiKey&regions=$regions&markets=$markets&oddsFormat=$oddsFormat',
         );
-        print('📡 Requesting data from: ${requestUri.toString().replaceAll(apiKey, maskedKey)}');
-        
+        print(
+            '📡 Requesting data from: ${requestUri.toString().replaceAll(apiKey, maskedKey)}');
+
         try {
           final response = await http.get(requestUri);
-          
+
           if (response.statusCode == 200) {
             print('✅ API request successful! Parsing data...');
             final List<dynamic> data = jsonDecode(response.body);

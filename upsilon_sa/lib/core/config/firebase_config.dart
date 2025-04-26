@@ -1,45 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:upsilon_sa/core/utils/helpers.dart';
 
 class FirebaseConfig {
-  // Get API key from .env file or environment variables
-  static String get apiKey {
-    if (kIsWeb) {
-      // For web, we need to handle it differently
-      return const String.fromEnvironment('FIREBASE_API_KEY', defaultValue: '');
-    }
-    // For mobile, we can use dotenv directly
-    return dotenv.env['FIREBASE_API_KEY'] ?? '';
-  }
-
-  // Get auth domain from .env file
-  static String get authDomain {
-    return dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? 'upsilon-sa.firebaseapp.com';
-  }
-
-  // Get project ID from .env file
-  static String get projectId {
-    return dotenv.env['FIREBASE_PROJECT_ID'] ?? 'upsilon-sa';
-  }
-
-  // Get storage bucket from .env file
-  static String get storageBucket {
-    return dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? 'upsilon-sa.appspot.com';
-  }
-
-  // Get messaging sender ID from .env file
-  static String get messagingSenderId {
-    if (kIsWeb) {
-      return const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: '');
-    }
-    return dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '';
-  }
-
-  // Get app ID from .env file
-  static String get appId {
-    if (kIsWeb) {
-      return const String.fromEnvironment('FIREBASE_APP_ID', defaultValue: '');
-    }
-    return dotenv.env['FIREBASE_APP_ID'] ?? '';
-  }
+  static String get apiKey => EnvironmentHelper.getEnvironmentValue('FIREBASE_API_KEY');
+  static String get authDomain => EnvironmentHelper.getEnvironmentValue('FIREBASE_AUTH_DOMAIN', defaultValue: 'upsilon-sa.firebaseapp.com');
+  static String get projectId => EnvironmentHelper.getEnvironmentValue('FIREBASE_PROJECT_ID', defaultValue: 'upsilon-sa');
+  static String get storageBucket => EnvironmentHelper.getEnvironmentValue('FIREBASE_STORAGE_BUCKET', defaultValue: 'upsilon-sa.appspot.com');
+  static String get messagingSenderId => EnvironmentHelper.getEnvironmentValue('FIREBASE_MESSAGING_SENDER_ID');
+  static String get appId => EnvironmentHelper.getEnvironmentValue('FIREBASE_APP_ID');
 }
