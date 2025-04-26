@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:upsilon_sa/core/utils/helpers.dart';
 
+// Import reference to our global environment variables
+import 'package:upsilon_sa/main.dart' show environmentVariables;
+
 class LiveGame {
   final String id;
   final String homeTeam;
@@ -33,13 +36,22 @@ class LiveGamesRepository {
   final String _baseUrl = 'https://api.the-odds-api.com/v4';
   
   // Get API key from environment variables
-  String get apiKey => EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  String get apiKey {
+    // First check if we have it in the global map (for web)
+    final webApiKey = environmentVariables['ODDS_API_KEY'];
+    if (webApiKey != null && webApiKey.isNotEmpty && webApiKey != 'YOUR_ODDS_API_KEY') {
+      return webApiKey;
+    }
+    
+    // Then try the environment helper (for mobile)
+    return EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  }
   
   /// Gets currently live games from the API
   Future<LiveGame?> getLiveGame() async {
     try {
-      if (apiKey.isEmpty) {
-        print('❌ No Odds API key found, using mock data for live games');
+      if (apiKey.isEmpty || apiKey == 'YOUR_ODDS_API_KEY') {
+        print('❌ No valid Odds API key found, using mock data for live games');
         return _getMockLiveGame();
       }
       

@@ -2,7 +2,7 @@
 // Update the main function to load environment variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,19 +19,51 @@ import 'package:upsilon_sa/features/home/ui/home_page.dart';
 import 'package:upsilon_sa/features/bets/ui/bets_page.dart';
 import 'package:upsilon_sa/features/bets/bloc/bets_bloc.dart';
 import 'package:upsilon_sa/features/bets/repository/bets_repository.dart';
+import 'package:upsilon_sa/core/utils/helpers.dart';
 import 'core/config/themes.dart';
 import 'firebase_options.dart';
+
+// Create a global variable for API keys that will be populated at startup
+Map<String, String> environmentVariables = {};
+
+// Function to set up environment variables, including those provided via --dart-define
+void setupEnvironmentVariables() {
+  // Add your API keys here - in a real app, use secure methods
+  environmentVariables['ODDS_API_KEY'] = 'YOUR_ODDS_API_KEY';
+  
+  // For demo purposes, you could set default values
+  // In production, you would use secure methods to store these
+  
+  if (kDebugMode) {
+    print('Environment variables set up completed');
+    EnvironmentHelper.debugPrintEnvironment();
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Load environment variables
-  await dotenv.load(fileName: '.env');
+  try {
+    // First try to load from .env file (works on mobile)
+    await dotenv.load(fileName: '.env');
+    print('Loaded environment from .env file');
+  } catch (e) {
+    print('Could not load .env file: $e');
+  }
+  
+  // Set up environment variables for web
+  setupEnvironmentVariables();
   
   // Initialize Firebase using the generated options
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print('Firebase initialized successfully');
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
 
   runApp(const SystemsAnalyticsApp());
 }

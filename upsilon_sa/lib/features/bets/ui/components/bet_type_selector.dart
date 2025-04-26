@@ -1,5 +1,6 @@
 // lib/features/bets/ui/components/bet_type_selector.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class BetTypeSelector extends StatelessWidget {
   final String selectedType;
@@ -14,6 +15,7 @@ class BetTypeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -57,12 +59,15 @@ class BetTypeSelector extends StatelessWidget {
     bool isSelected,
   ) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
     
     return Expanded(
       child: GestureDetector(
         onTap: () => onTypeSelected(type),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(
+            vertical: isWebPlatform ? 12 : 10,
+          ),
           decoration: BoxDecoration(
             color: isSelected 
                 ? primaryColor.withOpacity(0.2)
@@ -81,7 +86,7 @@ class BetTypeSelector extends StatelessWidget {
               color: isSelected 
                   ? primaryColor
                   : Colors.white,
-              fontSize: 14,
+              fontSize: isWebPlatform ? 16 : 14,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,

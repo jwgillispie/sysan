@@ -4,12 +4,24 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:upsilon_sa/core/utils/helpers.dart';
 
+// Import reference to our global environment variables
+import 'package:upsilon_sa/main.dart' show environmentVariables;
+
 class HomeRepository {
   // Base URL for The Odds API
   final String _baseUrl = 'https://api.the-odds-api.com/v4';
   
   // Get API key from environment variables
-  String get apiKey => EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  String get apiKey {
+    // First check if we have it in the global map (for web)
+    final webApiKey = environmentVariables['ODDS_API_KEY'];
+    if (webApiKey != null && webApiKey.isNotEmpty && webApiKey != 'YOUR_ODDS_API_KEY') {
+      return webApiKey;
+    }
+    
+    // Then try the environment helper (for mobile)
+    return EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  }
   
   Future<List<Map<String, dynamic>>> getNews() async {
     // Simulate network delay
@@ -34,81 +46,80 @@ class HomeRepository {
   Future<List<Map<String, dynamic>>> getBettingLines() async {
     try {
       // Check if we have a valid API key
-      if (apiKey.isEmpty) {
-        print('❌ No Odds API key found, using mock data');
-        return _getMockBettingLines();
-      }
-      
-      // Define the parameters for the API request
-      final Map<String, String> params = {
-        'apiKey': apiKey,
-        'regions': 'us',
-        'markets': 'h2h,spreads,totals',
-        'oddsFormat': 'american'
-      };
-      
-      // Make API requests for different sports
-      final List<Map<String, dynamic>> allBettingLines = [];
-      
-      // List of sports to fetch (you can expand this list)
-      final List<String> sports = [
-        'basketball_nba',
-
-      ];
-      
-      for (String sport in sports) {
-        try {
-          final uri = Uri.parse('$_baseUrl/sports/$sport/odds').replace(
-            queryParameters: params
-          );
-          
-          print('📡 Requesting odds data for $sport');
-          final response = await http.get(uri);
-          
-          if (response.statusCode == 200) {
-            final List<dynamic> data = jsonDecode(response.body);
+      if (apiKey.isNotEmpty && apiKey != 'YOUR_ODDS_API_KEY') {
+        // Define the parameters for the API request
+        final Map<String, String> params = {
+          'apiKey': apiKey,
+          'regions': 'us',
+          'markets': 'h2h,spreads,totals',
+          'oddsFormat': 'american'
+        };
+        
+        // Make API requests for different sports
+        final List<Map<String, dynamic>> allBettingLines = [];
+        
+        // List of sports to fetch (you can expand this list)
+        final List<String> sports = [
+          'basketball_nba',
+        ];
+        
+        for (String sport in sports) {
+          try {
+            final uri = Uri.parse('$_baseUrl/sports/$sport/odds').replace(
+              queryParameters: params
+            );
             
-            // Transform the API data into our desired format
-            for (var game in data) {
-              // Skip games with no bookmakers
-              if (game['bookmakers'] == null || (game['bookmakers'] as List).isEmpty) {
-                continue;
-              }
+            print('📡 Requesting odds data for $sport');
+            final response = await http.get(uri);
+            
+            if (response.statusCode == 200) {
+              final List<dynamic> data = jsonDecode(response.body);
               
-              // Get the sport name in a nicer format
-              String sportName = sport.split('_').last.toUpperCase();
-              
-              // Find the best odds available for this game
-              final bestOdds = _findBestOdds(game);
-              if (bestOdds == null) continue;
-              
-              allBettingLines.add({
-                'sport': sportName,
-                'teams': '${game['away_team']} @ ${game['home_team']}',
-                'spread': bestOdds['spread'],
-                'total': bestOdds['total'],
-                'moneyline': bestOdds['moneyline'],
-                'prediction': {
-                  'confidence': '${(75 + (DateTime.now().millisecond % 20)).toString()}%',
-                  'pick': bestOdds['best_pick']
+              // Transform the API data into our desired format
+              for (var game in data) {
+                // Skip games with no bookmakers
+                if (game['bookmakers'] == null || (game['bookmakers'] as List).isEmpty) {
+                  continue;
                 }
-              });
+                
+                // Get the sport name in a nicer format
+                String sportName = sport.split('_').last.toUpperCase();
+                
+                // Find the best odds available for this game
+                final bestOdds = _findBestOdds(game);
+                if (bestOdds == null) continue;
+                
+                allBettingLines.add({
+                  'sport': sportName,
+                  'teams': '${game['away_team']} @ ${game['home_team']}',
+                  'spread': bestOdds['spread'],
+                  'total': bestOdds['total'],
+                  'moneyline': bestOdds['moneyline'],
+                  'prediction': {
+                    'confidence': '${(75 + (DateTime.now().millisecond % 20)).toString()}%',
+                    'pick': bestOdds['best_pick']
+                  }
+                });
+              }
+            } else {
+              print('❌ API error for $sport: ${response.statusCode}');
+              print('Error body: ${response.body}');
             }
-          } else {
-            print('❌ API error for $sport: ${response.statusCode}');
-            print('Error body: ${response.body}');
+          } catch (e) {
+            print('❌ Exception fetching $sport: $e');
           }
-        } catch (e) {
-          print('❌ Exception fetching $sport: $e');
         }
-      }
-      
-      // If we got data, return it, otherwise fall back to mock data
-      if (allBettingLines.isNotEmpty) {
-        print('✅ Got ${allBettingLines.length} betting lines from the API');
-        return allBettingLines;
+        
+        // If we got data, return it, otherwise fall back to mock data
+        if (allBettingLines.isNotEmpty) {
+          print('✅ Got ${allBettingLines.length} betting lines from the API');
+          return allBettingLines;
+        } else {
+          print('⚠️ No betting lines found, using mock data');
+          return _getMockBettingLines();
+        }
       } else {
-        print('⚠️ No betting lines found, using mock data');
+        print('⚠️ No API key found, using mock data');
         return _getMockBettingLines();
       }
     } catch (e) {

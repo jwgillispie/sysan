@@ -1,6 +1,7 @@
 // lib/features/bets/ui/bets_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/ui_components.dart';
@@ -58,6 +59,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -93,25 +96,41 @@ class _BetsPageContentState extends State<_BetsPageContent> {
       body: Stack(
         children: [
           const CyberGrid(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                _buildFilterSection(),
-                const SizedBox(height: 20),
-                _buildBetTypeSelector(),
-                const SizedBox(height: 10),
-                _buildAppliedSystemIndicator(),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: _buildBetsList(),
+          // Constrain the content width on web platform to prevent stretching
+          Center(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: isWebPlatform ? 800 : double.infinity,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    _buildFilterSection(),
+                    const SizedBox(height: 20),
+                    _buildBetTypeSelector(),
+                    const SizedBox(height: 10),
+                    _buildAppliedSystemIndicator(),
+                    const SizedBox(height: 10),
+                    // Make sure this expands to fill available space
+                    Expanded(
+                      child: _buildBetsList(),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],
       ),
-      floatingActionButton: _buildFloatingActionButton(),
+      // Position the floating action button appropriately based on platform
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: isWebPlatform ? 20.0 : 0.0,
+          right: isWebPlatform ? 20.0 : 0.0,
+        ),
+        child: _buildFloatingActionButton(),
+      ),
     );
   }
 
@@ -158,6 +177,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   Widget _buildBetsList() {
+    final bool isWebPlatform = kIsWeb;
+    
     return BlocBuilder<BetsBloc, BetsState>(
       builder: (context, state) {
         if (state is BetsLoading) {
@@ -171,11 +192,13 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                 'No bets found',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontSize: 18,
+                  fontSize: isWebPlatform ? 20 : 18,
                 ),
               ),
             );
           }
+          
+          // Use a more web-friendly layout for the list
           return ListView.builder(
             itemCount: state.filteredBets.length,
             itemBuilder: (context, index) {
@@ -186,7 +209,6 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                 appliedSystem: state.appliedSystem,
                 onBetSelected: (bet) {
                   // Handle bet selection
-                  // You could navigate to a detail page or show a dialog
                   _showBetDetailsDialog(bet);
                 },
               );
@@ -196,9 +218,9 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           return Center(
             child: Text(
               'Error: ${state.message}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.red,
-                fontSize: 18,
+                fontSize: isWebPlatform ? 20 : 18,
               ),
             ),
           );
@@ -229,7 +251,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
-                    color: Colors.black,  // Make sure the text is visible against green
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -243,6 +265,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
 
   void _showBetDetailsDialog(Bet bet) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
+    final dialogWidth = isWebPlatform ? 400.0 : null;
     
     // Implement a dialog to show more details about the bet
     showDialog(
@@ -256,32 +280,35 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Game starts at: ${bet.commenceTime.toLocal().toString().substring(0, 16)}',
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Available at:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...bet.bookmakers.map((bookmaker) => Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  '• ${bookmaker.title}',
+        content: Container(
+          width: dialogWidth,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Game starts at: ${bet.commenceTime.toLocal().toString().substring(0, 16)}',
                   style: const TextStyle(color: Colors.white),
                 ),
-              )),
-            ],
+                const SizedBox(height: 16),
+                const Text(
+                  'Available at:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ...bet.bookmakers.map((bookmaker) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    '• ${bookmaker.title}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                )),
+              ],
+            ),
           ),
         ),
         actions: [
@@ -302,7 +329,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: primaryColor,
-              foregroundColor: Colors.black, // Text color on the green button
+              foregroundColor: Colors.black,
             ),
             child: const Text(
               'PLACE BET',
@@ -318,6 +345,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
 
   void _showSystemsDialog() {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
+    final dialogWidth = isWebPlatform ? 400.0 : null;
     
     // Mock data for available systems
     final systems = [
@@ -337,29 +366,32 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: systems.length,
-            itemBuilder: (context, index) {
-              final system = systems[index];
-              return ListTile(
-                title: Text(
-                  system['name']!,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                leading: Icon(
-                  Icons.memory,
-                  color: primaryColor,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  BlocProvider.of<BetsBloc>(context)
-                      .add(ApplySystem(systemId: system['name']!));
-                },
-              );
-            },
+        content: Container(
+          width: dialogWidth,
+          child: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: systems.length,
+              itemBuilder: (context, index) {
+                final system = systems[index];
+                return ListTile(
+                  title: Text(
+                    system['name']!,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  leading: Icon(
+                    Icons.memory,
+                    color: primaryColor,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    BlocProvider.of<BetsBloc>(context)
+                        .add(ApplySystem(systemId: system['name']!));
+                  },
+                );
+              },
+            ),
           ),
         ),
         actions: [

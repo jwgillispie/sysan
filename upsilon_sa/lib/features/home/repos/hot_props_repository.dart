@@ -5,18 +5,30 @@ import 'package:http/http.dart' as http;
 import 'package:upsilon_sa/core/utils/helpers.dart';
 import 'package:upsilon_sa/core/widgets/hot_props_widget.dart';
 
+// Import reference to our global environment variables
+import 'package:upsilon_sa/main.dart' show environmentVariables;
+
 class HotPropsRepository {
   // Base URL for The Odds API
   final String _baseUrl = 'https://api.the-odds-api.com/v4';
   
   // Get API key from environment variables
-  String get apiKey => EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  String get apiKey {
+    // First check if we have it in the global map (for web)
+    final webApiKey = environmentVariables['ODDS_API_KEY'];
+    if (webApiKey != null && webApiKey.isNotEmpty && webApiKey != 'YOUR_ODDS_API_KEY') {
+      return webApiKey;
+    }
+    
+    // Then try the environment helper (for mobile)
+    return EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
+  }
   
   /// Fetches hot props from the Odds API
   Future<List<HotProp>> getHotProps() async {
     try {
-      if (apiKey.isEmpty) {
-        print('❌ No Odds API key found, using mock data for hot props');
+      if (apiKey.isEmpty || apiKey == 'YOUR_ODDS_API_KEY') {
+        print('❌ No valid Odds API key found, using mock data for hot props');
         return _getMockHotProps();
       }
       

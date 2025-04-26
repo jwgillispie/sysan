@@ -1,6 +1,6 @@
-
 // lib/features/bets/ui/components/applied_system_indicator.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AppliedSystemIndicator extends StatelessWidget {
   final String systemName;
@@ -15,9 +15,13 @@ class AppliedSystemIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final isWebPlatform = kIsWeb;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: 16, 
+        vertical: isWebPlatform ? 10 : 8
+      ),
       decoration: BoxDecoration(
         color: primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
@@ -34,14 +38,14 @@ class AppliedSystemIndicator extends StatelessWidget {
               Icon(
                 Icons.memory,
                 color: primaryColor,
-                size: 16,
+                size: isWebPlatform ? 18 : 16,
               ),
               const SizedBox(width: 8),
               Text(
                 'SYSTEM APPLIED: $systemName',
                 style: TextStyle(
                   color: primaryColor,
-                  fontSize: 14,
+                  fontSize: isWebPlatform ? 16 : 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -61,7 +65,7 @@ class AppliedSystemIndicator extends StatelessWidget {
               child: Icon(
                 Icons.close,
                 color: Colors.red,
-                size: 14,
+                size: isWebPlatform ? 16 : 14,
               ),
             ),
           ),
