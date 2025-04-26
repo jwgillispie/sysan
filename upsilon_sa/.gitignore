@@ -12,20 +12,40 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
-*/.plist
-**firebase.json
-**/.firebaserc
-/GoogleService-Info.plist
-*.plist
+
+# Firebase configuration files
+firebase.json
+.firebaserc
+firebase-config.js
+**/GoogleService-Info.plist
+**/google-services.json
+**/firebase_options.dart
+**/firebase-credentials.json
+
+# iOS specific
+ios/Runner/GoogleService-Info.plist
+ios/Firebase/
+
+# macOS specific
+macos/Runner/GoogleService-Info.plist
+macos/Firebase/
+
+# Web specific
+web/firebase-config.js
+
+# Android specific
+android/app/google-services.json
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
+
+# Environment files
 .env
-**/firebase_options.dart
-*.firebaserc
-**/firebase-credentials.json
+*.env.*
+
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
