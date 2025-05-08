@@ -108,7 +108,7 @@ class StoriesSection extends StatelessWidget {
   void _showAddStoryDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AddStoryDialog(),
+      builder: (context) => const AddStoryDialog(),
     );
   }
 }

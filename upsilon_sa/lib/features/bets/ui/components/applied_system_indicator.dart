@@ -18,7 +18,7 @@ class AppliedSystemIndicator extends StatelessWidget {
     const isWebPlatform = kIsWeb;
 
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 16, 
         vertical: isWebPlatform ? 10 : 8
       ),
@@ -62,7 +62,7 @@ class AppliedSystemIndicator extends StatelessWidget {
                   color: Colors.red.withOpacity(0.5),
                 ),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.close,
                 color: Colors.red,
                 size: isWebPlatform ? 16 : 14,

@@ -68,7 +68,7 @@ class BetCard extends StatelessWidget {
   Widget _buildGameHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
-    final fontSize = isWebPlatform ? 16.0 : 14.0;
+    const fontSize = isWebPlatform ? 16.0 : 14.0;
 
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -102,7 +102,7 @@ class BetCard extends StatelessWidget {
                 flex: 5,
                 child: Text(
                   bet.awayTeam,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: isWebPlatform ? 18 : 16,
                     fontWeight: FontWeight.bold,
@@ -124,7 +124,7 @@ class BetCard extends StatelessWidget {
                 flex: 5,
                 child: Text(
                   bet.homeTeam,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: isWebPlatform ? 18 : 16,
                     fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class BetCard extends StatelessWidget {
   Widget _buildOddsHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
-    final fontSize = isWebPlatform ? 14.0 : 12.0;
+    const fontSize = isWebPlatform ? 14.0 : 12.0;
     
     return Row(
       children: [
@@ -229,8 +229,8 @@ class BetCard extends StatelessWidget {
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
     final textColor = isHome ? primaryColor : Colors.white;
-    final fontSize = isWebPlatform ? 16.0 : 14.0;
-    final oddsSize = isWebPlatform ? 15.0 : 13.0;
+    const fontSize = isWebPlatform ? 16.0 : 14.0;
+    const oddsSize = isWebPlatform ? 15.0 : 13.0;
     
     return Row(
       children: [
@@ -307,8 +307,8 @@ class BetCard extends StatelessWidget {
   Widget _buildTotalsRow(BuildContext context, Map<String, dynamic> totalsOdds) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
-    final fontSize = isWebPlatform ? 14.0 : 12.0;
-    final oddsSize = isWebPlatform ? 15.0 : 13.0;
+    const fontSize = isWebPlatform ? 14.0 : 12.0;
+    const oddsSize = isWebPlatform ? 15.0 : 13.0;
     
     return Row(
       children: [

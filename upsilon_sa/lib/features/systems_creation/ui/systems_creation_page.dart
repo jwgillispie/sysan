@@ -23,7 +23,7 @@ class SystemCreationPage extends StatelessWidget {
 }
 
 class _SystemCreationView extends StatefulWidget {
-  const _SystemCreationView({super.key});
+  const _SystemCreationView();
 
   @override
   State<_SystemCreationView> createState() => _SystemCreationViewState();
@@ -474,7 +474,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
                     ),
                   ],
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -483,7 +483,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
                       color: Colors.black,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     Text(
                       'CREATE NEW SYSTEM',
                       style: TextStyle(
@@ -533,17 +533,17 @@ class _SystemCreationViewState extends State<_SystemCreationView>
                     ),
                   ],
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle_outline,
                       color: Colors.black,
                       size: 20,
                     ),
-                    const SizedBox(width: 8),
-                    const Text(
+                    SizedBox(width: 8),
+                    Text(
                       'TEST ON BETS',
                       style: TextStyle(
                         color: Colors.black,

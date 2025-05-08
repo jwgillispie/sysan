@@ -33,16 +33,22 @@ class ProfileRepository {
       
       return [
         {
-          'name': 'Neural Alpha',
+          'name': 'LeBron Picks',
           'winRate': 92.5,
           'status': 'active',
           'followers': 523,
         },
         {
-          'name': 'Beta Protocol',
+          'name': 'Underdog Special',
           'winRate': 88.7,
           'status': 'active',
           'followers': 342,
+        },
+        {
+          'name': 'Home Team Edge',
+          'winRate': 85.3,
+          'status': 'active',
+          'followers': 278,
         },
       ];
     } catch (e) {
@@ -60,6 +66,14 @@ class ProfileRepository {
         'winRate': 92.5,
         'profitability': 27.8,
         'averageOdds': 1.95,
+        'roiData': [
+          {'x': 0, 'y': 65},
+          {'x': 1, 'y': 72},
+          {'x': 2, 'y': 85},
+          {'x': 3, 'y': 78},
+          {'x': 4, 'y': 92},
+          {'x': 5, 'y': 88},
+        ],
         'recentActivity': [
           {
             'type': 'bet',
@@ -69,8 +83,20 @@ class ProfileRepository {
           },
           {
             'type': 'system',
-            'description': 'Created new system Alpha Beta',
+            'description': 'Created new system "3-Point Kings"',
             'time': '5h ago',
+            'result': null,
+          },
+          {
+            'type': 'bet',
+            'description': 'Bet placed on KC vs BAL',
+            'time': '1d ago',
+            'result': 'pending',
+          },
+          {
+            'type': 'system',
+            'description': 'Updated "First Half Heroes" system',
+            'time': '2d ago',
             'result': null,
           },
         ],

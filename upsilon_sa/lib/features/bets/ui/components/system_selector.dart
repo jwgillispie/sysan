@@ -1,8 +1,6 @@
 // lib/features/bets/ui/components/system_selector.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:upsilon_sa/features/bets/bloc/bets_bloc.dart';
 import 'package:upsilon_sa/features/systems_creation/models/system_model.dart';
 
 class SystemSelector extends StatelessWidget {

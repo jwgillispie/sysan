@@ -1,7 +1,6 @@
 // lib/features/home/ui/components/ticker_bar.dart
 
 import 'package:flutter/material.dart';
-import 'package:upsilon_sa/core/config/constants.dart';
 
 class TickerBar extends StatelessWidget {
   final ScrollController scrollController;

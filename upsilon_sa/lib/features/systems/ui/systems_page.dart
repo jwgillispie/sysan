@@ -36,19 +36,19 @@ class _SystemsPageState extends State<SystemsPage> with SingleTickerProviderStat
     'profit': 1842,
     'recentActivity': [
       {
-        'title': 'System ALPHA-X Prediction',
+        'title': 'Lakers 4th Quarter Pick',
         'subtitle': 'Lakers vs Warriors | ML: Lakers -110',
         'time': '2h ago',
         'status': 'WIN'
       },
       {
-        'title': 'Neural Beta Analysis',
+        'title': 'Over Under Magic Alert',
         'subtitle': 'Chiefs vs Ravens | Over 47.5',
         'time': '3h ago',
         'status': 'PENDING'
       },
       {
-        'title': 'Quantum System Alert',
+        'title': 'Sunday Underdogs Update',
         'subtitle': 'Celtics vs 76ers | Spread: BOS -2.5',
         'time': '4h ago',
         'status': 'WIN'
@@ -57,9 +57,10 @@ class _SystemsPageState extends State<SystemsPage> with SingleTickerProviderStat
   };
 
   final List<Map<String, dynamic>> systemsData = [
-    {'name': 'System ALPHA-X', 'winRate': 99.8},
-    {'name': 'Neural Beta', 'winRate': 92.3},
-    {'name': 'Quantum System', 'winRate': 88.5},
+    {'name': 'Lakers 4th Quarter', 'winRate': 89.8},
+    {'name': 'Sunday Underdogs', 'winRate': 82.3},
+    {'name': 'Rookie Performers', 'winRate': 78.5},
+    {'name': 'Over Under Magic', 'winRate': 85.7},
   ];
 
   @override

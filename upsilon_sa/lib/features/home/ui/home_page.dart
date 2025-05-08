@@ -37,31 +37,31 @@ class _HomePageState extends State<HomePage>
 
   // System data
   final List<String> systemItems = [
-    'Infinite Money Glitch',
-    'Quantum β',
-    'Random System',
+    'Lakers 4th Quarter',
+    'Underdog Special',
+    'Home Run Heroes',
   ];
-  final List<double> systemValues = [99.8, 92.3, 88.5];
+  final List<double> systemValues = [89.8, 84.3, 78.5];
 
   // News data
   final List<Map<String, String>> newsItems = [
     {
-      'title': 'AI System Predicts Major Playoff Upset',
+      'title': 'Weekend Underdogs: Teams to Watch This Sunday',
       'url': 'https://example.com/news1',
       'time': '2h ago',
       'category': 'PREDICTION',
     },
     {
-      'title': 'Neural Network Shows 98% Accuracy in Recent Games',
+      'title': 'Lakers 4th Quarter System Hits 90% Success Rate',
       'url': 'https://example.com/news2',
       'time': '4h ago',
       'category': 'PERFORMANCE',
     },
     {
-      'title': 'New Quantum Algorithm Beats Market Average',
+      'title': 'Why Home Team Betting is Trending This Season',
       'url': 'https://example.com/news3',
       'time': '6h ago',
-      'category': 'TECHNOLOGY',
+      'category': 'STRATEGY',
     },
   ];
 
@@ -383,11 +383,11 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildTopPerformersList() {
     final topUsers = [
-      {'rank': '01', 'name': 'Infinite Money Glitch', 'profit': '+234.5%'},
-      {'rank': '02', 'name': 'Quantum β', 'profit': '+187.2%'},
-      {'rank': '03', 'name': 'Random System', 'profit': '+156.8%'},
-      {'rank': '04', 'name': 'Big Bags', 'profit': '+143.2%'},
-      {'rank': '05', 'name': 'Matrix v2.0', 'profit': '+138.7%'},
+      {'rank': '01', 'name': 'First Half Heroes', 'profit': '+134.5%'},
+      {'rank': '02', 'name': 'Underdog Special', 'profit': '+127.2%'},
+      {'rank': '03', 'name': '3-Point Kings', 'profit': '+116.8%'},
+      {'rank': '04', 'name': 'Sunday Winners', 'profit': '+103.2%'},
+      {'rank': '05', 'name': 'Power Play Picks', 'profit': '+98.7%'},
     ];
 
     return Column(
@@ -515,9 +515,9 @@ class _HomePageState extends State<HomePage>
   
   // Widget to show while hot props are loading
   Widget _buildLoadingHotProps() {
-    return SizedBox(
+    return const SizedBox(
       height: 200,
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

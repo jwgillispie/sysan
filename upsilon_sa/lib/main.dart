@@ -117,7 +117,7 @@ class SystemsAnalyticsApp extends StatelessWidget {
           '/home': (context) => const HomePage(),
           '/leaderboard': (context) => const LeaderboardPage(),
           '/systems': (context) => const SystemsPage(),
-          '/datasets': (context) => DatasetsPage(),
+          '/datasets': (context) => const DatasetsPage(),
           '/bets': (context) => const BetsPage(),
         },
       ),

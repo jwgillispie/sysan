@@ -1,7 +1,6 @@
 // lib/features/datasets/ui/components/team_list.dart
 
 import 'package:flutter/material.dart';
-import 'package:upsilon_sa/features/datasets/bloc/datasets_bloc.dart';
 import 'package:upsilon_sa/features/datasets/bloc/datasets_state.dart';
 
 class TeamList extends StatelessWidget {

@@ -65,7 +65,7 @@ class BetTypeSelector extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTypeSelected(type),
         child: Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             vertical: isWebPlatform ? 12 : 10,
           ),
           decoration: BoxDecoration(

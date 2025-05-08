@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/features/datasets/bloc/datasets_state.dart';
 import 'package:upsilon_sa/features/datasets/ui/components/player_card.dart';
-import 'package:upsilon_sa/features/datasets/bloc/datasets_bloc.dart';
 
 class PlayerList extends StatelessWidget {
   final DatasetsState state;

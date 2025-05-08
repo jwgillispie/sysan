@@ -30,7 +30,7 @@ class BetsPage extends StatelessWidget {
 }
 
 class _BetsPageContent extends StatefulWidget {
-  const _BetsPageContent({super.key});
+  const _BetsPageContent();
 
   @override
   State<_BetsPageContent> createState() => _BetsPageContentState();
@@ -71,56 +71,56 @@ class _BetsPageContentState extends State<_BetsPageContent> {
     if (systems.isEmpty) {
       final mockSystems = [
         SystemModel(
-          id: 'neural-alpha',
-          name: 'Neural Alpha v2.4',
+          id: 'lakers-fourth',
+          name: 'Lakers 4th Quarter',
           sport: 'basketball_nba',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 14)),
           confidence: 0.87,
         ),
         SystemModel(
-          id: 'momentum-tracker',
-          name: 'Momentum Tracker',
+          id: 'three-point-kings',
+          name: '3-Point Kings',
           sport: 'basketball_nba',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 7)),
           confidence: 0.76,
         ),
         SystemModel(
-          id: 'quantum-delta',
-          name: 'Quantum Delta',
+          id: 'underdog-special',
+          name: 'Underdog Special',
           sport: 'basketball_nba',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 3)),
           confidence: 0.92,
         ),
         SystemModel(
-          id: 'beta-protocol',
-          name: 'Beta Protocol',
+          id: 'sunday-winners',
+          name: 'Sunday Winners',
           sport: 'americanfootball_nfl',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 21)),
           confidence: 0.81,
         ),
         SystemModel(
-          id: 'genesis-analytics',
-          name: 'Genesis Analytics',
+          id: 'home-run-heroes',
+          name: 'Home Run Heroes',
           sport: 'baseball_mlb',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 5)),
           confidence: 0.79,
         ),
         SystemModel(
-          id: 'ice-predictor',
-          name: 'Ice Predictor',
+          id: 'power-play-picks',
+          name: 'Power Play Picks',
           sport: 'icehockey_nhl',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 2)),
           confidence: 0.83,
         ),
         SystemModel(
-          id: 'goal-analyzer',
-          name: 'Goal Analyzer Pro',
+          id: 'corner-kick-kings',
+          name: 'Corner Kick Kings',
           sport: 'soccer_epl',
           factors: [],
           createdAt: DateTime.now().subtract(const Duration(days: 9)),
@@ -192,7 +192,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           // Constrain the content width on web platform to prevent stretching
           Center(
             child: Container(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxWidth: isWebPlatform ? 800 : double.infinity,
               ),
               child: Padding(
@@ -218,7 +218,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
       ),
       // Position the floating action button appropriately based on platform
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           bottom: isWebPlatform ? 20.0 : 0.0,
           right: isWebPlatform ? 20.0 : 0.0,
         ),
@@ -315,7 +315,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           return Center(
             child: Text(
               'Error: ${state.message}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: isWebPlatform ? 20 : 18,
               ),
@@ -363,7 +363,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   void _showBetDetailsDialog(Bet bet) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
-    final dialogWidth = isWebPlatform ? 400.0 : null;
+    const dialogWidth = isWebPlatform ? 400.0 : null;
     
     // Implement a dialog to show more details about the bet
     showDialog(
@@ -447,7 +447,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
     
     final primaryColor = Theme.of(context).colorScheme.primary;
     const isWebPlatform = kIsWeb;
-    final dialogWidth = isWebPlatform ? 400.0 : null;
+    const dialogWidth = isWebPlatform ? 400.0 : null;
 
     // Sport mappings for display
     final sportLabels = {

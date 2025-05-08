@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});

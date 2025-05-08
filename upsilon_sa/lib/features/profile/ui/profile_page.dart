@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid_painter.dart';
 import 'package:upsilon_sa/features/profile/bloc/profile_bloc.dart';
 import 'components/profile_header.dart';
 import 'components/profile_stats.dart';
 import 'components/profile_subscription.dart';
+import 'components/profile_roi_chart.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -167,6 +169,33 @@ class _ProfilePageState extends State<ProfilePage> {
                               if (state is ProfileLoading) {
                                 return const SizedBox(
                                   height: 150,
+                                  child: Center(child: CircularProgressIndicator()),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // ROI Chart Section
+                          BlocBuilder<ProfileBloc, ProfileState>(
+                            builder: (context, state) {
+                              if (state is ProfileStatsLoaded || _profileBloc.statsData != null) {
+                                // Convert the ROI data from the repository to FlSpot format
+                                final List<dynamic> roiDataRaw = _profileBloc.statsData!['roiData'] ?? [];
+                                final List<FlSpot> roiData = roiDataRaw
+                                    .map((data) => FlSpot(
+                                          data['x'].toDouble(),
+                                          data['y'].toDouble(),
+                                        ))
+                                    .toList();
+                                
+                                return ProfileROIChart(roiData: roiData);
+                              }
+                              if (state is ProfileLoading) {
+                                return const SizedBox(
+                                  height: 300,
                                   child: Center(child: CircularProgressIndicator()),
                                 );
                               }
