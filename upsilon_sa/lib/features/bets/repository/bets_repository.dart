@@ -2,10 +2,8 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/bet_model.dart';
 import 'package:upsilon_sa/core/utils/helpers.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 
 // Import reference to our global environment variables
 import 'package:upsilon_sa/main.dart' show environmentVariables;

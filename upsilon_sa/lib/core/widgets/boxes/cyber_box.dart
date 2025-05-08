@@ -12,14 +12,14 @@ abstract class CyberBox extends StatelessWidget {
   final Color? accentColor;
 
   const CyberBox({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.title,
     required this.icon,
     this.onTap,
     this.accentColor,
-  }) : super(key: key);
+  });
 
   Widget buildContent(BuildContext context);
 

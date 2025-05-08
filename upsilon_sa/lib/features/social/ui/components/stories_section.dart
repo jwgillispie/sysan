@@ -114,6 +114,8 @@ class StoriesSection extends StatelessWidget {
 }
 
 class AddStoryDialog extends StatefulWidget {
+  const AddStoryDialog({super.key});
+
   @override
   State<AddStoryDialog> createState() => _AddStoryDialogState();
 }

@@ -11,7 +11,7 @@ import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.
 import '../models/factor_model.dart';
 
 class SystemCreationPage extends StatelessWidget {
-  const SystemCreationPage({Key? key}) : super(key: key);
+  const SystemCreationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SystemCreationPage extends StatelessWidget {
 }
 
 class _SystemCreationView extends StatefulWidget {
-  const _SystemCreationView({Key? key}) : super(key: key);
+  const _SystemCreationView({super.key});
 
   @override
   State<_SystemCreationView> createState() => _SystemCreationViewState();
@@ -165,7 +165,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
             children: [
               const CyberGrid(),
               _buildContent(context, state),
-              _buildCreateButton(context, state),
+              // Floating button removed
             ],
           ),
         );
@@ -210,8 +210,8 @@ class _SystemCreationViewState extends State<_SystemCreationView>
           // Factors Section
           _buildFactorsSection(context, state),
 
-          // Add space at the bottom for the floating create button
-          const SizedBox(height: 80),
+          // Add space at the bottom for better padding
+          const SizedBox(height: 40),
         ],
       ),
     );
@@ -437,6 +437,123 @@ class _SystemCreationViewState extends State<_SystemCreationView>
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Create System Button (styled similarly to the one in system_selector.dart)
+          Center(
+            child: InkWell(
+              onTap: () {
+                context.read<SystemsCreationBloc>().add(const CreateSystem());
+              },
+              child: Container(
+                width: 280,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      primaryColor.withOpacity(0.7),
+                      primaryColor.withOpacity(0.4),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: primaryColor,
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: primaryColor.withOpacity(0.3),
+                      blurRadius: 8,
+                      spreadRadius: -2,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_circle,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'CREATE NEW SYSTEM',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          
+          // Test Bets Button
+          Center(
+            child: InkWell(
+              onTap: () {
+                // Navigate to the bets page
+                Navigator.pushNamed(context, '/bets');
+              },
+              child: Container(
+                width: 280,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue.withOpacity(0.7),
+                      Colors.blue.withOpacity(0.4),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.3),
+                      blurRadius: 8,
+                      spreadRadius: -2,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'TEST ON BETS',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -1167,92 +1284,5 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
         return Colors.grey;
     }
   }
-Widget _buildCreateButton(BuildContext context, SystemsCreationState state) {
-  final primaryColor = Theme.of(context).colorScheme.primary;
-  final mediaQuery = MediaQuery.of(context);
-  final bottomPadding = mediaQuery.padding.bottom;
-
-  return Positioned(
-    bottom: 20 + bottomPadding,
-    left: 20,
-    right: 20,
-    child: Row(
-      children: [
-        // First button - CREATE SYSTEM
-        Expanded(
-          flex: 1,
-          child: GlowingActionButton(
-            onPressed: () {
-              context.read<SystemsCreationBloc>().add(const CreateSystem());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.sync_alt,
-                  color: Colors.white,
-                  size: 16, // Slightly smaller icon
-                ),
-                const SizedBox(width: 4), // Smaller spacing
-                Flexible(
-                  child: Text(
-                    state.status == SystemsCreationStatus.loading
-                        ? 'CREATING...'
-                        : 'CREATE',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12, // Smaller text
-                      letterSpacing: 0.5, // Less letter spacing
-                      color: Colors.black,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        
-        const SizedBox(width: 10),
-        
-        // Second button - TEST ON BETS
-        Expanded(
-          flex: 1,
-          child: GlowingActionButton(
-            onPressed: () {
-              // Navigate to the bets page
-              Navigator.pushNamed(context, '/bets');
-            },
-            color: Colors.blue, // Different color to distinguish
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center, 
-              children: [
-                Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.white,
-                  size: 16, // Slightly smaller icon
-                ),
-                SizedBox(width: 4), // Smaller spacing
-                Flexible(
-                  child: Text(
-                    'TEST BETS',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12, // Smaller text
-                      letterSpacing: 0.5, // Less letter spacing
-                      color: Colors.black,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
+// The floating create button has been replaced with inline buttons in the UI
 }

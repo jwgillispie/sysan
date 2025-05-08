@@ -7,22 +7,15 @@ class SystemsBox extends CyberBox {
   final List<double> systemValues;
 
   const SystemsBox({
-    Key? key,
+    super.key,
     required this.systemItems,
     required this.systemValues,
-    required double width,
-    required double height,
-    required String title,
-    required IconData icon,
-    VoidCallback? onTap,
-  }) : super(
-          key: key,
-          width: width,
-          height: height,
-          title: title,
-          icon: icon,
-          onTap: onTap,
-        );
+    required super.width,
+    required super.height,
+    required super.title,
+    required super.icon,
+    super.onTap,
+  });
 
   @override
   Widget buildContent(BuildContext context) {

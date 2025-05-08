@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:upsilon_sa/core/widgets/nav_bar.dart';
-import 'package:upsilon_sa/features/landing/ui/landing_page.dart';
 import 'package:upsilon_sa/features/leaderboard/ui/leaderboard_page.dart';
 import 'package:upsilon_sa/features/datasets/ui/datasets_page.dart';
 import 'package:upsilon_sa/features/news/bloc/news_bloc.dart';

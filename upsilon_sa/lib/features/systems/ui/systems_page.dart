@@ -156,9 +156,9 @@ class _SystemsPageState extends State<SystemsPage> with SingleTickerProviderStat
         onPressed: () {
           // Add system creation logic
         },
-        child: Row(
+        child: const Row(
           mainAxisSize: MainAxisSize.min,
-          children: const [
+          children: [
             Icon(Icons.add),
             SizedBox(width: 8),
             Text('CREATE SYSTEM'),

@@ -6,9 +6,9 @@ class AddPlayerDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onAdd;
 
   const AddPlayerDialog({
-    Key? key,
+    super.key,
     required this.onAdd,
-  }) : super(key: key);
+  });
 
   @override
   State<AddPlayerDialog> createState() => _AddPlayerDialogState();

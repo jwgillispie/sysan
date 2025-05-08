@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/widgets/ui_components.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({Key? key}) : super(key: key);
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

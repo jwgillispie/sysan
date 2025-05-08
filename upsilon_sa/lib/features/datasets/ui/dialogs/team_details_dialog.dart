@@ -6,9 +6,9 @@ class TeamDetailsDialog extends StatelessWidget {
   final Map<String, dynamic> team;
 
   const TeamDetailsDialog({
-    Key? key,
+    super.key,
     required this.team,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -7,15 +7,15 @@ class AppliedSystemIndicator extends StatelessWidget {
   final VoidCallback onRemove;
 
   const AppliedSystemIndicator({
-    Key? key,
+    super.key,
     required this.systemName,
     required this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
 
     return Container(
       padding: EdgeInsets.symmetric(

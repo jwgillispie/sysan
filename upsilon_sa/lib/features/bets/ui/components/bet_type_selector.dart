@@ -7,15 +7,15 @@ class BetTypeSelector extends StatelessWidget {
   final Function(String) onTypeSelected;
 
   const BetTypeSelector({
-    Key? key,
+    super.key,
     required this.selectedType,
     required this.onTypeSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -59,7 +59,7 @@ class BetTypeSelector extends StatelessWidget {
     bool isSelected,
   ) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     
     return Expanded(
       child: GestureDetector(

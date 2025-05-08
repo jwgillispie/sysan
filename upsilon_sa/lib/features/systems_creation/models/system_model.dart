@@ -26,11 +26,11 @@ class SystemModel {
     double? confidence,
   }) {
     return SystemModel(
-      id: this.id,
+      id: id,
       name: name ?? this.name,
       sport: sport ?? this.sport,
       factors: factors ?? this.factors,
-      createdAt: this.createdAt,
+      createdAt: createdAt,
       confidence: confidence ?? this.confidence,
     );
   }

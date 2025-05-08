@@ -234,7 +234,7 @@ class Outcome {
     return Outcome(
       name: json['name'],
       price: json['price'],
-      point: json['point'] != null ? json['point'].toDouble() : null,
+      point: json['point']?.toDouble(),
     );
   }
 }

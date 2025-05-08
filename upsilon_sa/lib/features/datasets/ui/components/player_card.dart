@@ -7,9 +7,9 @@ class PlayerCard extends StatelessWidget {
   final Player player;
 
   const PlayerCard({
-    Key? key,
+    super.key,
     required this.player,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

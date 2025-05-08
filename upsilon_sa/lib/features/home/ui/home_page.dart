@@ -475,14 +475,14 @@ class _HomePageState extends State<HomePage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.local_fire_department,
                   color: Colors.redAccent,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Text(
                   'HOT PROPS',
                   style: TextStyle(
@@ -515,9 +515,9 @@ class _HomePageState extends State<HomePage>
   
   // Widget to show while hot props are loading
   Widget _buildLoadingHotProps() {
-    return Container(
+    return SizedBox(
       height: 200,
-      child: Center(
+      child: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -529,7 +529,7 @@ class _HomePageState extends State<HomePage>
                 strokeWidth: 2,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               'LOADING HOT PROPS...',
               style: TextStyle(
@@ -780,7 +780,7 @@ class _HomePageState extends State<HomePage>
 
   // Widget to show while live game is loading
   Widget _buildLoadingLiveGame() {
-    return Container(
+    return SizedBox(
       height: 200,
       child: Center(
         child: Column(

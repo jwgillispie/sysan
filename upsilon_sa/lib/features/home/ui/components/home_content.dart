@@ -16,12 +16,12 @@ class HomeContent extends StatelessWidget {
   final List<Map<String, String>> newsItems;
 
   const HomeContent({
-    Key? key,
+    super.key,
     required this.homeBloc,
     required this.systemItems,
     required this.systemValues,
     required this.newsItems,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildLiveGamesSection(BuildContext context) {
-    return ScoreboardBox(
+    return const ScoreboardBox(
       width: double.infinity,
       height: 400,
       team1: 'BOS',

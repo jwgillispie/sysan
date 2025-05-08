@@ -117,9 +117,9 @@ class PerformanceIndicator extends StatelessWidget {
   final double value;
 
   const PerformanceIndicator({
-    Key? key,
+    super.key,
     required this.value,
-  }) : super(key: key);
+  });
 
   Color _getIndicatorColor() {
     if (value >= 80) return Colors.green;

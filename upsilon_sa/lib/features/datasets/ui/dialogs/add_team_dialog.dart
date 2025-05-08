@@ -6,9 +6,9 @@ class AddTeamDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onAdd;
 
   const AddTeamDialog({
-    Key? key,
+    super.key,
     required this.onAdd,
-  }) : super(key: key);
+  });
 
   @override
   State<AddTeamDialog> createState() => _AddTeamDialogState();

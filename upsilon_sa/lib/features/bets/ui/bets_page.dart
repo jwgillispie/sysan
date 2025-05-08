@@ -8,13 +8,15 @@ import 'package:upsilon_sa/core/widgets/ui_components.dart';
 import 'package:upsilon_sa/features/bets/bloc/bets_bloc.dart';
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
 import 'package:upsilon_sa/features/bets/repository/bets_repository.dart';
+import 'package:upsilon_sa/features/systems_creation/models/system_model.dart';
+import 'package:upsilon_sa/features/systems_creation/repositories/systems_creation_repository.dart';
 import 'components/bet_card.dart';
-import 'components/filter_section.dart';
-import 'components/bet_type_selector.dart';
+import 'components/sport_selector.dart';
+import 'components/system_selector.dart';
 import 'components/applied_system_indicator.dart';
 
 class BetsPage extends StatelessWidget {
-  const BetsPage({Key? key}) : super(key: key);
+  const BetsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class BetsPage extends StatelessWidget {
 }
 
 class _BetsPageContent extends StatefulWidget {
-  const _BetsPageContent({Key? key}) : super(key: key);
+  const _BetsPageContent({super.key});
 
   @override
   State<_BetsPageContent> createState() => _BetsPageContentState();
@@ -36,12 +38,17 @@ class _BetsPageContent extends StatefulWidget {
 
 class _BetsPageContentState extends State<_BetsPageContent> {
   final TextEditingController _searchController = TextEditingController();
-  String _selectedBetType = 'moneyline';
+  final SystemsCreationRepository _systemsRepository = SystemsCreationRepository();
+  List<SystemModel> _systems = [];
+  List<SystemModel> _filteredSystems = [];
+  SystemModel? _selectedSystem;
+  String _selectedSport = 'basketball_nba';
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    _loadSystems();
   }
 
   @override
@@ -56,10 +63,96 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         .add(FilterBets(teamName: _searchController.text));
   }
 
+  Future<void> _loadSystems() async {
+    // Try to get real systems first
+    final systems = await _systemsRepository.getSystems();
+    
+    // If no systems exist, add mock systems for demonstration
+    if (systems.isEmpty) {
+      final mockSystems = [
+        SystemModel(
+          id: 'neural-alpha',
+          name: 'Neural Alpha v2.4',
+          sport: 'basketball_nba',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 14)),
+          confidence: 0.87,
+        ),
+        SystemModel(
+          id: 'momentum-tracker',
+          name: 'Momentum Tracker',
+          sport: 'basketball_nba',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 7)),
+          confidence: 0.76,
+        ),
+        SystemModel(
+          id: 'quantum-delta',
+          name: 'Quantum Delta',
+          sport: 'basketball_nba',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 3)),
+          confidence: 0.92,
+        ),
+        SystemModel(
+          id: 'beta-protocol',
+          name: 'Beta Protocol',
+          sport: 'americanfootball_nfl',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 21)),
+          confidence: 0.81,
+        ),
+        SystemModel(
+          id: 'genesis-analytics',
+          name: 'Genesis Analytics',
+          sport: 'baseball_mlb',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          confidence: 0.79,
+        ),
+        SystemModel(
+          id: 'ice-predictor',
+          name: 'Ice Predictor',
+          sport: 'icehockey_nhl',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 2)),
+          confidence: 0.83,
+        ),
+        SystemModel(
+          id: 'goal-analyzer',
+          name: 'Goal Analyzer Pro',
+          sport: 'soccer_epl',
+          factors: [],
+          createdAt: DateTime.now().subtract(const Duration(days: 9)),
+          confidence: 0.84,
+        ),
+      ];
+      setState(() {
+        _systems = mockSystems;
+        _filterSystemsBySport();
+      });
+    } else {
+      setState(() {
+        _systems = systems;
+        _filterSystemsBySport();
+      });
+    }
+  }
+  
+  void _filterSystemsBySport() {
+    setState(() {
+      _filteredSystems = _systems.where((system) => system.sport == _selectedSport).toList();
+      // Clear selected system if it doesn't belong to the currently selected sport
+      if (_selectedSystem != null && _selectedSystem!.sport != _selectedSport) {
+        _selectedSystem = null;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -106,9 +199,9 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    _buildFilterSection(),
-                    const SizedBox(height: 20),
-                    _buildBetTypeSelector(),
+                    _buildSportSelector(),
+                    const SizedBox(height: 16),
+                    _buildSystemSelector(),
                     const SizedBox(height: 10),
                     _buildAppliedSystemIndicator(),
                     const SizedBox(height: 10),
@@ -134,30 +227,35 @@ class _BetsPageContentState extends State<_BetsPageContent> {
     );
   }
 
-  Widget _buildFilterSection() {
-    return FilterSection(
-      searchController: _searchController,
-      onSortChanged: (sort) {
-        BlocProvider.of<BetsBloc>(context).add(SortBets(sort: sort));
+  Widget _buildSportSelector() {
+    return SportSelector(
+      selectedSport: _selectedSport,
+      onSportSelected: (sportId) {
+        setState(() {
+          _selectedSport = sportId;
+          _filterSystemsBySport();
+        });
+        // Update bets list with new sport
+        BlocProvider.of<BetsBloc>(context).add(LoadBets(sport: sportId));
       },
     );
   }
 
-  Widget _buildBetTypeSelector() {
-    return BlocBuilder<BetsBloc, BetsState>(
-      builder: (context, state) {
-        if (state is BetsLoaded) {
-          _selectedBetType = state.selectedBetType;
-        }
-        return BetTypeSelector(
-          selectedType: _selectedBetType,
-          onTypeSelected: (type) {
-            BlocProvider.of<BetsBloc>(context).add(SelectBetType(betType: type));
-          },
-        );
+  Widget _buildSystemSelector() {
+    return SystemSelector(
+      systems: _filteredSystems,
+      selectedSystem: _selectedSystem,
+      onSystemSelected: (systemId) {
+        final selectedSystem = _systems.firstWhere((system) => system.id == systemId);
+        setState(() {
+          _selectedSystem = selectedSystem;
+        });
+        BlocProvider.of<BetsBloc>(context).add(ApplySystem(systemId: selectedSystem.name));
       },
     );
   }
+
+  // Removed the bet type selector as we now show all bet types together in a condensed format
 
   Widget _buildAppliedSystemIndicator() {
     return BlocBuilder<BetsBloc, BetsState>(
@@ -177,7 +275,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   Widget _buildBetsList() {
-    final bool isWebPlatform = kIsWeb;
+    const bool isWebPlatform = kIsWeb;
     
     return BlocBuilder<BetsBloc, BetsState>(
       builder: (context, state) {
@@ -205,7 +303,6 @@ class _BetsPageContentState extends State<_BetsPageContent> {
               final bet = state.filteredBets[index];
               return BetCard(
                 bet: bet,
-                selectedBetType: state.selectedBetType,
                 appliedSystem: state.appliedSystem,
                 onBetSelected: (bet) {
                   // Handle bet selection
@@ -265,7 +362,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
 
   void _showBetDetailsDialog(Bet bet) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     final dialogWidth = isWebPlatform ? 400.0 : null;
     
     // Implement a dialog to show more details about the bet
@@ -280,7 +377,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Container(
+        content: SizedBox(
           width: dialogWidth,
           child: SingleChildScrollView(
             child: Column(
@@ -343,17 +440,23 @@ class _BetsPageContentState extends State<_BetsPageContent> {
     );
   }
 
-  void _showSystemsDialog() {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
-    final dialogWidth = isWebPlatform ? 400.0 : null;
+  void _showSystemsDialog() async {
+    if (_systems.isEmpty) {
+      await _loadSystems();
+    }
     
-    // Mock data for available systems
-    final systems = [
-      {'id': 'system1', 'name': 'Neural Alpha'},
-      {'id': 'system2', 'name': 'Beta Protocol'},
-      {'id': 'system3', 'name': 'Quantum System'},
-    ];
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    const isWebPlatform = kIsWeb;
+    final dialogWidth = isWebPlatform ? 400.0 : null;
+
+    // Sport mappings for display
+    final sportLabels = {
+      'basketball_nba': 'NBA',
+      'americanfootball_nfl': 'NFL',
+      'baseball_mlb': 'MLB',
+      'icehockey_nhl': 'NHL',
+      'soccer_epl': 'Soccer',
+    };
 
     showDialog(
       context: context,
@@ -366,32 +469,64 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Container(
+        content: SizedBox(
           width: dialogWidth,
           child: SizedBox(
             width: double.maxFinite,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: systems.length,
-              itemBuilder: (context, index) {
-                final system = systems[index];
-                return ListTile(
-                  title: Text(
-                    system['name']!,
-                    style: const TextStyle(color: Colors.white),
+            child: _filteredSystems.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'No systems found for ${sportLabels[_selectedSport] ?? _selectedSport}. Create a system for this sport.',
+                        style: TextStyle(color: primaryColor.withOpacity(0.7)),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/systems_creation');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          foregroundColor: Colors.black,
+                        ),
+                        child: const Text('CREATE SYSTEM'),
+                      ),
+                    ],
                   ),
-                  leading: Icon(
-                    Icons.memory,
-                    color: primaryColor,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    BlocProvider.of<BetsBloc>(context)
-                        .add(ApplySystem(systemId: system['name']!));
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _filteredSystems.length,
+                  itemBuilder: (context, index) {
+                    final system = _filteredSystems[index];
+                    return ListTile(
+                      title: Text(
+                        system.name,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(
+                        'Confidence: ${(system.confidence * 100).toStringAsFixed(1)}%',
+                        style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+                      ),
+                      leading: Icon(
+                        Icons.memory,
+                        color: primaryColor,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _selectedSystem = system;
+                        });
+                        Navigator.pop(context);
+                        BlocProvider.of<BetsBloc>(context)
+                            .add(ApplySystem(systemId: system.name));
+                      },
+                    );
                   },
-                );
-              },
-            ),
+                ),
           ),
         ),
         actions: [

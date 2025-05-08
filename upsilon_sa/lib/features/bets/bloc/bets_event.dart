@@ -18,6 +18,9 @@ class LoadBets extends BetsEvent {
     this.markets = 'h2h,spreads,totals',
     this.oddsFormat = 'american',
   });
+
+  @override
+  List<Object> get props => [sport, regions, markets, oddsFormat];
 }
 
 class ApplySystem extends BetsEvent {

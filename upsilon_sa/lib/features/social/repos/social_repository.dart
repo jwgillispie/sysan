@@ -1,7 +1,5 @@
 // lib/features/social/repositories/social_repository.dart
 import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:upsilon_sa/core/config/constants.dart';
 import 'package:upsilon_sa/features/social/models/social_system.dart';
 import 'package:upsilon_sa/features/social/models/story.dart';

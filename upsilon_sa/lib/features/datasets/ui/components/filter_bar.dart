@@ -11,14 +11,14 @@ class FilterBar extends StatelessWidget {
   final List<String> availableTeams;
 
   const FilterBar({
-    Key? key,
+    super.key,
     required this.selectedSport,
     required this.selectedTeam,
     required this.onSportChanged,
     required this.onTeamChanged,
     required this.availableSports,
     required this.availableTeams,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

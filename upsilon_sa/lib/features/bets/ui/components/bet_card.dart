@@ -6,22 +6,20 @@ import 'package:upsilon_sa/core/config/themes.dart';
 
 class BetCard extends StatelessWidget {
   final Bet bet;
-  final String selectedBetType;
   final String? appliedSystem;
   final Function(Bet) onBetSelected;
 
   const BetCard({
-    Key? key,
+    super.key,
     required this.bet,
-    required this.selectedBetType,
     required this.onBetSelected,
     this.appliedSystem,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     final screenWidth = MediaQuery.of(context).size.width;
 
     // Get confidence score for the system (mock data)
@@ -69,7 +67,7 @@ class BetCard extends StatelessWidget {
 
   Widget _buildGameHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     final fontSize = isWebPlatform ? 16.0 : 14.0;
 
     return Padding(
@@ -143,108 +141,271 @@ class BetCard extends StatelessWidget {
   }
 
   Widget _buildBetTypeContent(BuildContext context) {
-    switch (selectedBetType) {
-      case 'moneyline':
-        return _buildMoneylineContent(context);
-      case 'spread':
-        return _buildSpreadContent(context);
-      case 'totals':
-        return _buildTotalsContent(context);
-      default:
-        return _buildMoneylineContent(context);
-    }
-  }
-
-  Widget _buildMoneylineContent(BuildContext context) {
     final moneylineOdds = bet.getBestMoneylineOdds();
-    final primaryColor = Theme.of(context).colorScheme.primary;
-
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildOddsBox(
-            context,
-            team: bet.awayTeam,
-            odds: moneylineOdds['away']['odds'] != null
-                ? _formatOdds(moneylineOdds['away']['odds'])
-                : 'N/A',
-            bookmaker: moneylineOdds['away']['bookmaker'] ?? 'N/A',
-          ),
-          _buildOddsBox(
-            context,
-            team: bet.homeTeam,
-            odds: moneylineOdds['home']['odds'] != null
-                ? _formatOdds(moneylineOdds['home']['odds'])
-                : 'N/A',
-            bookmaker: moneylineOdds['home']['bookmaker'] ?? 'N/A',
-            isHighlighted: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSpreadContent(BuildContext context) {
     final spreadOdds = bet.getBestSpreadOdds();
-    final primaryColor = Theme.of(context).colorScheme.primary;
-
+    final totalsOdds = bet.getBestTotalsOdds();
+    
     return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Column(
         children: [
-          _buildOddsBox(
-            context,
-            team: bet.awayTeam,
-            odds: spreadOdds['away']['odds'] != null
-                ? '${_formatOdds(spreadOdds['away']['odds'])} (${_formatPoint(spreadOdds['away']['point'])})'
-                : 'N/A',
-            bookmaker: spreadOdds['away']['bookmaker'] ?? 'N/A',
+          // Odds header row
+          _buildOddsHeader(context),
+          const SizedBox(height: 8),
+          // Teams with all odds types in a compact format
+          _buildCompactOddsRow(
+            context, 
+            bet.awayTeam, 
+            moneylineOdds['away'], 
+            spreadOdds['away'], 
+            false
           ),
-          _buildOddsBox(
-            context,
-            team: bet.homeTeam,
-            odds: spreadOdds['home']['odds'] != null
-                ? '${_formatOdds(spreadOdds['home']['odds'])} (${_formatPoint(spreadOdds['home']['point'])})'
-                : 'N/A',
-            bookmaker: spreadOdds['home']['bookmaker'] ?? 'N/A',
-            isHighlighted: true,
+          const SizedBox(height: 8),
+          _buildCompactOddsRow(
+            context, 
+            bet.homeTeam, 
+            moneylineOdds['home'], 
+            spreadOdds['home'],
+            true
           ),
+          const SizedBox(height: 8),
+          // Totals row
+          _buildTotalsRow(context, totalsOdds),
         ],
       ),
     );
   }
-
-  Widget _buildTotalsContent(BuildContext context) {
-    final totalsOdds = bet.getBestTotalsOdds();
+  
+  Widget _buildOddsHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildOddsBox(
-            context,
-            team: 'Over',
-            odds: totalsOdds['over']['odds'] != null
-                ? '${_formatOdds(totalsOdds['over']['odds'])} (${_formatPoint(totalsOdds['over']['point'])})'
-                : 'N/A',
-            bookmaker: totalsOdds['over']['bookmaker'] ?? 'N/A',
+    const isWebPlatform = kIsWeb;
+    final fontSize = isWebPlatform ? 14.0 : 12.0;
+    
+    return Row(
+      children: [
+        // Team column
+        Expanded(
+          flex: 3,
+          child: Text(
+            'TEAM',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          _buildOddsBox(
-            context,
-            team: 'Under',
-            odds: totalsOdds['under']['odds'] != null
-                ? '${_formatOdds(totalsOdds['under']['odds'])} (${_formatPoint(totalsOdds['under']['point'])})'
-                : 'N/A',
-            bookmaker: totalsOdds['under']['bookmaker'] ?? 'N/A',
-            isHighlighted: true,
+        ),
+        // Money line column
+        Expanded(
+          flex: 2,
+          child: Text(
+            'ML',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+        // Spread column
+        Expanded(
+          flex: 2,
+          child: Text(
+            'SPREAD',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildCompactOddsRow(BuildContext context, String team, Map<String, dynamic> moneylineData, Map<String, dynamic> spreadData, bool isHome) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    const isWebPlatform = kIsWeb;
+    final textColor = isHome ? primaryColor : Colors.white;
+    final fontSize = isWebPlatform ? 16.0 : 14.0;
+    final oddsSize = isWebPlatform ? 15.0 : 13.0;
+    
+    return Row(
+      children: [
+        // Team name
+        Expanded(
+          flex: 3,
+          child: Text(
+            team,
+            style: TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        // Money line
+        Expanded(
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+            decoration: BoxDecoration(
+              color: isHome ? primaryColor.withOpacity(0.1) : Colors.black,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: isHome ? primaryColor : primaryColor.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              moneylineData['odds'] != null
+                  ? _formatOdds(moneylineData['odds'])
+                  : 'N/A',
+              style: TextStyle(
+                color: textColor,
+                fontSize: oddsSize,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Spread
+        Expanded(
+          flex: 2,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+            decoration: BoxDecoration(
+              color: isHome ? primaryColor.withOpacity(0.1) : Colors.black,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: isHome ? primaryColor : primaryColor.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              spreadData['point'] != null
+                  ? _formatPoint(spreadData['point'])
+                  : 'N/A',
+              style: TextStyle(
+                color: textColor,
+                fontSize: oddsSize,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildTotalsRow(BuildContext context, Map<String, dynamic> totalsOdds) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    const isWebPlatform = kIsWeb;
+    final fontSize = isWebPlatform ? 14.0 : 12.0;
+    final oddsSize = isWebPlatform ? 15.0 : 13.0;
+    
+    return Row(
+      children: [
+        // Label
+        Expanded(
+          flex: 3,
+          child: Text(
+            'TOTAL',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        // Over
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'O',
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: primaryColor.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  totalsOdds['over']['point'] != null
+                      ? _formatPoint(totalsOdds['over']['point'])
+                      : 'N/A',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: oddsSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Under
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'U',
+                style: TextStyle(
+                  color: primaryColor, 
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                decoration: BoxDecoration(
+                  color: primaryColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: primaryColor,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  totalsOdds['under']['point'] != null
+                      ? _formatPoint(totalsOdds['under']['point'])
+                      : 'N/A',
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontSize: oddsSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -256,7 +417,7 @@ class BetCard extends StatelessWidget {
     bool isHighlighted = false,
   }) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
     final screenWidth = MediaQuery.of(context).size.width;
     
     // Adjust width based on platform and screen size
@@ -315,7 +476,7 @@ class BetCard extends StatelessWidget {
   Widget _buildSystemConfidenceIndicator(
       BuildContext context, double confidence) {
     final color = _getConfidenceColor(confidence);
-    final isWebPlatform = kIsWeb;
+    const isWebPlatform = kIsWeb;
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),

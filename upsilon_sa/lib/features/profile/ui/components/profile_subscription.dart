@@ -8,9 +8,9 @@ class ProfileSubscription extends StatelessWidget {
   final Map<String, dynamic> subscriptionData;
 
   const ProfileSubscription({
-    Key? key,
+    super.key,
     required this.subscriptionData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -4,20 +4,13 @@ import 'package:upsilon_sa/core/widgets/boxes/cyber_box.dart';
 
 class LeaderboardBox extends CyberBox {
   const LeaderboardBox({
-    Key? key,
-    required double width,
-    required double height,
-    required String title,
-    required IconData icon,
-    VoidCallback? onTap,
-  }) : super(
-          key: key,
-          width: width,
-          height: height,
-          title: title,
-          icon: icon,
-          onTap: onTap,
-        );
+    super.key,
+    required super.width,
+    required super.height,
+    required super.title,
+    required super.icon,
+    super.onTap,
+  });
 
   @override
   Widget buildContent(BuildContext context) {

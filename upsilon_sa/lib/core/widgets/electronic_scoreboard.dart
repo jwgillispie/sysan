@@ -29,10 +29,10 @@ class SimplifiedScoreboard extends StatelessWidget {
   final Function(GameData)? onGameDataChanged;
 
   const SimplifiedScoreboard({
-    Key? key,
+    super.key,
     required this.gameData,
     this.onGameDataChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

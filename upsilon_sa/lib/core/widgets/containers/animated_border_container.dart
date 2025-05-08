@@ -15,7 +15,7 @@ class AnimatedBorderContainer extends StatefulWidget {
   final EdgeInsets margin;
 
   const AnimatedBorderContainer({
-    Key? key,
+    super.key,
     required this.child,
     this.width,
     this.height,
@@ -26,7 +26,7 @@ class AnimatedBorderContainer extends StatefulWidget {
     this.lightSize = 4.0,
     this.lightColor = Colors.white,
     this.margin = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedBorderContainer> createState() => _AnimatedBorderContainerState();

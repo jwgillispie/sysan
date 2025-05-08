@@ -8,11 +8,11 @@ class GlowingActionButton extends StatelessWidget {
   final Color? color;
 
   const GlowingActionButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.child,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +50,10 @@ class StatusBadge extends StatelessWidget {
   final Color color;
 
   const StatusBadge({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +83,10 @@ class PulsingDot extends StatelessWidget {
   final double size;
 
   const PulsingDot({
-    Key? key,
+    super.key,
     this.color,
     this.size = 8,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,9 +9,9 @@ class PlayerList extends StatelessWidget {
   final DatasetsState state;
   
   const PlayerList({
-    Key? key,
+    super.key,
     required this.state,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,9 +8,9 @@ class ROIChartSection extends StatelessWidget {
   final List<FlSpot> roiData;
 
   const ROIChartSection({
-    Key? key,
+    super.key,
     required this.roiData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

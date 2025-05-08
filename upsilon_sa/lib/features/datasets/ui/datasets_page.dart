@@ -12,6 +12,8 @@ import 'package:upsilon_sa/features/datasets/ui/components/player_list.dart';
 import 'package:upsilon_sa/features/datasets/ui/components/team_list.dart';
 
 class DatasetsPage extends StatefulWidget {
+  const DatasetsPage({super.key});
+
   @override
   State<DatasetsPage> createState() => _DatasetsPageState();
 }

@@ -7,9 +7,9 @@ class TeamCard extends StatelessWidget {
   final Map<String, dynamic> team;
 
   const TeamCard({
-    Key? key,
+    super.key,
     required this.team,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

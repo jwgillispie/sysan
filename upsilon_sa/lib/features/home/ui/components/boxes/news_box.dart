@@ -6,21 +6,14 @@ class NewsBox extends CyberBox {
   final List<Map<String, String>> newsItems;
 
   const NewsBox({
-    Key? key,
+    super.key,
     required this.newsItems,
-    required double width,
-    required double height,
-    required String title,
-    required IconData icon,
-    VoidCallback? onTap,
-  }) : super(
-          key: key,
-          width: width,
-          height: height,
-          title: title,
-          icon: icon,
-          onTap: onTap,
-        );
+    required super.width,
+    required super.height,
+    required super.title,
+    required super.icon,
+    super.onTap,
+  });
 
   @override
   Widget buildContent(BuildContext context) {

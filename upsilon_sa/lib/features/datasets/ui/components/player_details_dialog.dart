@@ -7,9 +7,9 @@ class PlayerDetailsDialog extends StatelessWidget {
   final Map<String, dynamic> player;
 
   const PlayerDetailsDialog({
-    Key? key,
+    super.key,
     required this.player,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

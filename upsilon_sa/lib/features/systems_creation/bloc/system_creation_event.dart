@@ -1,7 +1,6 @@
 // lib/features/systems_creation/bloc/system_creation_event.dart
 
 import 'package:equatable/equatable.dart';
-import '../models/factor_model.dart';
 
 abstract class SystemsCreationEvent extends Equatable {
   const SystemsCreationEvent();

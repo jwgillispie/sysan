@@ -19,14 +19,11 @@ class HotPropsBox extends CyberBox {
   final List<HotProp> props;
 
   const HotPropsBox({
-    Key? key,
-    required double width,
-    required double height,
+    super.key,
+    required super.width,
+    required super.height,
     required this.props,
   }) : super(
-          key: key,
-          width: width,
-          height: height,
           title: 'HOT PROPS',
           icon: Icons.local_fire_department,
           accentColor: Colors.redAccent,
@@ -48,9 +45,9 @@ class HotPropCard extends StatefulWidget {
   final HotProp prop;
 
   const HotPropCard({
-    Key? key,
+    super.key,
     required this.prop,
-  }) : super(key: key);
+  });
 
   @override
   State<HotPropCard> createState() => _HotPropCardState();

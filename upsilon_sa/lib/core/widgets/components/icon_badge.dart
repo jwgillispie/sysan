@@ -7,11 +7,11 @@ class IconBadge extends StatelessWidget {
   final double size;
 
   const IconBadge({
-    Key? key,
+    super.key,
     required this.icon,
     required this.color,
     this.size = 14,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

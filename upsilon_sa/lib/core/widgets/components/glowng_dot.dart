@@ -6,10 +6,10 @@ class GlowingDot extends StatelessWidget {
   final double size;
 
   const GlowingDot({
-    Key? key,
+    super.key,
     required this.color,
     this.size = 6,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

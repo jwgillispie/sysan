@@ -1,5 +1,4 @@
 // lib/features/social/components/social_search_bar.dart
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 

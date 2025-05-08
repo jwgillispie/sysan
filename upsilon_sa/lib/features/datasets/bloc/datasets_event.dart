@@ -1,5 +1,3 @@
-import 'package:upsilon_sa/features/datasets/models/player_model.dart';
-import 'package:upsilon_sa/features/datasets/models/team_model.dart';
 
 abstract class DatasetsEvent {}
 

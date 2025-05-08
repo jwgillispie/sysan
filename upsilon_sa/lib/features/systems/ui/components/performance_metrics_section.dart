@@ -9,14 +9,14 @@ class PerformanceMetricsSection extends StatelessWidget {
   final Map<String, dynamic> metrics;
 
   const PerformanceMetricsSection({
-    Key? key,
+    super.key,
     required this.metrics,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(UIConstants.defaultPadding),
+      padding: const EdgeInsets.all(UIConstants.defaultPadding),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
@@ -135,15 +135,15 @@ class ActivityListItem extends StatelessWidget {
   final Map<String, dynamic> activity;
 
   const ActivityListItem({
-    Key? key,
+    super.key,
     required this.activity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.all(UIConstants.smallPadding),
+      padding: const EdgeInsets.all(UIConstants.smallPadding),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),

@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:upsilon_sa/core/widgets/custom_navbar.dart';
 import 'package:upsilon_sa/features/systems_creation/ui/systems_creation_page.dart';
 import 'package:upsilon_sa/features/profile/ui/profile_page.dart';
 import 'package:upsilon_sa/features/social/ui/social_page.dart';
-import 'package:upsilon_sa/features/systems/ui/systems_page.dart';
-import 'package:upsilon_sa/features/news/ui/news_page.dart';
 import '../../features/home/ui/home_page.dart';
 
 class NavBar {

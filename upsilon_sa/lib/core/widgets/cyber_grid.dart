@@ -8,12 +8,12 @@ class CyberGrid extends StatelessWidget {
   final double lineWidth;
 
   const CyberGrid({
-    Key? key,
+    super.key,
     this.child,
     this.gridColor,
     this.gridSpacing = 20,
     this.lineWidth = 0.5,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

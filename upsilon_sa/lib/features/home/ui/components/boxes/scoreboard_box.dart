@@ -9,22 +9,16 @@ class ScoreboardBox extends CyberBox {
   final int score2;
 
   const ScoreboardBox({
-    Key? key,
-    required double width,
-    required double height,
+    super.key,
+    required super.width,
+    required super.height,
     required this.team1,
     required this.team2,
     required this.score1,
     required this.score2,
-    required String title,
-    required IconData icon,
-  }) : super(
-          key: key,
-          width: width,
-          height: height,
-          title: title,
-          icon: icon,
-        );
+    required super.title,
+    required super.icon,
+  });
 
   @override
   Widget buildContent(BuildContext context) {

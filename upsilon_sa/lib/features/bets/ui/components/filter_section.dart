@@ -7,10 +7,10 @@ class FilterSection extends StatelessWidget {
   final Function(BetsSort) onSortChanged;
 
   const FilterSection({
-    Key? key,
+    super.key,
     required this.searchController,
     required this.onSortChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

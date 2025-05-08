@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
+  const LandingPage({super.key});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -225,15 +225,15 @@ class _LandingPageState extends State<LandingPage>
                       color: const Color(0xFF09BF30).withOpacity(0.3),
                     ),
                   ),
-                  child: Column(
+                  child: const Column(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.format_quote,
                         color: Color(0xFF09BF30),
                         size: 40,
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
+                      SizedBox(height: 20),
+                      Text(
                         '"Systems allowed me to avoid reading articles and analyzing what other people said by allowing me to run an analysis on what I think is important for determining what will happen in a game. Being able to use data to analyze games and track my bets makes me feel like I\'m putting my money into stocks when I\'m sports betting!"',
                         style: TextStyle(
                           color: Colors.white,
@@ -243,8 +243,8 @@ class _LandingPageState extends State<LandingPage>
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
+                      SizedBox(height: 20),
+                      Text(
                         '— Systems User',
                         style: TextStyle(
                           color: Color(0xFF09BF30),
@@ -494,9 +494,9 @@ class _LandingPageState extends State<LandingPage>
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
+        const Icon(
           Icons.check_circle,
-          color: const Color(0xFF09BF30),
+          color: Color(0xFF09BF30),
           size: 18,
         ),
         const SizedBox(width: 8),

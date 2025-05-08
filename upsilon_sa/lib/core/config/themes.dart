@@ -183,7 +183,6 @@ class SystemsThemes {
   static ThemeData get darkTheme {
     final base = ThemeData.dark();
     return base.copyWith(
-      useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFF121212),
       primaryColor: SystemsColors.primary,
       colorScheme: const ColorScheme.dark(
@@ -194,7 +193,6 @@ class SystemsThemes {
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: Colors.white,
-        onBackground: Colors.white,
         onError: Colors.white,
         brightness: Brightness.dark,
       ),

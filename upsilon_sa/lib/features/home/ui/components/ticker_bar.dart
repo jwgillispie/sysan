@@ -8,10 +8,10 @@ class TickerBar extends StatelessWidget {
   final List<Map<String, dynamic>> bettingLines;
 
   const TickerBar({
-    Key? key,
+    super.key,
     required this.scrollController,
     required this.bettingLines,
-  }) : super(key: key);
+  });
 
   // Format the betting lines for display
   List<String> get tickerLines => bettingLines.map((line) {
@@ -73,12 +73,12 @@ class TickerItem extends StatelessWidget {
   final String confidence;
 
   const TickerItem({
-    Key? key,
+    super.key,
     required this.sport,
     required this.teams,
     required this.pick,
     required this.confidence,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
