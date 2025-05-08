@@ -20,6 +20,8 @@ class EnvironmentHelper {
           return kFirebaseMessagingSenderId;
         case 'FIREBASE_APP_ID':
           return kFirebaseAppId;
+        case 'ODDS_API_KEY':
+          return kOddsApiKey;
         default:
           return dotenv.env[key] ?? defaultValue;
       }
@@ -34,6 +36,7 @@ class EnvironmentHelper {
     if (kDebugMode) {
       print('FIREBASE_API_KEY: ${getEnvironmentValue('FIREBASE_API_KEY', defaultValue: 'not found')}');
       print('FIREBASE_PROJECT_ID: ${getEnvironmentValue('FIREBASE_PROJECT_ID', defaultValue: 'not found')}');
+      print('ODDS_API_KEY: ${getEnvironmentValue('ODDS_API_KEY', defaultValue: 'not found')}');
       // Add more variables as needed
     }
   }
@@ -46,3 +49,4 @@ const String kFirebaseAuthDomain = String.fromEnvironment('FIREBASE_AUTH_DOMAIN'
 const String kFirebaseStorageBucket = String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: '');
 const String kFirebaseMessagingSenderId = String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: '');
 const String kFirebaseAppId = String.fromEnvironment('FIREBASE_APP_ID', defaultValue: '');
+const String kOddsApiKey = String.fromEnvironment('ODDS_API_KEY', defaultValue: '');

@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage>
       });
       
       // Set up timer to refresh the live game data periodically
-      _startLiveGameUpdates();
     } catch (e) {
       print('Error loading live game: $e');
       setState(() {

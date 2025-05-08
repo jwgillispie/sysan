@@ -332,7 +332,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
               foregroundColor: Colors.black,
             ),
             child: const Text(
-              'PLACE BET',
+              'TEST SYSTEM',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),

@@ -28,14 +28,17 @@ Map<String, String> environmentVariables = {};
 
 // Function to set up environment variables, including those provided via --dart-define
 void setupEnvironmentVariables() {
-  // Add your API keys here - in a real app, use secure methods
-  environmentVariables['ODDS_API_KEY'] = 'YOUR_ODDS_API_KEY';
+  // Get the API key from dart-define if available
+  final oddsApiKey = EnvironmentHelper.getEnvironmentValue('ODDS_API_KEY');
   
-  // For demo purposes, you could set default values
-  // In production, you would use secure methods to store these
+  // Add your API keys to the global map
+  environmentVariables['ODDS_API_KEY'] = oddsApiKey.isNotEmpty 
+      ? oddsApiKey 
+      : 'YOUR_ODDS_API_KEY'; // Only use default if no value provided
   
   if (kDebugMode) {
     print('Environment variables set up completed');
+    print('ODDS_API_KEY: ${oddsApiKey.isEmpty ? "(using default)" : "(found key)"}');
     EnvironmentHelper.debugPrintEnvironment();
   }
 }
