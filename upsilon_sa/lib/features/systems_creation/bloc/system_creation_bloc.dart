@@ -124,24 +124,29 @@ class SystemsCreationBloc
     }
   }
 
-  void _onCreateSystem(CreateSystem event, Emitter<SystemsCreationState> emit) {
+  Future<void> _onCreateSystem(CreateSystem event, Emitter<SystemsCreationState> emit) async {
     // In a real implementation, you would save the system to a repository or API
     emit(state.copyWith(status: SystemsCreationStatus.loading));
 
     try {
-      // Simulate a delay
-      Future.delayed(const Duration(seconds: 1), () {
+      // Simulate a delay - using await to properly wait for the operation
+      await Future.delayed(const Duration(seconds: 1));
+      
+      // Only emit if the handler hasn't completed
+      if (!emit.isDone) {
         emit(state.copyWith(status: SystemsCreationStatus.success));
-      });
+      }
     } catch (e) {
-      emit(state.copyWith(
-        status: SystemsCreationStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      if (!emit.isDone) {
+        emit(state.copyWith(
+          status: SystemsCreationStatus.failure,
+          errorMessage: e.toString(),
+        ));
+      }
     }
   }
 
-  void _onTestSystem(TestSystem event, Emitter<SystemsCreationState> emit) {
+  Future<void> _onTestSystem(TestSystem event, Emitter<SystemsCreationState> emit) async {
     // Calculate a confidence score based on factors
     double confidence = 0.0;
 
@@ -152,6 +157,8 @@ class SystemsCreationBloc
       confidence = total / state.factors.length;
     }
 
-    emit(state.copyWith(systemConfidence: confidence));
+    if (!emit.isDone) {
+      emit(state.copyWith(systemConfidence: confidence));
+    }
   }
 }

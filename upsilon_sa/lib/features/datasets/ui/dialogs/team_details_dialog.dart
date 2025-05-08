@@ -21,7 +21,7 @@ class TeamDetailsDialog extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withAlpha(76), // Changed from withOpacity(0.3)
           ),
           borderRadius: BorderRadius.circular(12),
         ),
@@ -30,7 +30,7 @@ class TeamDetailsDialog extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+              backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(51), // Changed from withOpacity(0.2)
               child: Icon(
                 Icons.group,
                 size: 40,
@@ -81,7 +81,7 @@ class TeamDetailsDialog extends StatelessWidget {
           color: Colors.black,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withAlpha(76), // Changed from withOpacity(0.3)
           ),
         ),
         child: Row(
@@ -111,7 +111,7 @@ class TeamDetailsDialog extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.primary.withAlpha(76), // Changed from withOpacity(0.3)
         ),
       ),
       child: ListView.builder(
@@ -121,7 +121,7 @@ class TeamDetailsDialog extends StatelessWidget {
           final player = team["roster"][index];
           return ListTile(
             leading: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+              backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(51), // Changed from withOpacity(0.2)
               child: Icon(
                 Icons.person,
                 color: Theme.of(context).colorScheme.primary,

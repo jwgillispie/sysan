@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/ui_components.dart';
 import 'package:upsilon_sa/core/config/constants.dart';
+import 'package:upsilon_sa/core/widgets/custom_toast.dart';
+import 'package:upsilon_sa/core/widgets/animated_button.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_bloc.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.dart';
@@ -142,18 +144,16 @@ class _SystemCreationViewState extends State<_SystemCreationView>
     return BlocConsumer<SystemsCreationBloc, SystemsCreationState>(
       listener: (context, state) {
         if (state.status == SystemsCreationStatus.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('System created successfully!'),
-              backgroundColor: primaryColor,
-            ),
+          // Use CustomToast instead of SnackBar to avoid layout conflicts
+          CustomToast.showSuccess(
+            context, 
+            'System created successfully!'
           );
         } else if (state.status == SystemsCreationStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Failed to create system'),
-              backgroundColor: Colors.red,
-            ),
+          // Use CustomToast for error messages too
+          CustomToast.showError(
+            context, 
+            state.errorMessage ?? 'Failed to create system'
           );
         }
       },
@@ -443,118 +443,40 @@ class _SystemCreationViewState extends State<_SystemCreationView>
           
           const SizedBox(height: 20),
           
-          // Create System Button (styled similarly to the one in system_selector.dart)
+          // Create System Button with animations
           Center(
-            child: InkWell(
+            child: AnimatedButton(
+              text: 'CREATE NEW SYSTEM',
+              icon: Icons.add_circle,
+              primaryColor: primaryColor,
               onTap: () {
                 context.read<SystemsCreationBloc>().add(const CreateSystem());
               },
-              child: Container(
-                width: 280,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      primaryColor.withOpacity(0.7),
-                      primaryColor.withOpacity(0.4),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: primaryColor,
-                    width: 1.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primaryColor.withOpacity(0.3),
-                      blurRadius: 8,
-                      spreadRadius: -2,
-                    ),
-                  ],
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add_circle,
-                      color: Colors.black,
-                      size: 20,
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      'CREATE NEW SYSTEM',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
           
           const SizedBox(height: 16),
           
-          // Test Bets Button
+          // Test Bets Button with animations
           Center(
-            child: InkWell(
+            child: AnimatedButton(
+              text: 'TEST ON BETS',
+              icon: Icons.check_circle_outline,
+              primaryColor: Colors.blue,
               onTap: () {
-                // Navigate to the bets page
-                Navigator.pushNamed(context, '/bets');
+                // Show confirmation toast and navigate to the bets page
+                CustomToast.show(
+                  context: context,
+                  message: 'System ready for testing',
+                  backgroundColor: Colors.blue,
+                  icon: Icons.check_circle_outline,
+                );
+                
+                // Navigate to the bets page after a short delay
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  Navigator.pushNamed(context, '/bets');
+                });
               },
-              child: Container(
-                width: 280,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.blue.withOpacity(0.7),
-                      Colors.blue.withOpacity(0.4),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.blue,
-                    width: 1.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.3),
-                      blurRadius: 8,
-                      spreadRadius: -2,
-                    ),
-                  ],
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.black,
-                      size: 20,
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      'TEST ON BETS',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         ],
