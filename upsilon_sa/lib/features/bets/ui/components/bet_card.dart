@@ -353,7 +353,7 @@ class BetCard extends StatelessWidget {
                   totalsOdds['over']['point'] != null
                       ? _formatPoint(totalsOdds['over']['point'])
                       : 'N/A',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: oddsSize,
                     fontWeight: FontWeight.bold,

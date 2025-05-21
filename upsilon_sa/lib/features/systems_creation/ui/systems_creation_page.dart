@@ -7,6 +7,7 @@ import 'package:upsilon_sa/core/widgets/ui_components.dart';
 import 'package:upsilon_sa/core/config/constants.dart';
 import 'package:upsilon_sa/core/widgets/custom_toast.dart';
 import 'package:upsilon_sa/core/widgets/animated_button.dart';
+import 'package:upsilon_sa/core/widgets/numeric_input_field.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_bloc.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.dart';
@@ -210,8 +211,8 @@ class _SystemCreationViewState extends State<_SystemCreationView>
           // Factors Section
           _buildFactorsSection(context, state),
 
-          // Add space at the bottom for better padding
-          const SizedBox(height: 40),
+          // Add space at the bottom for better padding and visibility
+          const SizedBox(height: 70),
         ],
       ),
     );
@@ -446,7 +447,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
           // Create System Button with animations
           Center(
             child: AnimatedButton(
-              text: 'CREATE NEW SYSTEM',
+              text: 'FINISH',
               icon: Icons.add_circle,
               primaryColor: primaryColor,
               onTap: () {
@@ -510,7 +511,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
             'Add factors to your system',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -522,6 +523,134 @@ class _SystemCreationViewState extends State<_SystemCreationView>
               fontSize: 14,
             ),
             textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          
+          // Example cards to demonstrate how factors work
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: primaryColor.withOpacity(0.3),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'EXAMPLE FACTORS:',
+                  style: TextStyle(
+                    color: primaryColor, 
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                
+                // Example factor items
+                _buildExampleFactorItem(
+                  context, 
+                  'Points Per Game > 20', 
+                  'Offense', 
+                  Colors.blue, 
+                  'Bet when a player is scoring more than 20 points per game'
+                ),
+                const SizedBox(height: 8),
+                _buildExampleFactorItem(
+                  context, 
+                  'Field Goal % < 45%', 
+                  'Shooting', 
+                  Colors.green, 
+                  'Bet when a team is shooting below 45% from the field'
+                ),
+                const SizedBox(height: 8),
+                _buildExampleFactorItem(
+                  context, 
+                  'Team Pace > 105', 
+                  'Team', 
+                  Colors.purple, 
+                  'Bet when the team plays at a high pace (more possessions)'
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 16),
+          Text(
+            'Click the "ADD FACTOR" button below to get started',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildExampleFactorItem(
+    BuildContext context, 
+    String name, 
+    String category, 
+    Color categoryColor, 
+    String description
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              // Category tag
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: categoryColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: categoryColor.withOpacity(0.5),
+                  ),
+                ),
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    color: categoryColor,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            description,
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontSize: 11,
+              fontStyle: FontStyle.italic,
+            ),
           ),
         ],
       ),
@@ -543,7 +672,7 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
   
   final categoryColor = _getCategoryColor(currentCategory);
   final thresholdDirection = factor.isAboveThreshold ? 'OVER' : 'UNDER';
-  final directionColor = factor.isAboveThreshold ? Colors.green : Colors.red;
+  const directionColor = Colors.green;
 
   return Container(
     margin: const EdgeInsets.only(bottom: 12),
@@ -592,16 +721,16 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: directionColor.withOpacity(0.1),
+                  color: Colors.green.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                    color: directionColor.withOpacity(0.3),
+                    color: Colors.green.withOpacity(0.3),
                   ),
                 ),
                 child: Text(
                   thresholdDirection,
-                  style: TextStyle(
-                    color: directionColor,
+                  style: const TextStyle(
+                    color: Colors.green,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -691,91 +820,245 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Threshold direction toggle (new)
-                Row(
-                  children: [
-                    Text(
-                      'COMPARISON:',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<SystemsCreationBloc>().add(
-                          ToggleFactorThresholdDirection(factor.id),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: directionColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: directionColor.withOpacity(0.3),
-                          ),
+                // Threshold direction toggle with improved UI and explanation
+                Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900]?.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'THRESHOLD COMPARISON',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              factor.isAboveThreshold 
-                                ? Icons.arrow_upward
-                                : Icons.arrow_downward,
-                              color: directionColor,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              thresholdDirection,
-                              style: TextStyle(
-                                color: directionColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                      ),
+                      const SizedBox(height: 8),
+                      
+                      // Toggle buttons with better visual feedback
+                      Row(
+                        children: [
+                          // OVER button
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                if (!factor.isAboveThreshold) {
+                                  context.read<SystemsCreationBloc>().add(
+                                    ToggleFactorThresholdDirection(factor.id),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: factor.isAboveThreshold
+                                      ? Colors.green.withOpacity(0.2)
+                                      : Colors.transparent,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(8),
+                                  ),
+                                  border: Border.all(
+                                    color: factor.isAboveThreshold
+                                        ? Colors.green
+                                        : Colors.grey[700]!,
+                                    width: factor.isAboveThreshold ? 2 : 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_upward,
+                                      color: factor.isAboveThreshold
+                                          ? Colors.green
+                                          : Colors.grey[500],
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'OVER',
+                                      style: TextStyle(
+                                        color: factor.isAboveThreshold
+                                            ? Colors.green
+                                            : Colors.grey[500],
+                                        fontWeight: factor.isAboveThreshold
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          
+                          // UNDER button
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                if (factor.isAboveThreshold) {
+                                  context.read<SystemsCreationBloc>().add(
+                                    ToggleFactorThresholdDirection(factor.id),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: !factor.isAboveThreshold
+                                      ? Colors.green.withOpacity(0.2)
+                                      : Colors.transparent,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    right: Radius.circular(8),
+                                  ),
+                                  border: Border.all(
+                                    color: !factor.isAboveThreshold
+                                        ? Colors.green
+                                        : Colors.grey[700]!,
+                                    width: !factor.isAboveThreshold ? 2 : 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_downward,
+                                      color: !factor.isAboveThreshold
+                                          ? Colors.green
+                                          : Colors.grey[500],
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'UNDER',
+                                      style: TextStyle(
+                                        color: !factor.isAboveThreshold
+                                            ? Colors.green
+                                            : Colors.grey[500],
+                                        fontWeight: !factor.isAboveThreshold
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
                 
-                // Threshold and Games Back inputs
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildParameterInput(
-                        context,
-                        label: 'THRESHOLD',
-                        value: factor.threshold,
-                        onChanged: (value) {
-                          context.read<SystemsCreationBloc>().add(
-                            UpdateFactorThreshold(factor.id, value),
-                          );
-                        },
-                        unit: currentUnit,
+                // Factor settings section with improved compact layout
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900]?.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Threshold and Games Back inputs with better layout and compact help button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // THRESHOLD Label with help icon
+                          Row(
+                            children: [
+                              Text(
+                                'THRESHOLD',
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(width: 3),
+                              InkWell(
+                                onTap: () => _showThresholdHelpDialog(context, factor),
+                                child: Icon(
+                                  Icons.help_outline,
+                                  color: primaryColor,
+                                  size: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                          
+                          // GAMES BACK Label
+                          Text(
+                            'GAMES BACK',
+                            style: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _buildParameterInput(
-                        context,
-                        label: 'GAMES BACK',
-                        value: factor.gamesBack,
-                        onChanged: (value) {
-                          context.read<SystemsCreationBloc>().add(
-                            UpdateFactorGamesBack(factor.id, value),
-                          );
-                        },
+                      
+                      const SizedBox(height: 2),
+                      
+                      // Input fields row
+                      Row(
+                        children: [
+                          Expanded(
+                            child: NumericInputField(
+                              value: factor.threshold,
+                              label: 'THRESHOLD',
+                              unit: currentUnit,
+                              primaryColor: primaryColor,
+                              // Customized threshold parameters
+                              min: currentUnit == '%' ? 0 : 1, // Percentages can be 0
+                              // Higher max for ratings and percentages
+                              max: currentUnit == '%' ? 100 : 
+                                   currentUnit == 'rating' ? 150 : 50,
+                              allowDecimals: currentUnit == '%', // Allow decimals for percentages
+                              step: currentUnit == '%' ? 0.5 : 1, // Smaller steps for percentages
+                              showLabel: false, // Hide the label since we're showing it separately
+                              onChanged: (value) {
+                                context.read<SystemsCreationBloc>().add(
+                                  UpdateFactorThreshold(factor.id, value.toInt()),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: NumericInputField(
+                              value: factor.gamesBack,
+                              label: 'GAMES BACK',
+                              primaryColor: primaryColor,
+                              // Games back is always a positive integer 
+                              min: 1,
+                              max: 82, // NBA season length
+                              allowDecimals: false,
+                              showLabel: false, // Hide the label since we're showing it separately
+                              onChanged: (value) {
+                                context.read<SystemsCreationBloc>().add(
+                                  UpdateFactorGamesBack(factor.id, value.toInt()),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -789,98 +1072,20 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
     required String label,
     required int value,
     required Function(int) onChanged,
-    String? unit, // Make unit optional
+    String? unit,
   }) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final controller = TextEditingController(text: value.toString());
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: primaryColor.withOpacity(0.3),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                ),
-              ),
-              if (unit != null && unit.isNotEmpty) ...[
-                const SizedBox(width: 4),
-                Text(
-                  '($unit)',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 10,
-                  ),
-                ),
-              ],
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                  onChanged: (text) {
-                    final newValue = int.tryParse(text);
-                    if (newValue != null) {
-                      onChanged(newValue);
-                    }
-                  },
-                ),
-              ),
-              Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      final newValue = value + 1;
-                      controller.text = newValue.toString();
-                      onChanged(newValue);
-                    },
-                    child: Icon(
-                      Icons.arrow_drop_up,
-                      color: primaryColor,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (value > 1) {
-                        final newValue = value - 1;
-                        controller.text = newValue.toString();
-                        onChanged(newValue);
-                      }
-                    },
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      color: primaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+    
+    // Use our new NumericInputField for better UX
+    return NumericInputField(
+      value: value,
+      onChanged: (num newValue) => onChanged(newValue.toInt()),
+      label: label,
+      unit: unit,
+      primaryColor: primaryColor,
+      min: 1, // Prevent negative or zero values
+      max: 100, // Reasonable max for most parameters
+      allowDecimals: false,
     );
   }
 
@@ -1205,6 +1410,152 @@ Widget _buildFactorCard(BuildContext context, Factor factor) {
       default:
         return Colors.grey;
     }
+  }
+
+  void _showThresholdHelpDialog(BuildContext context, Factor factor) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    String currentUnit = '';
+    
+    // Find the unit for the factor
+    for (var f in availableFactors) {
+      if (f['name'] == factor.name) {
+        currentUnit = f['unit'] ?? '';
+        break;
+      }
+    }
+    
+    final direction = factor.isAboveThreshold ? 'ABOVE' : 'BELOW';
+    const directionColor = Colors.green;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: primaryColor, width: 1),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.help_outline,
+              color: primaryColor,
+              size: 24,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'THRESHOLD SETTINGS',
+              style: TextStyle(
+                color: primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 1.0,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHelpSection(
+              'What This Factor Does',
+              'Your system will look for situations where ${factor.name} is $direction the threshold of ${factor.threshold}${currentUnit.isNotEmpty ? ' $currentUnit' : ''}.',
+              Icons.info_outline
+            ),
+            
+            const SizedBox(height: 16),
+            
+            _buildHelpSection(
+              'Games Back',
+              'The system will analyze the last ${factor.gamesBack} games to calculate the ${factor.name} statistic.',
+              Icons.history
+            ),
+            
+            const SizedBox(height: 16),
+            
+            _buildHelpSection(
+              'Threshold Direction',
+              factor.isAboveThreshold
+                  ? 'Currently set to trigger when values are ABOVE the threshold. This is good for positive stats like points, assists, etc.'
+                  : 'Currently set to trigger when values are BELOW the threshold. This is good for negative stats like turnovers, missed shots, etc.',
+              factor.isAboveThreshold ? Icons.trending_up : Icons.trending_down,
+              color: directionColor
+            ),
+            
+            const SizedBox(height: 16),
+            
+            _buildHelpSection(
+              'Fine-Tuning Tips',
+              '• Higher thresholds for ABOVE factors = more selective but fewer matches\n'
+              '• Lower thresholds for BELOW factors = more selective but fewer matches\n'
+              '• More games back = more stable but less responsive to recent trends',
+              Icons.tune
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text(
+              'GOT IT',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildHelpSection(String title, String content, IconData icon, {Color? color}) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[900]?.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: color != null ? color.withOpacity(0.5) : Colors.grey[700]!,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                color: color ?? Colors.white,
+                size: 16,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                title.toUpperCase(),
+                style: TextStyle(
+                  color: color ?? Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            content,
+            style: TextStyle(
+              color: Colors.grey[300],
+              fontSize: 12,
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 // The floating create button has been replaced with inline buttons in the UI
 }

@@ -8,9 +8,7 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>> getProfile() async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-      
+      // No delay for faster loading
       return {
         'username': '@your_mom',
         'displayName': 'Your mom',
@@ -28,9 +26,7 @@ class ProfileRepository {
 
   Future<List<Map<String, dynamic>>> getProfileSystems() async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-      
+      // No delay for faster loading
       return [
         {
           'name': 'LeBron Picks',
@@ -58,9 +54,7 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>> getProfileStats() async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-      
+      // No delay for faster loading
       return {
         'totalBets': 1234,
         'winRate': 92.5,
@@ -108,9 +102,7 @@ class ProfileRepository {
 
   Future<Map<String, dynamic>> getSubscription() async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
-      
+      // No delay for faster loading
       return {
         'currentPlan': 'Pro',
         'startDate': '2024-01-15',
@@ -125,8 +117,8 @@ class ProfileRepository {
 
   Future<void> updateProfile(Map<String, dynamic> userData) async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
+      // No delay for faster loading
+      // In a real application, you would send the userData to the server
     } catch (e) {
       throw Exception('Failed to update profile: $e');
     }
@@ -134,8 +126,7 @@ class ProfileRepository {
 
   Future<void> updateSubscription(String planName) async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
+      // No delay for faster loading
       // In a real application, you would send the new plan name to the server
     } catch (e) {
       throw Exception('Failed to update subscription: $e');
@@ -144,8 +135,7 @@ class ProfileRepository {
 
   Future<void> cancelSubscription() async {
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 1));
+      // No delay for faster loading
       // In a real application, you would send a cancellation request to the server
     } catch (e) {
       throw Exception('Failed to cancel subscription: $e');

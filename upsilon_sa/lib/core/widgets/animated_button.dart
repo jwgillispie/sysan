@@ -11,13 +11,13 @@ class AnimatedButton extends StatefulWidget {
   final double width;
 
   const AnimatedButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.icon,
     required this.primaryColor,
     required this.onTap,
     this.width = 280,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedButton> createState() => _AnimatedButtonState();

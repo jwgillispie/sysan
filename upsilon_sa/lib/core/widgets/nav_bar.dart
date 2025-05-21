@@ -23,7 +23,7 @@ class NavBar {
   Widget build(BuildContext context) {
     return PersistentTabView(
       resizeToAvoidBottomInset: true,
-      navBarHeight: 55,
+      navBarHeight: 70, // Increased height to accommodate the larger create button
       tabs: [
         PersistentTabConfig(
           screen: const HomePage(),
@@ -55,8 +55,8 @@ class NavBar {
           screen: const SystemCreationPage(),
           item: ItemConfig(
             icon: SizedBox(
-              width: 28.0, // Ideal size for nav-bar icons
-              height: 28.0,
+              width: 48.0, // Increased size for better visibility
+              height: 48.0, // Increased size for better visibility
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.dark
                     ? 'assets/images/systems_logo_dark.jpeg'
@@ -64,7 +64,7 @@ class NavBar {
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => Icon(
                   Icons.settings_outlined, // Fallback icon
-                  size: 28.0,
+                  size: 48.0, // Increased size for fallback icon too
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),

@@ -342,43 +342,63 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildLeaderboardSection(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     return GestureDetector(
       onTap: () => homeBloc.add(LeaderboardClickedEvent()),
       child: AnimatedBorderContainer(
-        borderColor: Theme.of(context).colorScheme.primary,
-        lightColor: Theme.of(context).colorScheme.primary,
+        borderColor: primaryColor,
+        lightColor: primaryColor,
+        borderWidth: 1.0, // Match systems creation page border width
         duration: const Duration(seconds: 4),
         child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.emoji_events_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'TOP PERFORMERS',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ],
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: primaryColor.withOpacity(0.3),
+              width: 1,
             ),
-            const SizedBox(height: 16),
-            // List of top performers
-            _buildTopPerformersList(),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: primaryColor.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: -5,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.emoji_events_outlined,
+                    color: primaryColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'TOP PERFORMERS',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // List of top performers
+              _buildTopPerformersList(),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget _buildTopPerformersList() {
@@ -466,27 +486,46 @@ class _HomePageState extends State<HomePage>
 
   // Updated Hot Props Section with real data
   Widget _buildHotPropsSection(BuildContext context) {
+    const accentColor = Colors.redAccent;
+    
     return AnimatedBorderContainer(
-      borderColor: Colors.redAccent,
-      lightColor: Colors.redAccent,
+      borderColor: accentColor,
+      lightColor: accentColor,
+      borderWidth: 1.0, // Match systems creation page border width
       duration: const Duration(seconds: 3),
       child: Container(
         padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: accentColor.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: accentColor.withOpacity(0.1),
+              blurRadius: 20,
+              spreadRadius: -5,
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.local_fire_department,
-                  color: Colors.redAccent,
+                  color: accentColor,
                   size: 20,
                 ),
                 SizedBox(width: 8),
                 Text(
                   'HOT PROPS',
                   style: TextStyle(
-                    color: Colors.redAccent,
+                    color: accentColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2,
@@ -545,43 +584,63 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildSystemsSection(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     return GestureDetector(
       onTap: () => homeBloc.add(SystemsCickedEvent()),
       child: AnimatedBorderContainer(
-        borderColor: Theme.of(context).colorScheme.primary,
-        lightColor: Theme.of(context).colorScheme.primary,
+        borderColor: primaryColor,
+        lightColor: primaryColor,
+        borderWidth: 1.0, // Match systems creation page border width
         duration: const Duration(seconds: 4),
         child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.memory,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'ACTIVE SYSTEMS',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ],
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: primaryColor.withOpacity(0.3),
+              width: 1,
             ),
-            const SizedBox(height: 16),
-            // List of user's active systems
-            _buildActiveSystemsList(),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: primaryColor.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: -5,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.memory,
+                    color: primaryColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'ACTIVE SYSTEMS',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // List of user's active systems
+              _buildActiveSystemsList(),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget _buildActiveSystemsList() {
@@ -661,12 +720,29 @@ class _HomePageState extends State<HomePage>
 
   // Updated Live Games Section with real data
   Widget _buildLiveGamesSection(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     return AnimatedBorderContainer(
-      borderColor: Theme.of(context).colorScheme.primary,
-      lightColor: Theme.of(context).colorScheme.primary,
+      borderColor: primaryColor,
+      lightColor: primaryColor,
       duration: const Duration(seconds: 4),
       child: Container(
         padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: primaryColor.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.1),
+              blurRadius: 20,
+              spreadRadius: -5,
+            ),
+          ],
+        ),
         child: isLoadingLiveGame 
             ? _buildLoadingLiveGame() 
             : Column(
@@ -679,14 +755,14 @@ class _HomePageState extends State<HomePage>
                         children: [
                           Icon(
                             Icons.sports_basketball,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: primaryColor,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             'CURRENT GAME',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 2,
@@ -912,119 +988,135 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildUpdatesSection(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const NewsPage()),
       ),
       child: AnimatedBorderContainer(
-        borderColor: Theme.of(context).colorScheme.primary,
-        lightColor: Theme.of(context).colorScheme.primary,
+        borderColor: primaryColor,
+        lightColor: primaryColor,
+        borderWidth: 1.0, // Match systems creation page border width
         duration: const Duration(seconds: 4),
         child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.article_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'LATEST UPDATES',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ],
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: primaryColor.withOpacity(0.3),
+              width: 1,
             ),
-            const SizedBox(height: 16),
-            // News items
-            Column(
-              children: newsItems.map((news) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color:
-                          Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            boxShadow: [
+              BoxShadow(
+                color: primaryColor.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: -5,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.article_outlined,
+                    color: primaryColor,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'LATEST UPDATES',
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.article,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              news['title']!,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                ],
+              ),
+              const SizedBox(height: 16),
+              // News items
+              Column(
+                children: newsItems.map((news) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: primaryColor.withOpacity(0.1),
                       ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            news['time'] ?? 'Just now',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
-                              fontSize: 12,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.article,
+                              color: primaryColor,
+                              size: 14,
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                news['category']!,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.7),
-                                  fontSize: 12,
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                news['title']!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
                                 ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 14,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              news['time'] ?? 'Just now',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontSize: 12,
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  news['category']!,
+                                  style: TextStyle(
+                                    color: primaryColor.withOpacity(0.7),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: primaryColor,
+                                  size: 14,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
