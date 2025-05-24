@@ -9,11 +9,17 @@ import 'package:upsilon_sa/features/systems_creation/models/system_model.dart';
 class SimpleSystemTestDialog extends StatelessWidget {
   final Bet bet;
   final SystemModel system;
+  final String? betType;
+  final String? selection;
+  final dynamic details;
 
   const SimpleSystemTestDialog({
     super.key,
     required this.bet,
     required this.system,
+    this.betType,
+    this.selection,
+    this.details,
   });
 
   @override
@@ -82,6 +88,28 @@ class SimpleSystemTestDialog extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
+                // Show specific bet option if provided
+                if (betType != null && details != null) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: primaryColor.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Text(
+                      _getBetOptionText(),
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -201,8 +229,37 @@ class SimpleSystemTestDialog extends StatelessWidget {
   // Generate a simple performance value between -30% and +30%
   double _generatePerformanceValue() {
     // Using hash code of the bet ID and system ID to generate a consistent value
-    final hash = bet.id.hashCode + system.id.hashCode;
+    final hash = bet.id.hashCode + system.id.hashCode + (betType?.hashCode ?? 0);
     final randomValue = ((hash % 600) - 300) / 10; // Range -30.0 to +30.0
     return randomValue;
+  }
+  
+  String _getBetOptionText() {
+    if (betType == null || details == null) return '';
+    
+    switch (betType) {
+      case 'spread':
+        final point = details['point'];
+        final team = details['team'];
+        return '$team ${_formatPoint(point)}';
+      case 'total':
+        final point = details['point'];
+        final type = details['type'] == 'over' ? 'Over' : 'Under';
+        return '$type $point';
+      case 'moneyline':
+        final team = details['team'];
+        return '$team to Win';
+      default:
+        return '';
+    }
+  }
+  
+  String _formatPoint(dynamic point) {
+    if (point == null) return '--';
+    final pointValue = point as num;
+    if (pointValue > 0) {
+      return '+$pointValue';
+    }
+    return '$pointValue';
   }
 }

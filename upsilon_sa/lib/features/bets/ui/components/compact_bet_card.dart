@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
+import 'clickable_bet_option.dart';
 
 class CompactBetCard extends StatelessWidget {
   final Bet bet;
   final String? appliedSystem;
   final Function(Bet) onBetSelected;
+  final Function(Bet, String, String, dynamic) onBetOptionSelected;
 
   const CompactBetCard({
     super.key,
     required this.bet,
     required this.onBetSelected,
+    required this.onBetOptionSelected,
     this.appliedSystem,
   });
 
@@ -293,37 +296,39 @@ class CompactBetCard extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(color: primaryColor.withOpacity(0.1)),
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Spread point
-                  Text(
-                    spreadValue != null ? _formatPoint(spreadValue) : '--',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  // Spread odds
-                  if (spreadOddsValue != null)
-                    Text(
-                      _formatOdds(spreadOddsValue),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 10,
+              child: spreadValue != null
+                  ? ClickableBetOption(
+                      mainValue: _formatPoint(spreadValue),
+                      subValue: spreadOddsValue != null ? _formatOdds(spreadOddsValue) : null,
+                      onTap: () {
+                        onBetOptionSelected(
+                          bet,
+                          'spread',
+                          isHome ? 'home' : 'away',
+                          {
+                            'point': spreadValue,
+                            'odds': spreadOddsValue,
+                            'team': teamName,
+                          },
+                        );
+                      },
+                      hasSystemApplied: appliedSystem != null,
+                    )
+                  : const Center(
+                      child: Text(
+                        '--',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                ],
-              ),
             ),
           ),
           
@@ -331,51 +336,41 @@ class CompactBetCard extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(color: primaryColor.withOpacity(0.1)),
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Total point with over/under label
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: totalLabel,
-                          style: TextStyle(
-                            color: totalLabel == 'O' ? Colors.green[300] : Colors.grey[400],
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                          ),
+              child: totalValue != null
+                  ? ClickableBetOption(
+                      mainValue: _formatPoint(totalValue),
+                      subValue: totalOddsValue != null ? _formatOdds(totalOddsValue) : null,
+                      label: totalLabel,
+                      labelColor: totalLabel == 'O' ? Colors.green[300] : Colors.grey[400],
+                      onTap: () {
+                        onBetOptionSelected(
+                          bet,
+                          'total',
+                          totalLabel == 'O' ? 'over' : 'under',
+                          {
+                            'point': totalValue,
+                            'odds': totalOddsValue,
+                            'type': totalLabel == 'O' ? 'over' : 'under',
+                          },
+                        );
+                      },
+                      hasSystemApplied: appliedSystem != null,
+                    )
+                  : const Center(
+                      child: Text(
+                        '--',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
                         ),
-                        TextSpan(
-                          text: totalValue != null ? ' ${_formatPoint(totalValue)}' : ' --',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Total odds
-                  if (totalOddsValue != null)
-                    Text(
-                      _formatOdds(totalOddsValue),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 10,
                       ),
                     ),
-                ],
-              ),
             ),
           ),
           
@@ -383,35 +378,38 @@ class CompactBetCard extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(color: primaryColor.withOpacity(0.1)),
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    moneylineValue != null ? _formatOdds(moneylineValue) : '--',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (moneylineValue != null)
-                    const Text(
-                      'ML',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 9,
+              child: moneylineValue != null
+                  ? ClickableBetOption(
+                      mainValue: _formatOdds(moneylineValue),
+                      subValue: 'ML',
+                      onTap: () {
+                        onBetOptionSelected(
+                          bet,
+                          'moneyline',
+                          isHome ? 'home' : 'away',
+                          {
+                            'odds': moneylineValue,
+                            'team': teamName,
+                          },
+                        );
+                      },
+                      hasSystemApplied: appliedSystem != null,
+                    )
+                  : const Center(
+                      child: Text(
+                        '--',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                ],
-              ),
             ),
           ),
         ],

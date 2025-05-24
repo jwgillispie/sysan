@@ -271,6 +271,10 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                   // Handle bet selection
                   _showBetDetailsDialog(bet);
                 },
+                onBetOptionSelected: (bet, betType, selection, details) {
+                  // Handle individual bet option selection
+                  _showBetOptionDialog(bet, betType, selection, details);
+                },
               );
             },
           );
@@ -404,6 +408,336 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           system: systemModel,
         ),
       );
+    }
+  }
+
+  void _showBetOptionDialog(Bet bet, String betType, String selection, dynamic details) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    const isWebPlatform = kIsWeb;
+    const dialogWidth = isWebPlatform ? 400.0 : null;
+    
+    // Prepare display strings
+    String betTypeDisplay = betType == 'moneyline' ? 'Winner' : betType.toUpperCase();
+    String selectionDisplay = '';
+    String valueDisplay = '';
+    
+    switch (betType) {
+      case 'spread':
+        selectionDisplay = details['team'];
+        valueDisplay = '${_formatPoint(details['point'])} (${_formatOdds(details['odds'])})';
+        break;
+      case 'total':
+        selectionDisplay = details['type'] == 'over' ? 'Over' : 'Under';
+        valueDisplay = '${details['point']} (${_formatOdds(details['odds'])})';
+        break;
+      case 'moneyline':
+        selectionDisplay = details['team'];
+        valueDisplay = _formatOdds(details['odds']);
+        break;
+    }
+    
+    // Check if system is already applied
+    if (_selectedSystem == null) {
+      _showNoSystemDialog();
+      return;
+    }
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.black,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'APPLY SYSTEM TO BET',
+              style: TextStyle(
+                color: primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 2,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: primaryColor.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: primaryColor.withOpacity(0.3),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${bet.homeTeam} vs ${bet.awayTeam}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Icon(
+                        _getSportIcon(bet.sportKey),
+                        color: primaryColor,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: primaryColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          betTypeDisplay,
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        selectionDisplay,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        valueDisplay,
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: dialogWidth,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // System to apply
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: primaryColor.withOpacity(0.5),
+                    width: 2,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      color: primaryColor,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'SYSTEM',
+                            style: TextStyle(
+                              color: primaryColor.withOpacity(0.7),
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _selectedSystem!.name,
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // System confidence
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: _getConfidenceColor(_selectedSystem!.confidence * 100).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '${(_selectedSystem!.confidence * 100).toStringAsFixed(0)}%',
+                        style: TextStyle(
+                          color: _getConfidenceColor(_selectedSystem!.confidence * 100),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'This will test how your "${_selectedSystem!.name}" system performs with this specific bet option.',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'CANCEL',
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              // Show the system test results
+              _showSystemTestResultsDialog(bet, betType, selection, details);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text(
+              'TEST SYSTEM',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _showNoSystemDialog() {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.black,
+        title: Text(
+          'NO SYSTEM SELECTED',
+          style: TextStyle(
+            color: primaryColor,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
+        content: Text(
+          'Please select a system from the dropdown above before testing individual bet options.',
+          style: TextStyle(
+            color: Colors.grey[400],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'OK',
+              style: TextStyle(
+                color: primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  void _showSystemTestResultsDialog(Bet bet, String betType, String selection, dynamic details) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => SimpleSystemTestDialog(
+        bet: bet,
+        system: _selectedSystem!,
+        betType: betType,
+        selection: selection,
+        details: details,
+      ),
+    );
+  }
+  
+  String _formatPoint(dynamic point) {
+    if (point == null) return '--';
+    final pointValue = point as num;
+    if (pointValue > 0) {
+      return '+$pointValue';
+    }
+    return '$pointValue';
+  }
+
+  String _formatOdds(dynamic odds) {
+    if (odds == null) return '--';
+    final oddsValue = odds as num;
+    if (oddsValue > 0) {
+      return '+$oddsValue';
+    }
+    return '$oddsValue';
+  }
+  
+  Color _getConfidenceColor(double confidence) {
+    if (confidence >= 80) {
+      return Colors.green;
+    } else if (confidence >= 65) {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
+  }
+  
+  IconData _getSportIcon(String sportKey) {
+    if (sportKey.contains('basketball')) {
+      return Icons.sports_basketball;
+    } else if (sportKey.contains('football') || sportKey.contains('nfl')) {
+      return Icons.sports_football;
+    } else if (sportKey.contains('baseball') || sportKey.contains('mlb')) {
+      return Icons.sports_baseball;
+    } else if (sportKey.contains('hockey') || sportKey.contains('nhl')) {
+      return Icons.sports_hockey;
+    } else if (sportKey.contains('soccer')) {
+      return Icons.sports_soccer;
+    } else {
+      return Icons.sports;
     }
   }
 
