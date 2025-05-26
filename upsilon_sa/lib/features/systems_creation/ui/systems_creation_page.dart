@@ -12,6 +12,7 @@ import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_bloc.d
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_event.dart';
 import 'package:upsilon_sa/features/systems_creation/bloc/system_creation_state.dart';
 import '../models/factor_model.dart';
+import 'tutorial_overlay.dart';
 
 class SystemCreationPage extends StatelessWidget {
   const SystemCreationPage({super.key});
@@ -36,6 +37,7 @@ class _SystemCreationViewState extends State<_SystemCreationView>
     with SingleTickerProviderStateMixin {
   final _systemNameController = TextEditingController();
   final List<String> _sports = ['NBA', 'NFL', 'MLB', 'NHL'];
+  bool _showTutorial = false;
 
   // Sample predefined factors - in a real app, this would come from a repository
   static final List<Map<String, dynamic>> availableFactors = [
@@ -166,7 +168,15 @@ class _SystemCreationViewState extends State<_SystemCreationView>
             children: [
               const CyberGrid(),
               _buildContent(context, state),
-              // Floating button removed
+              // Tutorial overlay
+              if (_showTutorial)
+                TutorialOverlay(
+                  onClose: () {
+                    setState(() {
+                      _showTutorial = false;
+                    });
+                  },
+                ),
             ],
           ),
         );
@@ -194,6 +204,35 @@ class _SystemCreationViewState extends State<_SystemCreationView>
         ],
       ),
       centerTitle: true,
+      actions: [
+        Container(
+          margin: const EdgeInsets.only(right: 16),
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _showTutorial = true;
+              });
+            },
+            icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.help_outline,
+                color: Theme.of(context).colorScheme.primary,
+                size: 20,
+              ),
+            ),
+            tooltip: 'Tutorial',
+          ),
+        ),
+      ],
     );
   }
 

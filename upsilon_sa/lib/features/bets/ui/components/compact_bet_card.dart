@@ -23,9 +23,6 @@ class CompactBetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
-    // Get confidence score for the system (mock data)
-    final double confidenceScore = appliedSystem != null ? _getSystemConfidence() : 0;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -55,10 +52,6 @@ class CompactBetCard extends StatelessWidget {
             
             // Betting odds content - 3 columns with 2 rows layout
             _buildCompactBettingGrid(context),
-            
-            // Apply system indicator if a system is applied
-            if (appliedSystem != null)
-              _buildSystemConfidenceIndicator(context, confidenceScore),
           ],
         ),
       ),
@@ -417,89 +410,6 @@ class CompactBetCard extends StatelessWidget {
     );
   }
   
-  Widget _buildSystemConfidenceIndicator(BuildContext context, double confidence) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-        border: Border(
-          top: BorderSide(
-            color: primaryColor.withOpacity(0.3),
-          ),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // System name
-          Flexible(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.auto_awesome,
-                  color: primaryColor,
-                  size: 12,
-                ),
-                const SizedBox(width: 4),
-                Flexible(
-                  child: Text(
-                    appliedSystem!,
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // Test button
-          InkWell(
-            onTap: () => onBetSelected(bet),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: primaryColor.withOpacity(0.5),
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.science_outlined,
-                    color: primaryColor,
-                    size: 12,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'TEST',
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   // Helper methods
   String _formatDateTime(DateTime dateTime) {
@@ -537,11 +447,6 @@ class CompactBetCard extends StatelessWidget {
     return '$pointValue';
   }
 
-  double _getSystemConfidence() {
-    // This would be replaced with actual logic to get the system confidence
-    // For now, just return a random value
-    return 75.5;
-  }
 
   Color _getConfidenceColor(double confidence) {
     if (confidence >= 80) {

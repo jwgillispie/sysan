@@ -35,7 +35,8 @@ dependencies:
   webview_flutter_wkwebview: ^3.9.4  
   flutter_any_logo: ^1.1.1
   flutter_bloc: 
-  bloc: 
+  bloc:
+  equatable: ^2.0.5 
   video_player: ^2.2.11
   youtube_player_flutter: ^9.1.1 
   google_fonts: ^6.1.0

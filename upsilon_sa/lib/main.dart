@@ -18,8 +18,16 @@ import 'package:upsilon_sa/features/home/ui/home_page.dart';
 import 'package:upsilon_sa/features/bets/ui/bets_page.dart';
 import 'package:upsilon_sa/features/bets/bloc/bets_bloc.dart';
 import 'package:upsilon_sa/features/bets/repository/bets_repository.dart';
+import 'package:upsilon_sa/features/auth/bloc/auth_bloc.dart';
+import 'package:upsilon_sa/features/auth/repository/auth_repository.dart';
+import 'package:upsilon_sa/features/auth/ui/auth_wrapper.dart';
+import 'package:upsilon_sa/features/auth/ui/login_page.dart';
+import 'package:upsilon_sa/features/auth/ui/sign_up_page.dart';
+import 'package:upsilon_sa/features/auth/bloc/auth_event.dart';
+import 'package:upsilon_sa/features/landing/ui/landing_page.dart';
 import 'package:upsilon_sa/core/utils/helpers.dart';
 import 'core/config/themes.dart';
+import 'core/config/routes.dart';
 import 'firebase_options.dart';
 
 // Create a global variable for API keys that will be populated at startup
@@ -88,6 +96,11 @@ class SystemsAnalyticsApp extends StatelessWidget {
     // Otherwise, show the full mobile app with BLoC providers
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            authRepository: AuthRepository(),
+          )..add(AuthCheckRequested()),
+        ),
         BlocProvider<HomeBloc>(
           create: (context) => HomeBloc(),
         ),
@@ -112,9 +125,12 @@ class SystemsAnalyticsApp extends StatelessWidget {
         theme: SystemsThemes.lightTheme,
         darkTheme: SystemsThemes.darkTheme,
         themeMode: ThemeMode.dark,
-        home: const SA(),
+        home: const AuthWrapper(),
         routes: {
-          '/home': (context) => const HomePage(),
+          '/home': (context) => const SA(),
+          Routes.routeLogin: (context) => const LoginPage(),
+          Routes.routeSignUp: (context) => const SignUpPage(),
+          Routes.routeLanding: (context) => const LandingPage(),
           '/leaderboard': (context) => const LeaderboardPage(),
           '/systems': (context) => const SystemsPage(),
           '/datasets': (context) => const DatasetsPage(),

@@ -6,6 +6,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid_painter.dart';
 import 'package:upsilon_sa/features/profile/bloc/profile_bloc.dart';
+import 'package:upsilon_sa/features/auth/bloc/auth_bloc.dart';
+import 'package:upsilon_sa/features/auth/bloc/auth_event.dart';
+import 'package:upsilon_sa/features/auth/bloc/auth_state.dart';
+import 'package:upsilon_sa/core/config/themes.dart';
 import 'components/profile_header.dart';
 import 'components/profile_stats.dart';
 import 'components/profile_subscription.dart';
@@ -33,6 +37,34 @@ class _ProfilePageState extends State<ProfilePage> {
       ..add(LoadProfileEvent())
       ..add(LoadProfileStatsEvent())
       ..add(LoadSubscriptionEvent());
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.read<AuthBloc>().add(AuthSignOutRequested());
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: SystemsColors.red,
+              ),
+              child: const Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -83,6 +115,29 @@ class _ProfilePageState extends State<ProfilePage> {
                 // Navigate to settings
               },
             ),
+            PopupMenuButton<String>(
+              icon: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onSelected: (value) {
+                if (value == 'logout') {
+                  _showLogoutDialog(context);
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, color: SystemsColors.red),
+                      SizedBox(width: 8),
+                      Text('Logout'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         body: Stack(
@@ -103,6 +158,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     } else if (state is SubscriptionCancelled) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Subscription cancelled')),
+                      );
+                    }
+                  },
+                ),
+                BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthUnauthenticated) {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login',
+                        (route) => false,
                       );
                     }
                   },
@@ -128,14 +193,29 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Column(
                         children: [
                           // Profile Header
-                          BlocBuilder<ProfileBloc, ProfileState>(
-                            builder: (context, state) {
-                              if (state is ProfileLoaded || _profileBloc.profileData != null) {
-                                return ProfileHeader(userData: _profileBloc.profileData!);
-                              }
-                              return const SizedBox(
-                                height: 200,
-                                child: Center(child: CircularProgressIndicator()),
+                          BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, authState) {
+                              return BlocBuilder<ProfileBloc, ProfileState>(
+                                builder: (context, profileState) {
+                                  final user = authState is AuthAuthenticated ? authState.user : null;
+                                  
+                                  if (profileState is ProfileLoaded || _profileBloc.profileData != null) {
+                                    return ProfileHeader(
+                                      user: user,
+                                      userData: _profileBloc.profileData,
+                                    );
+                                  }
+                                  
+                                  // Show header with authenticated user data even if profile data is loading
+                                  if (user != null) {
+                                    return ProfileHeader(user: user);
+                                  }
+                                  
+                                  return const SizedBox(
+                                    height: 200,
+                                    child: Center(child: CircularProgressIndicator()),
+                                  );
+                                },
                               );
                             },
                           ),
