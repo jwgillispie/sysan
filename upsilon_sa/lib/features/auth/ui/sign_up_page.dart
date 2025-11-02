@@ -220,7 +220,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return ElevatedButton(
                         onPressed: state is AuthLoading ? null : _signUp,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: SystemsColors.primary,
+                          backgroundColor: SystemsColors.smokyGrey,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
@@ -264,7 +264,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Text(
                           'Sign In',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: SystemsColors.primary,
+                            color: SystemsColors.smokyGrey,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

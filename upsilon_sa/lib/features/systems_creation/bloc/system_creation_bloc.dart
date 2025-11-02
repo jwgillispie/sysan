@@ -16,7 +16,7 @@ class SystemsCreationBloc
     on<ToggleFactorExpansion>(_onToggleFactorExpansion);
     on<UpdateFactorWeight>(_onUpdateFactorWeight);
     on<UpdateFactorThreshold>(_onUpdateFactorThreshold);
-    on<UpdateFactorGamesBack>(_onUpdateFactorGamesBack);
+    on<UpdateSystemGamesBack>(_onUpdateSystemGamesBack);
     on<UpdateFactorName>(_onUpdateFactorName); // Add the new event handler
     on<CreateSystem>(_onCreateSystem);
     on<TestSystem>(_onTestSystem);
@@ -88,17 +88,12 @@ class SystemsCreationBloc
     }
   }
 
-  void _onUpdateFactorGamesBack(
-      UpdateFactorGamesBack event, Emitter<SystemsCreationState> emit) {
-    final factors = List<Factor>.from(state.factors);
-    final index = factors.indexWhere((factor) => factor.id == event.factorId);
-    if (index != -1) {
-      factors[index] = factors[index].copyWith(gamesBack: event.gamesBack);
-      emit(state.copyWith(factors: factors));
-    }
+  void _onUpdateSystemGamesBack(
+      UpdateSystemGamesBack event, Emitter<SystemsCreationState> emit) {
+    emit(state.copyWith(systemGamesBack: event.gamesBack));
   }
 
-  // New handler for updating factor name
+  // Handler for updating factor name
   void _onUpdateFactorName(
       UpdateFactorName event, Emitter<SystemsCreationState> emit) {
     final factors = List<Factor>.from(state.factors);

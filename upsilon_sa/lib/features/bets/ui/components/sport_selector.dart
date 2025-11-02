@@ -31,12 +31,12 @@ class SportSelector extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -93,13 +93,13 @@ class SportSelector extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected 
-            ? primaryColor.withOpacity(0.3) 
-            : primaryColor.withOpacity(0.1),
+            ? primaryColor.withValues(alpha: 0.3) 
+            : primaryColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected 
               ? primaryColor 
-              : primaryColor.withOpacity(0.3),
+              : primaryColor.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
         ),

@@ -23,11 +23,11 @@ class ProfileROIChart extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -54,13 +54,13 @@ class ProfileROIChart extends StatelessWidget {
                   drawVerticalLine: true,
                   getDrawingHorizontalLine: (value) {
                     return FlLine(
-                      color: primaryColor.withOpacity(0.1),
+                      color: primaryColor.withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
                   getDrawingVerticalLine: (value) {
                     return FlLine(
-                      color: primaryColor.withOpacity(0.1),
+                      color: primaryColor.withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -116,7 +116,7 @@ class ProfileROIChart extends StatelessWidget {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: primaryColor.withOpacity(0.1),
+                      color: primaryColor.withValues(alpha: 0.1),
                     ),
                   ),
                 ],

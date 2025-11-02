@@ -35,7 +35,7 @@ class LeaderboardBox extends CyberBox {
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -63,7 +63,7 @@ class LeaderboardBox extends CyberBox {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
+                      color: Colors.green.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -83,8 +83,8 @@ class LeaderboardBox extends CyberBox {
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
                   value: 1 - (index * 0.15), // Decreasing progress for each item
-                  backgroundColor: Colors.white.withOpacity(0.05),
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green.withOpacity(0.3)),
+                  backgroundColor: Colors.white.withValues(alpha: 0.05),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green.withValues(alpha: 0.3)),
                   minHeight: 2,
                 ),
               ),

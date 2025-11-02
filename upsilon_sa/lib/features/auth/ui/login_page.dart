@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Password reset email sent to ${state.email}'),
-                backgroundColor: SystemsColors.primary,
+                backgroundColor: SystemsColors.smokyGrey,
               ),
             );
           }
@@ -182,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         'Forgot Password?',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: SystemsColors.primary,
+                          color: SystemsColors.smokyGrey,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                       return ElevatedButton(
                         onPressed: state is AuthLoading ? null : _signIn,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: SystemsColors.primary,
+                          backgroundColor: SystemsColors.smokyGrey,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
@@ -241,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Sign Up',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: SystemsColors.primary,
+                            color: SystemsColors.smokyGrey,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

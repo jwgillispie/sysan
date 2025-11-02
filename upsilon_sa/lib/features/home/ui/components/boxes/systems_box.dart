@@ -35,7 +35,7 @@ class SystemsBox extends CyberBox {
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: valueColor.withOpacity(0.1),
+              color: valueColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -63,7 +63,7 @@ class SystemsBox extends CyberBox {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: valueColor.withOpacity(0.1),
+                      color: valueColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -82,8 +82,8 @@ class SystemsBox extends CyberBox {
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
                   value: value / 100,
-                  backgroundColor: Colors.white.withOpacity(0.05),
-                  valueColor: AlwaysStoppedAnimation<Color>(valueColor.withOpacity(0.3)),
+                  backgroundColor: Colors.white.withValues(alpha: 0.05),
+                  valueColor: AlwaysStoppedAnimation<Color>(valueColor.withValues(alpha: 0.3)),
                   minHeight: 2,
                 ),
               ),

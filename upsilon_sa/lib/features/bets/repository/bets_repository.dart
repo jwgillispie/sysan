@@ -36,41 +36,40 @@ class BetsRepository {
         String maskedKey = apiKey.length > 5
             ? '${apiKey.substring(0, 3)}...${apiKey.substring(apiKey.length - 2)}'
             : '***';
-        print('🔑 Using Odds API key: $maskedKey');
+        // Using Odds API key: $maskedKey
 
         final Uri requestUri = Uri.parse(
           '$baseUrl/sports/$sport/odds/?apiKey=$apiKey&regions=$regions&markets=$markets&oddsFormat=$oddsFormat',
         );
-        print(
-            '📡 Requesting data from: ${requestUri.toString().replaceAll(apiKey, maskedKey)}');
+        // Requesting data from: ${requestUri.toString().replaceAll(apiKey, maskedKey)}
 
         try {
           final response = await http.get(requestUri);
 
           if (response.statusCode == 200) {
-            print('✅ API request successful! Parsing data...');
+            // API request successful! Parsing data...
             final List<dynamic> data = jsonDecode(response.body);
             final bets = data.map((bet) => Bet.fromJson(bet)).toList();
-            print('📊 Retrieved ${bets.length} bets from the API');
+            // Retrieved ${bets.length} bets from the API
             return bets;
           } else {
-            print('❌ API error: ${response.statusCode}');
-            print('Error body: ${response.body}');
-            print('⚠️ Falling back to mock data...');
+            // API error: ${response.statusCode}
+            // Error body: ${response.body}
+            // Falling back to mock data...
             return _getMockBets();
           }
         } catch (e) {
-          print('❌ Exception during API request: $e');
-          print('⚠️ Falling back to mock data...');
+          // Exception during API request: $e
+          // Falling back to mock data...
           return _getMockBets();
         }
       } else {
-        print('⚠️ No API key found or empty key provided');
-        print('⚠️ Using mock data instead');
+        // No API key found or empty key provided
+        // Using mock data instead
         return _getMockBets();
       }
     } catch (e) {
-      print('Error getting bets: $e');
+      // Error getting bets: $e
       // On any error, fall back to mock data
       return _getMockBets();
     }

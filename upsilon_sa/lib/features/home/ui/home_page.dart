@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage>
       
       // Set up timer to refresh the live game data periodically
     } catch (e) {
-      print('Error loading live game: $e');
+      // Error loading live game: $e
       setState(() {
         liveGame = null;
         isLoadingLiveGame = false;
@@ -119,16 +119,6 @@ class _HomePageState extends State<HomePage>
     }
   }
   
-  // Method to update live game data periodically
-  void _startLiveGameUpdates() {
-    // Cancel existing timer if it exists
-    _liveGameUpdateTimer?.cancel();
-    
-    // Set up a timer to refresh the live game data every 60 seconds
-    _liveGameUpdateTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
-      _loadLiveGame();
-    });
-  }
   
   // Method to load hot props
   Future<void> _loadHotProps() async {
@@ -144,7 +134,7 @@ class _HomePageState extends State<HomePage>
         isLoadingHotProps = false;
       });
     } catch (e) {
-      print('Error loading hot props: $e');
+      // Error loading hot props: $e
       setState(() {
         hotProps = [];
         isLoadingHotProps = false;
@@ -169,7 +159,7 @@ class _HomePageState extends State<HomePage>
       // Start scrolling once we have the data
       _startScrolling();
     } catch (e) {
-      print('Error loading betting lines: $e');
+      // Error loading betting lines: $e
       setState(() {
         bettingLines = [];
         isLoadingBettingLines = false;
@@ -269,7 +259,7 @@ class _HomePageState extends State<HomePage>
         color: Colors.black,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -357,12 +347,12 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: primaryColor.withOpacity(0.3),
+              color: primaryColor.withValues(alpha: 0.3),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: primaryColor.withOpacity(0.1),
+                color: primaryColor.withValues(alpha: 0.1),
                 blurRadius: 20,
                 spreadRadius: -5,
               ),
@@ -420,7 +410,7 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -449,7 +439,7 @@ class _HomePageState extends State<HomePage>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
+                      color: Colors.green.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -471,9 +461,9 @@ class _HomePageState extends State<HomePage>
                   value: 1 -
                       (double.parse(user['rank']!) - 1) *
                           0.15, // Decreasing progress for each rank
-                  backgroundColor: Colors.white.withOpacity(0.05),
+                  backgroundColor: Colors.white.withValues(alpha: 0.05),
                   valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.green.withOpacity(0.3)),
+                      Colors.green.withValues(alpha: 0.3)),
                   minHeight: 2,
                 ),
               ),
@@ -499,12 +489,12 @@ class _HomePageState extends State<HomePage>
           color: Colors.black,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: accentColor.withOpacity(0.3),
+            color: accentColor.withValues(alpha: 0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: accentColor.withOpacity(0.1),
+              color: accentColor.withValues(alpha: 0.1),
               blurRadius: 20,
               spreadRadius: -5,
             ),
@@ -599,12 +589,12 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: primaryColor.withOpacity(0.3),
+              color: primaryColor.withValues(alpha: 0.3),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: primaryColor.withOpacity(0.1),
+                color: primaryColor.withValues(alpha: 0.1),
                 blurRadius: 20,
                 spreadRadius: -5,
               ),
@@ -657,7 +647,7 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: valueColor.withOpacity(0.1),
+              color: valueColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -686,7 +676,7 @@ class _HomePageState extends State<HomePage>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: valueColor.withOpacity(0.1),
+                      color: valueColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -705,9 +695,9 @@ class _HomePageState extends State<HomePage>
                 borderRadius: BorderRadius.circular(2),
                 child: LinearProgressIndicator(
                   value: value / 100,
-                  backgroundColor: Colors.white.withOpacity(0.05),
+                  backgroundColor: Colors.white.withValues(alpha: 0.05),
                   valueColor: AlwaysStoppedAnimation<Color>(
-                      valueColor.withOpacity(0.3)),
+                      valueColor.withValues(alpha: 0.3)),
                   minHeight: 2,
                 ),
               ),
@@ -732,12 +722,12 @@ class _HomePageState extends State<HomePage>
           color: Colors.black,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: primaryColor.withOpacity(0.3),
+            color: primaryColor.withValues(alpha: 0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
               blurRadius: 20,
               spreadRadius: -5,
             ),
@@ -773,10 +763,10 @@ class _HomePageState extends State<HomePage>
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
+                          color: Colors.red.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Colors.red.withOpacity(0.3),
+                            color: Colors.red.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Row(
@@ -789,7 +779,7 @@ class _HomePageState extends State<HomePage>
                                 color: Colors.red,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.red.withOpacity(0.3),
+                                    color: Colors.red.withValues(alpha: 0.3),
                                     blurRadius: 4,
                                     spreadRadius: 1,
                                   ),
@@ -938,7 +928,7 @@ class _HomePageState extends State<HomePage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),
+        color: primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: const Text(
@@ -971,7 +961,7 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: primaryColor.withOpacity(0.5),
+              color: primaryColor.withValues(alpha: 0.5),
             ),
           ),
           child: Text(
@@ -1006,12 +996,12 @@ class _HomePageState extends State<HomePage>
             color: Colors.black,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: primaryColor.withOpacity(0.3),
+              color: primaryColor.withValues(alpha: 0.3),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: primaryColor.withOpacity(0.1),
+                color: primaryColor.withValues(alpha: 0.1),
                 blurRadius: 20,
                 spreadRadius: -5,
               ),
@@ -1051,7 +1041,7 @@ class _HomePageState extends State<HomePage>
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: primaryColor.withOpacity(0.1),
+                        color: primaryColor.withValues(alpha: 0.1),
                       ),
                     ),
                     child: Column(
@@ -1085,7 +1075,7 @@ class _HomePageState extends State<HomePage>
                             Text(
                               news['time'] ?? 'Just now',
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
+                                color: Colors.white.withValues(alpha: 0.5),
                                 fontSize: 12,
                               ),
                             ),
@@ -1094,7 +1084,7 @@ class _HomePageState extends State<HomePage>
                                 Text(
                                   news['category']!,
                                   style: TextStyle(
-                                    color: primaryColor.withOpacity(0.7),
+                                    color: primaryColor.withValues(alpha: 0.7),
                                     fontSize: 12,
                                   ),
                                 ),

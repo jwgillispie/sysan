@@ -70,7 +70,7 @@ class UpdateFactorWeight extends SystemsCreationEvent {
 
 class UpdateFactorThreshold extends SystemsCreationEvent {
   final int factorId;
-  final int threshold;
+  final double threshold;
 
   const UpdateFactorThreshold(this.factorId, this.threshold);
 
@@ -78,14 +78,14 @@ class UpdateFactorThreshold extends SystemsCreationEvent {
   List<Object?> get props => [factorId, threshold];
 }
 
-class UpdateFactorGamesBack extends SystemsCreationEvent {
-  final int factorId;
+// New system-wide games back event
+class UpdateSystemGamesBack extends SystemsCreationEvent {
   final int gamesBack;
 
-  const UpdateFactorGamesBack(this.factorId, this.gamesBack);
+  const UpdateSystemGamesBack(this.gamesBack);
 
   @override
-  List<Object?> get props => [factorId, gamesBack];
+  List<Object?> get props => [gamesBack];
 }
 
 class ToggleFactorThresholdDirection extends SystemsCreationEvent {

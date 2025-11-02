@@ -48,7 +48,7 @@ class SimplifiedScoreboard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.2),
+            color: primaryColor.withValues(alpha: 0.2),
             blurRadius: 10,
             spreadRadius: 0,
           ),
@@ -127,7 +127,7 @@ class SimplifiedScoreboard extends StatelessWidget {
               color: statusColor,
               boxShadow: [
                 BoxShadow(
-                  color: statusColor.withOpacity(0.7),
+                  color: statusColor.withValues(alpha: 0.7),
                   blurRadius: 4,
                   spreadRadius: 2,
                 ),
@@ -204,7 +204,7 @@ class SimplifiedScoreboard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),  // Using primaryColor here
+        color: primaryColor.withValues(alpha: 0.1),  // Using primaryColor here
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Text(
@@ -247,7 +247,7 @@ class SimplifiedScoreboard extends StatelessWidget {
             color: Colors.black,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: primaryColor.withOpacity(0.5),
+              color: primaryColor.withValues(alpha: 0.5),
             ),
           ),
           child: Text(

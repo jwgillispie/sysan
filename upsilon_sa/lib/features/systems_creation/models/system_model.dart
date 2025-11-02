@@ -9,6 +9,7 @@ class SystemModel {
   final List<Factor> factors;
   final DateTime createdAt;
   final double confidence;
+  final int gamesBack; // System-wide games back setting
 
   SystemModel({
     required this.id,
@@ -17,6 +18,7 @@ class SystemModel {
     required this.factors,
     required this.createdAt,
     this.confidence = 0.0,
+    this.gamesBack = 10, // Default to 10 games
   });
 
   SystemModel copyWith({
@@ -24,6 +26,7 @@ class SystemModel {
     String? sport,
     List<Factor>? factors,
     double? confidence,
+    int? gamesBack,
   }) {
     return SystemModel(
       id: id,
@@ -32,6 +35,7 @@ class SystemModel {
       factors: factors ?? this.factors,
       createdAt: createdAt,
       confidence: confidence ?? this.confidence,
+      gamesBack: gamesBack ?? this.gamesBack,
     );
   }
 
@@ -43,6 +47,7 @@ class SystemModel {
       'factors': factors.map((factor) => factor.toJson()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'confidence': confidence,
+      'gamesBack': gamesBack,
     };
   }
 
@@ -56,6 +61,7 @@ class SystemModel {
           .toList(),
       createdAt: DateTime.parse(json['createdAt']),
       confidence: json['confidence'] ?? 0.0,
+      gamesBack: json['gamesBack'] ?? 10,
     );
   }
 }

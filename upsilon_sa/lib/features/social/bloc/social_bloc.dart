@@ -1,6 +1,6 @@
 // lib/features/social/bloc/social_bloc.dart
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:upsilon_sa/features/social/models/social_system.dart';
 import 'package:upsilon_sa/features/social/models/story.dart';
 import 'package:upsilon_sa/features/social/models/friend.dart';

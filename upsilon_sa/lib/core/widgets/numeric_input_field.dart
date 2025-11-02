@@ -178,12 +178,12 @@ class _NumericInputFieldState extends State<NumericInputField> {
         color: Colors.black,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: _hasFocus ? primaryColor : primaryColor.withOpacity(0.3),
+          color: _hasFocus ? primaryColor : primaryColor.withValues(alpha: 0.3),
           width: _hasFocus ? 2 : 1,
         ),
         boxShadow: _hasFocus ? [
           BoxShadow(
-            color: primaryColor.withOpacity(0.2),
+            color: primaryColor.withValues(alpha: 0.2),
             blurRadius: 8,
             spreadRadius: -2,
           ),

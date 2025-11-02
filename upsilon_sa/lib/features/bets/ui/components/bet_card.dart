@@ -1,8 +1,6 @@
 // lib/features/bets/ui/components/bet_card.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
-import 'package:upsilon_sa/core/config/themes.dart';
 
 class BetCard extends StatelessWidget {
   final Bet bet;
@@ -19,8 +17,6 @@ class BetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    final screenWidth = MediaQuery.of(context).size.width;
 
     // Get confidence score for the system (mock data)
     final double confidenceScore =
@@ -32,12 +28,12 @@ class BetCard extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -51,7 +47,7 @@ class BetCard extends StatelessWidget {
             _buildGameHeader(context),
 
             // Divider
-            Divider(color: primaryColor.withOpacity(0.3), height: 1),
+            Divider(color: primaryColor.withValues(alpha: 0.3), height: 1),
 
             // Bet type content (moneyline, spread, or totals)
             _buildBetTypeContent(context),
@@ -67,8 +63,7 @@ class BetCard extends StatelessWidget {
 
   Widget _buildGameHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const fontSize = isWebPlatform ? 16.0 : 14.0;
+    const fontSize = 14.0;
 
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -88,7 +83,7 @@ class BetCard extends StatelessWidget {
               Text(
                 _formatDateTime(bet.commenceTime),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.white.withValues(alpha: 0.7),
                   fontSize: fontSize,
                 ),
               ),
@@ -104,7 +99,7 @@ class BetCard extends StatelessWidget {
                   bet.awayTeam,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: isWebPlatform ? 18 : 16,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -115,8 +110,8 @@ class BetCard extends StatelessWidget {
                 child: Text(
                   '@',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: isWebPlatform ? 16 : 14,
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontSize: 14,
                   ),
                 ),
               ),
@@ -126,7 +121,7 @@ class BetCard extends StatelessWidget {
                   bet.homeTeam,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: isWebPlatform ? 18 : 16,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.right,
@@ -178,8 +173,7 @@ class BetCard extends StatelessWidget {
   
   Widget _buildOddsHeader(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const fontSize = isWebPlatform ? 14.0 : 12.0;
+    const fontSize = 12.0;
     
     return Row(
       children: [
@@ -227,10 +221,9 @@ class BetCard extends StatelessWidget {
   
   Widget _buildCompactOddsRow(BuildContext context, String team, Map<String, dynamic> moneylineData, Map<String, dynamic> spreadData, bool isHome) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
     final textColor = isHome ? primaryColor : Colors.white;
-    const fontSize = isWebPlatform ? 16.0 : 14.0;
-    const oddsSize = isWebPlatform ? 15.0 : 13.0;
+    const fontSize = 14.0;
+    const oddsSize = 13.0;
     
     return Row(
       children: [
@@ -253,10 +246,10 @@ class BetCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
             decoration: BoxDecoration(
-              color: isHome ? primaryColor.withOpacity(0.1) : Colors.black,
+              color: isHome ? primaryColor.withValues(alpha: 0.1) : Colors.black,
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: isHome ? primaryColor : primaryColor.withOpacity(0.3),
+                color: isHome ? primaryColor : primaryColor.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -280,10 +273,10 @@ class BetCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
             decoration: BoxDecoration(
-              color: isHome ? primaryColor.withOpacity(0.1) : Colors.black,
+              color: isHome ? primaryColor.withValues(alpha: 0.1) : Colors.black,
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: isHome ? primaryColor : primaryColor.withOpacity(0.3),
+                color: isHome ? primaryColor : primaryColor.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -306,9 +299,8 @@ class BetCard extends StatelessWidget {
   
   Widget _buildTotalsRow(BuildContext context, Map<String, dynamic> totalsOdds) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const fontSize = isWebPlatform ? 14.0 : 12.0;
-    const oddsSize = isWebPlatform ? 15.0 : 13.0;
+    const fontSize = 12.0;
+    const oddsSize = 13.0;
     
     return Row(
       children: [
@@ -345,7 +337,7 @@ class BetCard extends StatelessWidget {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                    color: primaryColor.withOpacity(0.3),
+                    color: primaryColor.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
@@ -383,7 +375,7 @@ class BetCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                 decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(0.1),
+                  color: primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
                     color: primaryColor,
@@ -409,74 +401,10 @@ class BetCard extends StatelessWidget {
     );
   }
 
-  Widget _buildOddsBox(
-    BuildContext context, {
-    required String team,
-    required String odds,
-    required String bookmaker,
-    bool isHighlighted = false,
-  }) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    final screenWidth = MediaQuery.of(context).size.width;
-    
-    // Adjust width based on platform and screen size
-    final double boxWidth = isWebPlatform 
-        ? (screenWidth > 600 ? 180 : 130)
-        : 150;
-
-    return Container(
-      width: boxWidth,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: isHighlighted ? primaryColor.withOpacity(0.1) : Colors.black,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isHighlighted ? primaryColor : primaryColor.withOpacity(0.3),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            team,
-            style: TextStyle(
-              color: isHighlighted ? primaryColor : Colors.white,
-              fontSize: isWebPlatform ? 16 : 14,
-              fontWeight: FontWeight.bold,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 6),
-          Text(
-            odds,
-            style: TextStyle(
-              color: isHighlighted ? primaryColor : Colors.white,
-              fontSize: isWebPlatform ? 18 : 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            bookmaker,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
-              fontSize: 12,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildSystemConfidenceIndicator(
       BuildContext context, double confidence) {
     final color = _getConfidenceColor(confidence);
-    const isWebPlatform = kIsWeb;
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
@@ -488,7 +416,7 @@ class BetCard extends StatelessWidget {
           ),
           border: Border(
             top: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             ),
           ),
         ),
@@ -500,7 +428,7 @@ class BetCard extends StatelessWidget {
                 'SYSTEM: $appliedSystem',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
-                  fontSize: isWebPlatform ? 14 : 12,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -514,7 +442,7 @@ class BetCard extends StatelessWidget {
                   'CONF: ',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
-                    fontSize: isWebPlatform ? 14 : 12,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -522,7 +450,7 @@ class BetCard extends StatelessWidget {
                   '${confidence.toStringAsFixed(1)}%',
                   style: TextStyle(
                     color: color,
-                    fontSize: isWebPlatform ? 14 : 12,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -141,7 +141,7 @@ class BorderLightPainter extends CustomPainter {
 
       // Add extra glow effect
       final glowPaint = Paint()
-        ..color = lightColor.withOpacity(0.3)
+        ..color = lightColor.withValues(alpha: 0.3)
         ..style = PaintingStyle.fill
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
 

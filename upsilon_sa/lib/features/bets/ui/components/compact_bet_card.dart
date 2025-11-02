@@ -1,9 +1,7 @@
 // lib/features/bets/ui/components/compact_bet_card.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
-import 'package:upsilon_sa/core/config/themes.dart';
 import 'clickable_bet_option.dart';
 
 class CompactBetCard extends StatelessWidget {
@@ -22,7 +20,6 @@ class CompactBetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -30,12 +27,12 @@ class CompactBetCard extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: Colors.blue.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: Colors.blue.withValues(alpha: 0.1),
             blurRadius: 10,
             spreadRadius: -3,
           ),
@@ -59,7 +56,6 @@ class CompactBetCard extends StatelessWidget {
   }
 
   Widget _buildGameHeader(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 6),
@@ -73,8 +69,8 @@ class CompactBetCard extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 bet.sportTitle,
-                style: TextStyle(
-                  color: primaryColor,
+                style: const TextStyle(
+                  color: Colors.blue,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -96,7 +92,6 @@ class CompactBetCard extends StatelessWidget {
   }
   
   Widget _buildCompactBettingGrid(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     
     // Get the odds data
     final moneylineOdds = bet.getBestMoneylineOdds();
@@ -104,7 +99,7 @@ class CompactBetCard extends StatelessWidget {
     final totalsOdds = bet.getBestTotalsOdds();
     
     // Background color for the column headers
-    final headerBgColor = primaryColor.withOpacity(0.05);
+    final headerBgColor = Colors.blue.withValues(alpha: 0.05);
     
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 4),
@@ -124,12 +119,12 @@ class CompactBetCard extends StatelessWidget {
                 // Team name column
                 Expanded(
                   flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
                     child: Text(
                       'TEAM',
                       style: TextStyle(
-                        color: primaryColor,
+                        color: Colors.blue,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -144,14 +139,14 @@ class CompactBetCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       border: Border(
-                        left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                        left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'SPREAD',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: primaryColor,
+                        color: Colors.blue,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -166,14 +161,14 @@ class CompactBetCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       border: Border(
-                        left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                        left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'TOTAL',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: primaryColor,
+                        color: Colors.blue,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -188,14 +183,14 @@ class CompactBetCard extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       border: Border(
-                        left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                        left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'WINNER',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: primaryColor,
+                        color: Colors.blue,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -249,8 +244,7 @@ class CompactBetCard extends StatelessWidget {
       required bool isHome,
     }
   ) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final bgColor = isHome ? primaryColor.withOpacity(0.05) : Colors.transparent;
+    final bgColor = isHome ? Colors.blue.withValues(alpha: 0.05) : Colors.transparent;
     
     return Container(
       decoration: BoxDecoration(
@@ -291,7 +285,7 @@ class CompactBetCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                  left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                 ),
               ),
               child: spreadValue != null
@@ -331,7 +325,7 @@ class CompactBetCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                  left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                 ),
               ),
               child: totalValue != null
@@ -373,7 +367,7 @@ class CompactBetCard extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border(
-                  left: BorderSide(color: primaryColor.withOpacity(0.1)),
+                  left: BorderSide(color: Colors.blue.withValues(alpha: 0.1)),
                 ),
               ),
               child: moneylineValue != null
@@ -448,23 +442,8 @@ class CompactBetCard extends StatelessWidget {
   }
 
 
-  Color _getConfidenceColor(double confidence) {
-    if (confidence >= 80) {
-      return Colors.green;
-    } else if (confidence >= 65) {
-      return Colors.orange;
-    } else {
-      return Colors.red;
-    }
-  }
-  
-  Color _getValueColor(dynamic value, bool isHome, BuildContext context) {
-    if (value == null) return Colors.grey;
-    return Colors.white;
-  }
   
   Widget _getSportIcon(String sportKey, BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     IconData iconData;
     
     // Determine the sport icon based on the sport key
@@ -486,13 +465,13 @@ class CompactBetCard extends StatelessWidget {
       width: 18,
       height: 18,
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),
+        color: Colors.blue.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: Center(
         child: Icon(
           iconData,
-          color: primaryColor,
+          color: Colors.blue,
           size: 12,
         ),
       ),

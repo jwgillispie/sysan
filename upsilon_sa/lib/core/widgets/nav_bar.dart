@@ -3,22 +3,10 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:upsilon_sa/core/widgets/custom_navbar.dart';
 import 'package:upsilon_sa/features/systems_creation/ui/systems_creation_page.dart';
 import 'package:upsilon_sa/features/profile/ui/profile_page.dart';
-import 'package:upsilon_sa/features/social/ui/social_page.dart';
+import 'package:upsilon_sa/features/marketplace/ui/marketplace_page.dart';
 import '../../features/home/ui/home_page.dart';
 
 class NavBar {
-  late PersistentTabController _controller;
-
-  List<Widget> _buildScreens() {
-    return [
-      const HomePage(),
-      // const NewsPage(),
-      // const SystemsPage(),
-      const SystemCreationPage(),
-      // const SocialPage(),
-      const SocialPage()
-    ];
-  }
 
   Widget build(BuildContext context) {
     return PersistentTabView(
@@ -78,18 +66,19 @@ class NavBar {
             activeColorSecondary: Theme.of(context).colorScheme.primary,
           ),
         ),
-        // PersistentTabConfig(
-        //   screen: const SocialPage(),
-        //   item: ItemConfig(
-        //     icon: const Icon(Icons.people_outline_outlined),
-        //     title: "Social",
-        //     activeForegroundColor: Theme.of(context).colorScheme.primary,
-        //     inactiveForegroundColor:
-        //         Theme.of(context).brightness == Brightness.dark
-        //             ? Colors.white
-        //             : Colors.black,
-        //   ),
-        // ),
+        PersistentTabConfig(
+          screen: const MarketplacePage(),
+          item: ItemConfig(
+            icon: const Icon(Icons.store),
+            title: "Shop",
+            activeForegroundColor: Theme.of(context).colorScheme.primary,
+            inactiveForegroundColor:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+            activeColorSecondary: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         PersistentTabConfig(
           screen: const ProfilePage(),
           item: ItemConfig(

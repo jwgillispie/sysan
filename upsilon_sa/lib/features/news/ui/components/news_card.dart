@@ -28,7 +28,7 @@ class NewsCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: primaryColor.withOpacity(0.1)),
+          border: Border.all(color: primaryColor.withValues(alpha: 0.1)),
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -57,7 +57,7 @@ class NewsCard extends StatelessWidget {
                   Text(
                     description,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 14,
                     ),
                     maxLines: 2,

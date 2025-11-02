@@ -1,8 +1,6 @@
 // lib/features/bets/ui/components/system_performance_dialog.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/scheduler.dart' show WidgetsBinding;
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
 import 'package:upsilon_sa/features/systems_creation/models/system_model.dart';
 
@@ -19,8 +17,6 @@ class SystemPerformanceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const dialogWidth = isWebPlatform ? 500.0 : null;
     
     // Generate mock performance statistics for the system on this bet
     final betOutcome = _generateBetOutcome();
@@ -74,10 +70,10 @@ class SystemPerformanceDialog extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.2),
+                  color: Colors.blue.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.blue.withOpacity(0.4),
+                    color: Colors.blue.withValues(alpha: 0.4),
                   ),
                 ),
                 child: Text(
@@ -94,7 +90,6 @@ class SystemPerformanceDialog extends StatelessWidget {
         ],
       ),
       content: SizedBox(
-        width: dialogWidth,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -151,21 +146,15 @@ class SystemPerformanceDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
             // Here you would implement system saving functionality
-            // Use a post-frame callback to ensure the context is valid when showing the SnackBar
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              // Clear any existing SnackBars first
-              ScaffoldMessenger.of(context).clearSnackBars();
-              
-              // Show the SnackBar with safer positioning
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('System saved for this bet'),
-                  backgroundColor: primaryColor,
-                  behavior: SnackBarBehavior.fixed, // Changed to fixed behavior
-                  duration: const Duration(seconds: 2), // Shorter duration
-                ),
-              );
-            });
+            // Show the SnackBar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('System saved for this bet'),
+                backgroundColor: primaryColor,
+                behavior: SnackBarBehavior.fixed,
+                duration: const Duration(seconds: 2),
+              ),
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: primaryColor,
@@ -231,10 +220,10 @@ class SystemPerformanceDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[900]?.withOpacity(0.3),
+        color: Colors.grey[900]?.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -297,10 +286,10 @@ class SystemPerformanceDialog extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: _getRecommendationColor(betOutcome['recommendation']).withOpacity(0.1),
+              color: _getRecommendationColor(betOutcome['recommendation']).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: _getRecommendationColor(betOutcome['recommendation']).withOpacity(0.3),
+                color: _getRecommendationColor(betOutcome['recommendation']).withValues(alpha: 0.3),
               ),
             ),
             child: Row(
@@ -348,11 +337,11 @@ class SystemPerformanceDialog extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
             color: recommended
-                ? Colors.green.withOpacity(0.2)
+                ? Colors.green.withValues(alpha: 0.2)
                 : Colors.grey[800],
             borderRadius: BorderRadius.circular(12),
             border: recommended
-                ? Border.all(color: Colors.green.withOpacity(0.5))
+                ? Border.all(color: Colors.green.withValues(alpha: 0.5))
                 : null,
           ),
           child: Text(
@@ -419,10 +408,10 @@ class SystemPerformanceDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[900]?.withOpacity(0.3),
+        color: Colors.grey[900]?.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -499,10 +488,10 @@ class SystemPerformanceDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[900]?.withOpacity(0.3),
+        color: Colors.grey[900]?.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -518,8 +507,8 @@ class SystemPerformanceDialog extends StatelessWidget {
                     height: 16,
                     decoration: BoxDecoration(
                       color: (factor['positive'] as bool)
-                          ? Colors.green.withOpacity(0.2)
-                          : Colors.red.withOpacity(0.2),
+                          ? Colors.green.withValues(alpha: 0.2)
+                          : Colors.red.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: (factor['positive'] as bool)

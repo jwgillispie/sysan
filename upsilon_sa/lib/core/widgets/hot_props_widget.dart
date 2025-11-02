@@ -109,11 +109,11 @@ class _HotPropCardState extends State<HotPropCard>
         color: Colors.black,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: heatColor.withOpacity(0.3),
+          color: heatColor.withValues(alpha: 0.3),
         ),
         boxShadow: [
           BoxShadow(
-            color: heatColor.withOpacity(0.1),
+            color: heatColor.withValues(alpha: 0.1),
             blurRadius: 8,
             spreadRadius: -2,
           ),

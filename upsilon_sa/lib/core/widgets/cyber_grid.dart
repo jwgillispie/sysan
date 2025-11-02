@@ -17,7 +17,7 @@ class CyberGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = gridColor ?? Theme.of(context).colorScheme.primary.withOpacity(0.05);
+    final color = gridColor ?? Theme.of(context).colorScheme.primary.withValues(alpha: 0.05);
     
     return Stack(
       children: [

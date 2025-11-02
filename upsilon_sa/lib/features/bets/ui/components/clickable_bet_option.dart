@@ -56,7 +56,7 @@ class _ClickableBetOptionState extends State<ClickableBetOption>
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
     
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -78,7 +78,7 @@ class _ClickableBetOptionState extends State<ClickableBetOption>
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 decoration: BoxDecoration(
                   color: _isHovered 
-                      ? primaryColor.withOpacity(0.1)
+                      ? primaryColor.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(4),
                   border: widget.isSelected
@@ -88,7 +88,7 @@ class _ClickableBetOptionState extends State<ClickableBetOption>
                         )
                       : widget.hasSystemApplied
                           ? Border.all(
-                              color: primaryColor.withOpacity(0.3),
+                              color: primaryColor.withValues(alpha: 0.3),
                               width: 1,
                             )
                           : null,
@@ -143,7 +143,7 @@ class _ClickableBetOptionState extends State<ClickableBetOption>
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: _isHovered || widget.isSelected
-                              ? primaryColor.withOpacity(0.8)
+                              ? primaryColor.withValues(alpha: 0.8)
                               : Colors.grey[400],
                           fontSize: 10,
                         ),

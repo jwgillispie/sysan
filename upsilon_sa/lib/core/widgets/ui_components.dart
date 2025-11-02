@@ -23,7 +23,7 @@ class GlowingActionButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: buttonColor.withOpacity(0.3),
+            color: buttonColor.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -60,10 +60,10 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
         ),
       ),
       child: Text(
@@ -101,10 +101,10 @@ class PulsingDot extends StatelessWidget {
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: dotColor.withOpacity(value),
+            color: dotColor.withValues(alpha: value),
             boxShadow: [
               BoxShadow(
-                color: dotColor.withOpacity(0.5 * value),
+                color: dotColor.withValues(alpha: 0.5 * value),
                 blurRadius: 6,
                 spreadRadius: 1,
               ),

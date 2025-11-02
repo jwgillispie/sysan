@@ -21,12 +21,12 @@ class PerformanceMetricsSection extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -148,7 +148,7 @@ class ActivityListItem extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -169,7 +169,7 @@ class ActivityListItem extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Icon(
@@ -195,7 +195,7 @@ class ActivityListItem extends StatelessWidget {
         Text(
           activity['subtitle'],
           style: TextStyle(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
             fontSize: 12,
           ),
         ),
@@ -203,7 +203,7 @@ class ActivityListItem extends StatelessWidget {
         Text(
           activity['time'],
           style: TextStyle(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withValues(alpha: 0.5),
             fontSize: 11,
           ),
         ),

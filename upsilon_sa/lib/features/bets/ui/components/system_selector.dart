@@ -17,7 +17,7 @@ class SystemSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -25,12 +25,12 @@ class SystemSelector extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -45,16 +45,16 @@ class SystemSelector extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.auto_awesome,
-                    color: primaryColor,
+                    color: Colors.blue,
                     size: 16,
                   ),
                   const SizedBox(width: 6),
                   Text(
                     selectedSystem != null ? 'ACTIVE SYSTEM' : 'SELECT SYSTEM',
-                    style: TextStyle(
-                      color: primaryColor,
+                    style: const TextStyle(
+                      color: Colors.blue,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1,
@@ -66,7 +66,7 @@ class SystemSelector extends StatelessWidget {
                 message: 'Systems are prediction models you create to analyze bets',
                 child: Icon(
                   Icons.info_outline,
-                  color: primaryColor.withOpacity(0.7),
+                  color: primaryColor.withValues(alpha: 0.7),
                   size: 14,
                 ),
               ),
@@ -97,10 +97,7 @@ class SystemSelector extends StatelessWidget {
   
   // New method to display the currently selected system
   Widget _buildSelectedSystemDisplay(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     final system = selectedSystem!;
-    final sportIconData = _getSportIcon(system.sport);
-    final sportColor = _getSportColor(system.sport);
     
     return Row(
       children: [
@@ -128,25 +125,25 @@ class SystemSelector extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: primaryColor.withOpacity(0.3),
+                color: Colors.blue.withValues(alpha: 0.3),
               ),
             ),
-            child: Row(
+            child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.swap_horiz,
-                  color: primaryColor,
+                  color: Colors.blue,
                   size: 14,
                 ),
-                const SizedBox(width: 4),
+                SizedBox(width: 4),
                 Text(
                   'CHANGE',
                   style: TextStyle(
-                    color: primaryColor,
+                    color: Colors.blue,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
@@ -203,14 +200,14 @@ class SystemSelector extends StatelessWidget {
   
   // New method to build a dialog for system selection
   Widget _buildSystemSelectionDialog(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
     
     return AlertDialog(
       backgroundColor: Colors.black,
-      title: Text(
+      title: const Text(
         'SELECT SYSTEM',
         style: TextStyle(
-          color: primaryColor,
+          color: Colors.blue,
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
@@ -226,7 +223,7 @@ class SystemSelector extends StatelessWidget {
                   width: 24,
                   height: 24,
                   decoration: BoxDecoration(
-                    color: _getSportColor(system.sport).withOpacity(0.2),
+                    color: _getSportColor(system.sport).withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -252,9 +249,9 @@ class SystemSelector extends StatelessWidget {
                   ),
                 ),
                 trailing: system.id == selectedSystem?.id
-                  ? Icon(
+                  ? const Icon(
                       Icons.check_circle,
-                      color: primaryColor,
+                      color: Colors.blue,
                     )
                   : null,
                 onTap: () {
@@ -268,10 +265,10 @@ class SystemSelector extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(
+          child: const Text(
             'CANCEL',
             style: TextStyle(
-              color: primaryColor,
+              color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -281,15 +278,15 @@ class SystemSelector extends StatelessWidget {
   }
 
   Widget _buildEmptySystemsMessage(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
     
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[900]?.withOpacity(0.2),
+        color: Colors.grey[900]?.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: primaryColor.withOpacity(0.2),
+          color: primaryColor.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -300,13 +297,13 @@ class SystemSelector extends StatelessWidget {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Icon(
                 Icons.psychology_outlined,
-                color: primaryColor.withOpacity(0.7),
+                color: primaryColor.withValues(alpha: 0.7),
                 size: 16,
               ),
             ),
@@ -348,17 +345,17 @@ class SystemSelector extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
               decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.1),
+                color: primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: primaryColor.withOpacity(0.5),
+                  color: primaryColor.withValues(alpha: 0.5),
                   width: 1,
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'CREATE',
                 style: TextStyle(
-                  color: primaryColor,
+                  color: Colors.blue,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
@@ -376,7 +373,7 @@ class SystemSelector extends StatelessWidget {
     bool isSelected,
     VoidCallback onPressed,
   ) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
     
     // Get sport info for displaying the badge
     final sportIconData = _getSportIcon(system.sport);
@@ -389,18 +386,18 @@ class SystemSelector extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected 
-            ? primaryColor.withOpacity(0.3) 
-            : primaryColor.withOpacity(0.1),
+            ? primaryColor.withValues(alpha: 0.3) 
+            : primaryColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected 
               ? primaryColor 
-              : primaryColor.withOpacity(0.3),
+              : primaryColor.withValues(alpha: 0.3),
             width: isSelected ? 1.5 : 1,
           ),
           boxShadow: isSelected ? [
             BoxShadow(
-              color: primaryColor.withOpacity(0.2),
+              color: primaryColor.withValues(alpha: 0.2),
               blurRadius: 6,
               spreadRadius: -2,
             ),
@@ -414,7 +411,7 @@ class SystemSelector extends StatelessWidget {
               width: 16,
               height: 16,
               decoration: BoxDecoration(
-                color: sportColor.withOpacity(0.2),
+                color: sportColor.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -446,7 +443,7 @@ class SystemSelector extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
               decoration: BoxDecoration(
-                color: _getConfidenceColor(system.confidence).withOpacity(0.2),
+                color: _getConfidenceColor(system.confidence).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -462,9 +459,9 @@ class SystemSelector extends StatelessWidget {
             // Check icon for selected system
             if (isSelected) ...[
               const SizedBox(width: 4),
-              Icon(
+              const Icon(
                 Icons.check_circle,
-                color: primaryColor,
+                color: Colors.blue,
                 size: 12,
               ),
             ],

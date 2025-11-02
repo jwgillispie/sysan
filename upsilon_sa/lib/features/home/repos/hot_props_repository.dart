@@ -28,14 +28,14 @@ class HotPropsRepository {
   Future<List<HotProp>> getHotProps() async {
     try {
       if (apiKey.isEmpty || apiKey == 'YOUR_ODDS_API_KEY') {
-        print('❌ No valid Odds API key found, using mock data for hot props');
+        // No valid Odds API key found, using mock data for hot props
         return _getMockHotProps();
       }
 
       // Step 1: Get some upcoming events for NBA basketball
       final events = await _getUpcomingEvents('basketball_nba');
       if (events.isEmpty) {
-        print('❌ No events found, using mock data');
+        // No events found, using mock data
         return _getMockHotProps();
       }
 
@@ -52,13 +52,13 @@ class HotPropsRepository {
           // If we have enough props, we can stop early
           if (allProps.length >= 5) break;
         } catch (e) {
-          print('Error fetching player props for event ${events[i]['id']}: $e');
+          // Error fetching player props for event ${events[i]['id']}: $e
         }
       }
 
       // If we found any props, return them, otherwise use mock data
       if (allProps.isNotEmpty) {
-        print('✅ Found ${allProps.length} hot props from the API');
+        // Found ${allProps.length} hot props from the API
 
         // Sort by confidence (descending)
         allProps.sort((a, b) => b.confidence.compareTo(a.confidence));
@@ -66,11 +66,11 @@ class HotPropsRepository {
         // Take the top 3 (or all if less than 3)
         return allProps.take(3).toList();
       } else {
-        print('❌ No hot props found, using mock data');
+        // No hot props found, using mock data
         return _getMockHotProps();
       }
     } catch (e) {
-      print('Error getting hot props: $e');
+      // Error getting hot props: $e
       return _getMockHotProps();
     }
   }
@@ -87,18 +87,18 @@ class HotPropsRepository {
       final uri = Uri.parse('$_baseUrl/sports/$sport/events')
           .replace(queryParameters: params);
 
-      print('📡 Requesting upcoming events for $sport');
+      // Requesting upcoming events for $sport
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final List<dynamic> events = jsonDecode(response.body);
         return List<Map<String, dynamic>>.from(events);
       } else {
-        print('❌ API error: ${response.statusCode}');
+        // API error: ${response.statusCode}
         return [];
       }
     } catch (e) {
-      print('Error fetching upcoming events: $e');
+      // Error fetching upcoming events: $e
       return [];
     }
   }
@@ -120,7 +120,7 @@ class HotPropsRepository {
           Uri.parse('$_baseUrl/sports/basketball_nba/events/$eventId/odds')
               .replace(queryParameters: params);
 
-      print('📡 Requesting player props for event $eventId');
+      // Requesting player props for event $eventId
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
@@ -187,11 +187,11 @@ class HotPropsRepository {
 
         return hotProps;
       } else {
-        print('❌ API error: ${response.statusCode}');
+        // API error: ${response.statusCode}
         return [];
       }
     } catch (e) {
-      print('Error fetching player props: $e');
+      // Error fetching player props: $e
       return [];
     }
   }

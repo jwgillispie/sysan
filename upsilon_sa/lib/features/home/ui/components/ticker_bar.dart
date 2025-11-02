@@ -33,7 +33,7 @@ class TickerBar extends StatelessWidget {
         color: Colors.black,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -88,10 +88,10 @@ class TickerItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),
+        color: primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -101,10 +101,10 @@ class TickerItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: _getSportColor(sport).withOpacity(0.2),
+              color: _getSportColor(sport).withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: _getSportColor(sport).withOpacity(0.3),
+                color: _getSportColor(sport).withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -131,7 +131,7 @@ class TickerItem extends StatelessWidget {
           Text(
             pick,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 12,
             ),
           ),
@@ -140,10 +140,10 @@ class TickerItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: confidenceColor.withOpacity(0.2),
+              color: confidenceColor.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: confidenceColor.withOpacity(0.3),
+                color: confidenceColor.withValues(alpha: 0.3),
               ),
             ),
             child: Text(

@@ -31,7 +31,7 @@ class NewsBox extends CyberBox {
             color: Colors.black,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
             ),
           ),
           child: Column(
@@ -65,7 +65,7 @@ class NewsBox extends CyberBox {
                   Text(
                     item['time'] ?? 'Just now',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
+                      color: Colors.white.withValues(alpha: 0.5),
                       fontSize: 12,
                     ),
                   ),

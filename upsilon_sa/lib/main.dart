@@ -2,7 +2,7 @@
 // Update the main function to load environment variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,7 +27,6 @@ import 'package:upsilon_sa/features/auth/bloc/auth_event.dart';
 import 'package:upsilon_sa/features/landing/ui/landing_page.dart';
 import 'package:upsilon_sa/core/utils/helpers.dart';
 import 'core/config/themes.dart';
-import 'core/config/routes.dart';
 import 'firebase_options.dart';
 
 // Create a global variable for API keys that will be populated at startup
@@ -44,8 +43,8 @@ void setupEnvironmentVariables() {
       : 'YOUR_ODDS_API_KEY'; // Only use default if no value provided
   
   if (kDebugMode) {
-    print('Environment variables set up completed');
-    print('ODDS_API_KEY: ${oddsApiKey.isEmpty ? "(using default)" : "(found key)"}');
+    // Environment variables set up completed
+    // ODDS_API_KEY: ${oddsApiKey.isEmpty ? "(using default)" : "(found key)"}
     EnvironmentHelper.debugPrintEnvironment();
   }
 }
@@ -57,9 +56,9 @@ void main() async {
   try {
     // First try to load from .env file (works on mobile)
     await dotenv.load(fileName: '.env');
-    print('Loaded environment from .env file');
+    // Loaded environment from .env file
   } catch (e) {
-    print('Could not load .env file: $e');
+    // Could not load .env file: $e
   }
   
   // Set up environment variables for web
@@ -70,9 +69,9 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print('Firebase initialized successfully');
+    // Firebase initialized successfully
   } catch (e) {
-    print('Error initializing Firebase: $e');
+    // Error initializing Firebase: $e
   }
 
   runApp(const SystemsAnalyticsApp());
@@ -128,9 +127,9 @@ class SystemsAnalyticsApp extends StatelessWidget {
         home: const AuthWrapper(),
         routes: {
           '/home': (context) => const SA(),
-          Routes.routeLogin: (context) => const LoginPage(),
-          Routes.routeSignUp: (context) => const SignUpPage(),
-          Routes.routeLanding: (context) => const LandingPage(),
+          '/login': (context) => const LoginPage(),
+          '/signup': (context) => const SignUpPage(),
+          '/landing': (context) => const LandingPage(),
           '/leaderboard': (context) => const LeaderboardPage(),
           '/systems': (context) => const SystemsPage(),
           '/datasets': (context) => const DatasetsPage(),

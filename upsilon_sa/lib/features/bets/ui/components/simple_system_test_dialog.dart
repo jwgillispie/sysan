@@ -1,8 +1,6 @@
 // lib/features/bets/ui/components/simple_system_test_dialog.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/scheduler.dart' show WidgetsBinding;
 import 'package:upsilon_sa/features/bets/models/bet_model.dart';
 import 'package:upsilon_sa/features/systems_creation/models/system_model.dart';
 
@@ -24,7 +22,6 @@ class SimpleSystemTestDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     
     // Generate a simple performance result - either positive or negative percentage
     final performance = _generatePerformanceValue();
@@ -33,19 +30,19 @@ class SimpleSystemTestDialog extends StatelessWidget {
     
     return AlertDialog(
       backgroundColor: Colors.black,
-      title: Row(
+      title: const Row(
         children: [
           Icon(
             Icons.analytics_outlined,
-            color: primaryColor,
+            color: Colors.blue,
             size: 24,
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Expanded(
             child: Text(
               'SYSTEM TEST RESULT',
               style: TextStyle(
-                color: primaryColor,
+                color: Colors.blue,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.2,
                 fontSize: 16,
@@ -61,10 +58,10 @@ class SimpleSystemTestDialog extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.grey[900]?.withOpacity(0.3),
+              color: Colors.grey[900]?.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: primaryColor.withOpacity(0.3),
+                color: Colors.blue.withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -94,16 +91,16 @@ class SimpleSystemTestDialog extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: primaryColor.withOpacity(0.3),
+                        color: Colors.blue.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Text(
                       _getBetOptionText(),
-                      style: TextStyle(
-                        color: primaryColor,
+                      style: const TextStyle(
+                        color: Colors.blue,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -121,10 +118,10 @@ class SimpleSystemTestDialog extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: color.withOpacity(0.5),
+                color: color.withValues(alpha: 0.5),
               ),
             ),
             child: Column(
@@ -202,17 +199,17 @@ class SimpleSystemTestDialog extends StatelessWidget {
               
               // Show the SnackBar with safer positioning
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: const Text('System applied to this bet'),
-                  backgroundColor: primaryColor,
+                const SnackBar(
+                  content: Text('System applied to this bet'),
+                  backgroundColor: Colors.blue,
                   behavior: SnackBarBehavior.fixed, // Changed to fixed behavior
-                  duration: const Duration(seconds: 2), // Shorter duration
+                  duration: Duration(seconds: 2), // Shorter duration
                 ),
               );
             });
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
+            backgroundColor: Colors.blue,
             foregroundColor: Colors.black,
           ),
           child: const Text(

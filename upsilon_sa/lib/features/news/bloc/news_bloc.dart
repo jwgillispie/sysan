@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:upsilon_sa/features/news/repos/news_repository.dart';
 
 part 'news_event.dart';

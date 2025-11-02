@@ -23,12 +23,12 @@ class SystemsOverviewSection extends StatelessWidget {
           color: Colors.black,
           borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
           border: Border.all(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               blurRadius: 20,
               spreadRadius: -5,
             ),
@@ -72,11 +72,11 @@ class SystemCard extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
             blurRadius: 10,
             spreadRadius: -5,
           ),
@@ -137,12 +137,12 @@ class PerformanceIndicator extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: indicatorColor.withOpacity(0.5),
+          color: indicatorColor.withValues(alpha: 0.5),
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: indicatorColor.withOpacity(0.2),
+            color: indicatorColor.withValues(alpha: 0.2),
             blurRadius: 10,
             spreadRadius: 2,
           ),

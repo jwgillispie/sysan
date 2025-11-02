@@ -58,7 +58,7 @@ abstract class CyberBox extends StatelessWidget {
         color: Colors.black,
         border: Border(
           bottom: BorderSide(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -69,7 +69,7 @@ abstract class CyberBox extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.1),
+              color: primaryColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Icon(

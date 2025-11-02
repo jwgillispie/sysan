@@ -36,16 +36,16 @@ class SystemsDecorations {
     return BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: SystemsColors.smokyGrey.withOpacity(0.1), width: 1),
+      border: Border.all(color: SystemsColors.smokyGrey.withValues(alpha: 0.1), width: 1),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
+          color: Colors.grey.withValues(alpha: 0.2),
           spreadRadius: 0,
           blurRadius: 15,
           offset: const Offset(0, 4),
         ),
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withValues(alpha: 0.1),
           spreadRadius: -5,
           blurRadius: 25,
           offset: const Offset(0, 10),
@@ -66,18 +66,18 @@ class SystemsDecorations {
       ),
       borderRadius: BorderRadius.circular(12),
       border: Border.all(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         width: 1,
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withValues(alpha: 0.3),
           spreadRadius: 0,
           blurRadius: 20,
           offset: const Offset(0, 5),
         ),
         BoxShadow(
-          color: SystemsColors.primary.withOpacity(0.03),
+          color: SystemsColors.primary.withValues(alpha: 0.03),
           spreadRadius: 0,
           blurRadius: 10,
           offset: const Offset(0, -1),
@@ -88,15 +88,15 @@ class SystemsDecorations {
 
   static BoxDecoration get glassContainer {
     return BoxDecoration(
-      color: Colors.white.withOpacity(0.1),
+      color: Colors.white.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(12),
       border: Border.all(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         width: 1,
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
           blurRadius: 10,
           spreadRadius: 0,
         ),
@@ -161,7 +161,7 @@ class SystemsThemes {
         titleTextStyle: _customTextTheme(base.textTheme).titleLarge,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -205,7 +205,7 @@ class SystemsThemes {
         titleTextStyle: _customTextTheme(base.textTheme).titleLarge,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

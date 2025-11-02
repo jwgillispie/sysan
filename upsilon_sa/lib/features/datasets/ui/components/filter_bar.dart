@@ -28,7 +28,7 @@ class FilterBar extends StatelessWidget {
         color: Colors.black,
         border: Border(
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           ),
         ),
       ),
@@ -74,7 +74,7 @@ class FilterBar extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
         ),
       ),
       child: DropdownButton<String>(

@@ -65,13 +65,15 @@ class _LandingPageState extends State<LandingPage>
           _isSubmitting = false;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error submitting form: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error submitting form: $e'),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       }
     }
   }
@@ -88,7 +90,7 @@ class _LandingPageState extends State<LandingPage>
           Positioned.fill(
             child: CustomPaint(
               painter: CyberGridPainter(
-                color: const Color(0xFF09BF30).withOpacity(0.05),
+                color: const Color(0xFF09BF30).withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -115,7 +117,7 @@ class _LandingPageState extends State<LandingPage>
                             color: const Color(0xFF09BF30),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF09BF30).withOpacity(0.5),
+                                color: const Color(0xFF09BF30).withValues(alpha: 0.5),
                                 blurRadius: 10,
                                 spreadRadius: 2,
                               ),
@@ -217,10 +219,10 @@ class _LandingPageState extends State<LandingPage>
                   constraints: const BoxConstraints(maxWidth: 800),
                   padding: const EdgeInsets.all(30),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color(0xFF09BF30).withOpacity(0.3),
+                      color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                     ),
                   ),
                   child: const Column(
@@ -311,7 +313,7 @@ class _LandingPageState extends State<LandingPage>
                       Text(
                         '© 2025 SYSTEMS ANALYTICS. ALL RIGHTS RESERVED.',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                           fontSize: 12,
                           letterSpacing: 1.5,
                         ),
@@ -320,7 +322,7 @@ class _LandingPageState extends State<LandingPage>
                       Text(
                         'Sports betting should be approached responsibly.',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           fontSize: 10,
                         ),
                       ),
@@ -363,10 +365,10 @@ class _LandingPageState extends State<LandingPage>
             child: Container(
               padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFF09BF30).withOpacity(0.2),
+                  color: const Color(0xFF09BF30).withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -439,10 +441,10 @@ class _LandingPageState extends State<LandingPage>
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: const Color(0xFF09BF30).withOpacity(0.2),
+                color: const Color(0xFF09BF30).withValues(alpha: 0.2),
               ),
             ),
             child: Column(
@@ -520,7 +522,7 @@ class _LandingPageState extends State<LandingPage>
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF09BF30).withOpacity(0.3),
+            color: const Color(0xFF09BF30).withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 2,
           ),
@@ -542,10 +544,10 @@ class _LandingPageState extends State<LandingPage>
                 padding: const EdgeInsets.all(15),
                 margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.1),
+                  color: Colors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: Colors.green.withOpacity(0.3),
+                    color: Colors.green.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -590,19 +592,19 @@ class _LandingPageState extends State<LandingPage>
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Enter your name',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
                 filled: true,
                 fillColor: Colors.black,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -642,19 +644,19 @@ class _LandingPageState extends State<LandingPage>
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Enter your email',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
                 filled: true,
                 fillColor: Colors.black,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -699,19 +701,19 @@ class _LandingPageState extends State<LandingPage>
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 hintText: '(123) 456-7890',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
+                hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
                 filled: true,
                 fillColor: Colors.black,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: const Color(0xFF09BF30).withOpacity(0.3),
+                    color: const Color(0xFF09BF30).withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -789,7 +791,7 @@ class _LandingPageState extends State<LandingPage>
                   backgroundColor: const Color(0xFF09BF30),
                   foregroundColor: Colors.black,
                   disabledBackgroundColor:
-                      const Color(0xFF09BF30).withOpacity(0.5),
+                      const Color(0xFF09BF30).withValues(alpha: 0.5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -828,10 +830,10 @@ class _LandingPageState extends State<LandingPage>
       width: 300,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.black.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFF09BF30).withOpacity(0.3),
+          color: const Color(0xFF09BF30).withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -841,9 +843,9 @@ class _LandingPageState extends State<LandingPage>
             height: 60,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFF09BF30).withOpacity(0.1),
+              color: const Color(0xFF09BF30).withValues(alpha: 0.1),
               border: Border.all(
-                color: const Color(0xFF09BF30).withOpacity(0.5),
+                color: const Color(0xFF09BF30).withValues(alpha: 0.5),
               ),
             ),
             child: Icon(
@@ -866,7 +868,7 @@ class _LandingPageState extends State<LandingPage>
           Text(
             description,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 14,
               height: 1.4,
             ),
@@ -889,7 +891,7 @@ class _LandingPageState extends State<LandingPage>
         color: Colors.black,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFF09BF30).withOpacity(0.3),
+          color: const Color(0xFF09BF30).withValues(alpha: 0.3),
         ),
       ),
       child: Center(
@@ -916,7 +918,7 @@ class _LandingPageState extends State<LandingPage>
         Text(
           description,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
             fontSize: 16,
             height: 1.5,
           ),

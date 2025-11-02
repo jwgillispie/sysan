@@ -22,11 +22,11 @@ class ProfileSubscription extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
         ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.1),
+            color: primaryColor.withValues(alpha: 0.1),
             blurRadius: 15,
             spreadRadius: -5,
           ),
@@ -110,10 +110,10 @@ class ProfileSubscription extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: planColor.withOpacity(0.1),
+        color: planColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: planColor.withOpacity(0.3),
+          color: planColor.withValues(alpha: 0.3),
         ),
       ),
       child: Text(
@@ -155,7 +155,7 @@ class ProfileSubscription extends StatelessWidget {
                     color: Colors.green,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.withOpacity(0.5),
+                        color: Colors.green.withValues(alpha: 0.5),
                         blurRadius: 6,
                         spreadRadius: 1,
                       ),
@@ -233,10 +233,10 @@ class ProfileSubscription extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
           ),
         ),
         child: Row(
@@ -470,7 +470,7 @@ Widget _buildExtendOption(
       border: Border.all(
         color: recommended 
             ? primaryColor 
-            : primaryColor.withOpacity(0.3),
+            : primaryColor.withValues(alpha: 0.3),
         width: recommended ? 2 : 1,
       ),
     ),
@@ -504,7 +504,7 @@ Widget _buildExtendOption(
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: primaryColor.withOpacity(0.1),
+                    color: primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: primaryColor,

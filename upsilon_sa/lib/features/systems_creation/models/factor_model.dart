@@ -6,8 +6,7 @@ class Factor {
   final String unit; // Add this field
   final bool expanded;
   final double weight;
-  final int threshold;
-  final int gamesBack;
+  final double threshold;
   final bool isAboveThreshold; // Default to above
 
   const Factor({
@@ -17,8 +16,7 @@ class Factor {
     this.unit = '', // Default empty unit
     this.expanded = false,
     this.weight = 50.0,
-    this.threshold = 5,
-    this.gamesBack = 10,
+    this.threshold = 5.0,
     this.isAboveThreshold = true
   });
 
@@ -29,8 +27,7 @@ class Factor {
     String? unit,
     bool? expanded,
     double? weight,
-    int? threshold,
-    int? gamesBack,
+    double? threshold,
     bool? isAboveThreshold,
   }) {
     return Factor(
@@ -41,7 +38,6 @@ class Factor {
       expanded: expanded ?? this.expanded,
       weight: weight ?? this.weight,
       threshold: threshold ?? this.threshold,
-      gamesBack: gamesBack ?? this.gamesBack,
       isAboveThreshold: isAboveThreshold ?? this.isAboveThreshold
     );
   }
@@ -52,7 +48,6 @@ class Factor {
       'name': name,
       'weight': weight,
       'threshold': threshold,
-      'gamesBack': gamesBack,
     };
   }
 
@@ -61,8 +56,7 @@ class Factor {
       id: json['id'],
       name: json['name'],
       weight: json['weight'] ?? 50.0,
-      threshold: json['threshold'] ?? 20,
-      gamesBack: json['gamesBack'] ?? 5,
+      threshold: (json['threshold'] ?? 20).toDouble(),
     );
   }
 }

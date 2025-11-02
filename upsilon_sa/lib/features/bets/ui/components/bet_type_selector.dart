@@ -23,7 +23,7 @@ class BetTypeSelector extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: primaryColor.withOpacity(0.3),
+          color: primaryColor.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -70,7 +70,7 @@ class BetTypeSelector extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isSelected 
-                ? primaryColor.withOpacity(0.2)
+                ? primaryColor.withValues(alpha: 0.2)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             border: isSelected

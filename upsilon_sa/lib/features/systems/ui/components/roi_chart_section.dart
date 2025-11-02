@@ -21,11 +21,11 @@ class ROIChartSection extends StatelessWidget {
         color: Colors.black,
         borderRadius: BorderRadius.circular(UIConstants.defaultBorderRadius),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: -5,
           ),
@@ -55,7 +55,7 @@ class ROIChartSection extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(0.1),
+                          .withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -64,7 +64,7 @@ class ROIChartSection extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(0.1),
+                          .withValues(alpha: 0.1),
                       strokeWidth: 1,
                     );
                   },
@@ -119,7 +119,7 @@ class ROIChartSection extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(0.1),
+                          .withValues(alpha: 0.1),
                     ),
                   ),
                 ],

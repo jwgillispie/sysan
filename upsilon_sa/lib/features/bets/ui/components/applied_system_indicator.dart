@@ -14,7 +14,7 @@ class AppliedSystemIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
+    const primaryColor = Colors.blue;
     const isWebPlatform = kIsWeb;
 
     return Container(
@@ -23,7 +23,7 @@ class AppliedSystemIndicator extends StatelessWidget {
         vertical: isWebPlatform ? 10 : 8
       ),
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),
+        color: primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: primaryColor,
@@ -33,33 +33,38 @@ class AppliedSystemIndicator extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Icon(
-                Icons.memory,
-                color: primaryColor,
-                size: isWebPlatform ? 18 : 16,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'SYSTEM APPLIED: $systemName',
-                style: TextStyle(
-                  color: primaryColor,
-                  fontSize: isWebPlatform ? 16 : 14,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.memory,
+                  color: Colors.blue,
+                  size: 16,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'SYSTEM APPLIED: $systemName',
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
           GestureDetector(
             onTap: onRemove,
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                  color: Colors.red.withOpacity(0.5),
+                  color: Colors.red.withValues(alpha: 0.5),
                 ),
               ),
               child: const Icon(

@@ -50,8 +50,8 @@ class _AnimatedButtonState extends State<AnimatedButton> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                widget.primaryColor.withOpacity(isPressed ? 1.0 : isHovering ? 0.9 : 0.7),
-                widget.primaryColor.withOpacity(isPressed ? 0.8 : isHovering ? 0.6 : 0.4),
+                widget.primaryColor.withValues(alpha: isPressed ? 1.0 : isHovering ? 0.9 : 0.7),
+                widget.primaryColor.withValues(alpha: isPressed ? 0.8 : isHovering ? 0.6 : 0.4),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -63,7 +63,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.primaryColor.withOpacity(isPressed ? 0.2 : isHovering ? 0.5 : 0.3),
+                color: widget.primaryColor.withValues(alpha: isPressed ? 0.2 : isHovering ? 0.5 : 0.3),
                 blurRadius: isPressed ? 4 : isHovering ? 12 : 8,
                 spreadRadius: isPressed ? -4 : isHovering ? 0 : -2,
                 offset: isPressed ? const Offset(0, 1) : const Offset(0, 2),

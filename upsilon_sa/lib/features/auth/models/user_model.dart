@@ -25,10 +25,26 @@ class AppUser extends Equatable {
       email: firebaseUser.email ?? '',
       displayName: firebaseUser.displayName,
       photoURL: firebaseUser.photoURL,
-      emailVerified: firebaseUser.emailVerified,
-      createdAt: firebaseUser.metadata?.creationTime,
-      lastSignInTime: firebaseUser.metadata?.lastSignInTime,
+      emailVerified: firebaseUser.emailVerified ?? false,
+      createdAt: _getCreationTime(firebaseUser),
+      lastSignInTime: _getLastSignInTime(firebaseUser),
     );
+  }
+
+  static DateTime? _getCreationTime(dynamic firebaseUser) {
+    try {
+      return firebaseUser.metadata?.creationTime;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static DateTime? _getLastSignInTime(dynamic firebaseUser) {
+    try {
+      return firebaseUser.metadata?.lastSignInTime;
+    } catch (e) {
+      return null;
+    }
   }
 
   Map<String, dynamic> toMap() {

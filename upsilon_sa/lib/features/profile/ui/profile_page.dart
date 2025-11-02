@@ -14,6 +14,7 @@ import 'components/profile_header.dart';
 import 'components/profile_stats.dart';
 import 'components/profile_subscription.dart';
 import 'components/profile_roi_chart.dart';
+import 'package:upsilon_sa/features/marketplace/widgets/stripe_connect_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -86,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Theme.of(context).colorScheme.primary,
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                       blurRadius: 6,
                       spreadRadius: 1,
                     ),
@@ -179,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Positioned.fill(
                     child: CustomPaint(
                       painter: CyberGridPainter(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.03),
+                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.03),
                         gridSpacing: 40,
                         lineWidth: 0.8,
                       ),
@@ -237,9 +238,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               return const SizedBox.shrink();
                             },
                           ),
-                          
+
                           const SizedBox(height: 24),
-                          
+
+                          // Stripe Connect Section
+                          const StripeConnectWidget(),
+
+                          const SizedBox(height: 24),
+
                           // Stats Section
                           BlocBuilder<ProfileBloc, ProfileState>(
                             builder: (context, state) {
@@ -294,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (context, state) {
                       if (state is ProfileLoading) {
                         return Container(
-                          color: Colors.black.withOpacity(0.3),
+                          color: Colors.black.withValues(alpha: 0.3),
                           child: const Center(
                             child: CircularProgressIndicator(),
                           ),

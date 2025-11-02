@@ -1,7 +1,6 @@
 // lib/features/bets/ui/bets_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:upsilon_sa/core/widgets/cyber_grid.dart';
 import 'package:upsilon_sa/core/widgets/ui_components.dart';
@@ -137,24 +136,21 @@ class _BetsPageContentState extends State<_BetsPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const PulsingDot(),
-            const SizedBox(width: 10),
+            PulsingDot(color: Colors.blue),
+            SizedBox(width: 10),
             Text(
               "AVAILABLE BETS",
               style: TextStyle(
-                color: primaryColor,
+                color: Colors.blue,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 3,
               ),
@@ -164,9 +160,9 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.analytics_outlined,
-              color: primaryColor,
+              color: Colors.blue,
             ),
             onPressed: () => Navigator.pop(context),
           ),
@@ -179,7 +175,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           Center(
             child: Container(
               constraints: const BoxConstraints(
-                maxWidth: isWebPlatform ? 800 : double.infinity,
+                maxWidth: 800,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -238,7 +234,6 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   Widget _buildBetsList() {
-    const bool isWebPlatform = kIsWeb;
     
     return BlocBuilder<BetsBloc, BetsState>(
       builder: (context, state) {
@@ -248,12 +243,12 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           );
         } else if (state is BetsLoaded) {
           if (state.filteredBets.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 'No bets found',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: isWebPlatform ? 20 : 18,
+                  color: Colors.blue,
+                  fontSize: 18,
                 ),
               ),
             );
@@ -284,7 +279,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
               'Error: ${state.message}',
               style: const TextStyle(
                 color: Colors.red,
-                fontSize: isWebPlatform ? 20 : 18,
+                fontSize: 18,
               ),
             ),
           );
@@ -297,9 +292,6 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   // Floating action button removed
 
   void _showBetDetailsDialog(Bet bet) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const dialogWidth = isWebPlatform ? 400.0 : null;
     final currentState = BlocProvider.of<BetsBloc>(context).state;
     final hasSystemApplied = currentState is BetsLoaded && currentState.appliedSystem != null;
     
@@ -310,13 +302,13 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         backgroundColor: Colors.black,
         title: Text(
           '${bet.homeTeam} vs ${bet.awayTeam}',
-          style: TextStyle(
-            color: primaryColor,
+          style: const TextStyle(
+            color: Colors.blue,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: SizedBox(
-          width: dialogWidth,
+          width: 400,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -349,10 +341,10 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'CLOSE',
               style: TextStyle(
-                color: primaryColor,
+                color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -364,7 +356,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                 _showSystemPerformanceDialog(bet);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.black,
               ),
               child: const Text(
@@ -412,9 +404,6 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
 
   void _showBetOptionDialog(Bet bet, String betType, String selection, dynamic details) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    const isWebPlatform = kIsWeb;
-    const dialogWidth = isWebPlatform ? 400.0 : null;
     
     // Prepare display strings
     String betTypeDisplay = betType == 'moneyline' ? 'Winner' : betType.toUpperCase();
@@ -450,10 +439,10 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'APPLY SYSTEM TO BET',
               style: TextStyle(
-                color: primaryColor,
+                color: Colors.blue,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 letterSpacing: 2,
@@ -463,10 +452,10 @@ class _BetsPageContentState extends State<_BetsPageContent> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.05),
+                color: Colors.blue.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: primaryColor.withOpacity(0.3),
+                  color: Colors.blue.withValues(alpha: 0.3),
                 ),
               ),
               child: Column(
@@ -475,17 +464,21 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${bet.homeTeam} vs ${bet.awayTeam}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                      Expanded(
+                        child: Text(
+                          '${bet.homeTeam} vs ${bet.awayTeam}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      const SizedBox(width: 8),
                       Icon(
                         _getSportIcon(bet.sportKey),
-                        color: primaryColor,
+                        color: Colors.blue,
                         size: 16,
                       ),
                     ],
@@ -496,13 +489,13 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.2),
+                          color: Colors.blue.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           betTypeDisplay,
-                          style: TextStyle(
-                            color: primaryColor,
+                          style: const TextStyle(
+                            color: Colors.blue,
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
@@ -520,8 +513,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                       const SizedBox(width: 8),
                       Text(
                         valueDisplay,
-                        style: TextStyle(
-                          color: primaryColor,
+                        style: const TextStyle(
+                          color: Colors.blue,
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
@@ -534,8 +527,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
           ],
         ),
         content: SizedBox(
-          width: dialogWidth,
-          child: Column(
+          width: 400,
+                 child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -546,15 +539,15 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: primaryColor.withOpacity(0.5),
+                    color: Colors.blue.withValues(alpha: 0.5),
                     width: 2,
                   ),
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.auto_awesome,
-                      color: primaryColor,
+                      color: Colors.blue,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
@@ -565,7 +558,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                           Text(
                             'SYSTEM',
                             style: TextStyle(
-                              color: primaryColor.withOpacity(0.7),
+                              color: Colors.blue.withValues(alpha: 0.7),
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1,
@@ -574,8 +567,8 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                           const SizedBox(height: 2),
                           Text(
                             _selectedSystem!.name,
-                            style: TextStyle(
-                              color: primaryColor,
+                            style: const TextStyle(
+                              color: Colors.blue,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -587,7 +580,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _getConfidenceColor(_selectedSystem!.confidence * 100).withOpacity(0.2),
+                        color: _getConfidenceColor(_selectedSystem!.confidence * 100).withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -631,7 +624,7 @@ class _BetsPageContentState extends State<_BetsPageContent> {
               _showSystemTestResultsDialog(bet, betType, selection, details);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: primaryColor,
+              backgroundColor: Colors.blue,
               foregroundColor: Colors.black,
             ),
             child: const Text(
@@ -647,16 +640,15 @@ class _BetsPageContentState extends State<_BetsPageContent> {
   }
   
   void _showNoSystemDialog() {
-    final primaryColor = Theme.of(context).colorScheme.primary;
     
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.black,
-        title: Text(
+        title: const Text(
           'NO SYSTEM SELECTED',
           style: TextStyle(
-            color: primaryColor,
+            color: Colors.blue,
             fontWeight: FontWeight.bold,
             letterSpacing: 2,
           ),
@@ -670,10 +662,10 @@ class _BetsPageContentState extends State<_BetsPageContent> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'OK',
               style: TextStyle(
-                color: primaryColor,
+                color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -31,22 +31,18 @@ dependencies:
   http: ^1.0.0
   persistent_bottom_nav_bar_v2: ^5.3.0
   webview_flutter: ^4.4.2
-  webview_flutter_android: ^3.12.1
-  webview_flutter_wkwebview: ^3.9.4  
-  flutter_any_logo: ^1.1.1
-  flutter_bloc: 
+  flutter_bloc:
   bloc:
-  equatable: ^2.0.5 
+  equatable: ^2.0.5
   video_player: ^2.2.11
-  youtube_player_flutter: ^9.1.1 
-  google_fonts: ^6.1.0
-  flutter_animate: ^4.2.0  # For sophisticated animations
-  shimmer: ^3.0.0 
-  flutter_inappwebview: ^6.1.5
+  youtube_player_flutter: ^9.1.1
   fl_chart: ^0.70.2
+  flutter_stripe: ^11.1.0
+  cloud_functions: ^5.6.2
+  url_launcher: ^6.3.0
 
 
-  
+
   flutter:
     sdk: flutter
 

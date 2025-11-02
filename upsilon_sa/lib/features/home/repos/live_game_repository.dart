@@ -51,7 +51,7 @@ class LiveGamesRepository {
   Future<LiveGame?> getLiveGame() async {
     try {
       if (apiKey.isEmpty || apiKey == 'YOUR_ODDS_API_KEY') {
-        print('❌ No valid Odds API key found, using mock data for live games');
+        // No valid Odds API key found, using mock data for live games
         return _getMockLiveGame();
       }
 
@@ -59,16 +59,15 @@ class LiveGamesRepository {
       final liveGames = await _fetchLiveGames();
 
       if (liveGames.isEmpty) {
-        print('❌ No live games found, using mock data');
+        // No live games found, using mock data
         return _getMockLiveGame();
       }
 
       // Return the first live game (in a real app, you might let users choose)
-      print(
-          '✅ Found live game: ${liveGames[0].homeTeam} vs ${liveGames[0].awayTeam}');
+      // Found live game: ${liveGames[0].homeTeam} vs ${liveGames[0].awayTeam}
       return liveGames[0];
     } catch (e) {
-      print('Error getting live games: $e');
+      // Error getting live games: $e
       return _getMockLiveGame();
     }
   }
@@ -92,7 +91,7 @@ class LiveGamesRepository {
         final uri = Uri.parse('$_baseUrl/sports/$sport/scores')
             .replace(queryParameters: params);
 
-        print('📡 Requesting scores for $sport');
+        // Requesting scores for $sport
         final response = await http.get(uri);
 
         if (response.statusCode == 200) {
@@ -187,10 +186,10 @@ class LiveGamesRepository {
             }
           }
         } else {
-          print('❌ API error for $sport: ${response.statusCode}');
+          // API error for $sport: ${response.statusCode}
         }
       } catch (e) {
-        print('Error fetching scores for $sport: $e');
+        // Error fetching scores for $sport: $e
       }
     }
 

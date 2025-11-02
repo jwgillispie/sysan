@@ -69,7 +69,7 @@ class HomeRepository {
             final uri = Uri.parse('$_baseUrl/sports/$sport/odds')
                 .replace(queryParameters: params);
 
-            print('📡 Requesting odds data for $sport');
+            // Requesting odds data for $sport
             final response = await http.get(uri);
 
             if (response.statusCode == 200) {
@@ -104,28 +104,28 @@ class HomeRepository {
                 });
               }
             } else {
-              print('❌ API error for $sport: ${response.statusCode}');
-              print('Error body: ${response.body}');
+              // API error for $sport: ${response.statusCode}
+              // Error body: ${response.body}
             }
           } catch (e) {
-            print('❌ Exception fetching $sport: $e');
+            // Exception fetching $sport: $e
           }
         }
 
         // If we got data, return it, otherwise fall back to mock data
         if (allBettingLines.isNotEmpty) {
-          print('✅ Got ${allBettingLines.length} betting lines from the API');
+          // Got ${allBettingLines.length} betting lines from the API
           return allBettingLines;
         } else {
-          print('⚠️ No betting lines found, using mock data');
+          // No betting lines found, using mock data
           return _getMockBettingLines();
         }
       } else {
-        print('⚠️ No API key found, using mock data');
+        // No API key found, using mock data
         return _getMockBettingLines();
       }
     } catch (e) {
-      print('Error getting betting lines: $e');
+      // Error getting betting lines: $e
       return _getMockBettingLines();
     }
   }
@@ -208,7 +208,7 @@ class HomeRepository {
         'best_pick': bestPick
       };
     } catch (e) {
-      print('Error finding best odds: $e');
+      // Error finding best odds: $e
       return null;
     }
   }
