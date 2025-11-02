@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
 import 'package:upsilon_sa/features/marketplace/models/marketplace_system.dart';
-import 'package:upsilon_sa/features/marketplace/services/marketplace_service.dart';
+import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 
 /// Page for creators to manage their system listings
 class MyListingsPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class MyListingsPage extends StatefulWidget {
 }
 
 class _MyListingsPageState extends State<MyListingsPage> {
-  final MarketplaceService _service = MarketplaceService();
+  final MarketplaceRepository _repository = MarketplaceRepository();
   List<MarketplaceSystem> _listings = [];
   bool _isLoading = true;
   double _totalEarnings = 0.0;
@@ -27,7 +27,7 @@ class _MyListingsPageState extends State<MyListingsPage> {
   Future<void> _loadListings() async {
     setState(() => _isLoading = true);
 
-    final listings = await _service.getMyListings();
+    final listings = await _repository.getMyListings();
 
     setState(() {
       _listings = listings;
@@ -36,7 +36,7 @@ class _MyListingsPageState extends State<MyListingsPage> {
   }
 
   Future<void> _loadEarnings() async {
-    final earnings = await _service.getTotalEarnings();
+    final earnings = await _repository.getTotalEarnings();
     setState(() => _totalEarnings = earnings);
   }
 
@@ -321,7 +321,7 @@ class _MyListingsPageState extends State<MyListingsPage> {
   }
 
   Future<void> _toggleListingStatus(MarketplaceSystem listing) async {
-    final success = await _service.updateListing(
+    final success = await _repository.updateListing(
       listingId: listing.id,
       isActive: !listing.isActive,
     );

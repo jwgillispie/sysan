@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
 import 'package:upsilon_sa/features/marketplace/models/system_purchase.dart';
-import 'package:upsilon_sa/features/marketplace/services/marketplace_service.dart';
+import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 
 /// Page showing user's purchased systems
 class MyPurchasesPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class MyPurchasesPage extends StatefulWidget {
 }
 
 class _MyPurchasesPageState extends State<MyPurchasesPage> {
-  final MarketplaceService _service = MarketplaceService();
+  final MarketplaceRepository _repository = MarketplaceRepository();
   List<SystemPurchase> _purchases = [];
   bool _isLoading = true;
 
@@ -25,7 +25,7 @@ class _MyPurchasesPageState extends State<MyPurchasesPage> {
   Future<void> _loadPurchases() async {
     setState(() => _isLoading = true);
 
-    final purchases = await _service.getMyPurchases();
+    final purchases = await _repository.getMyPurchases();
 
     setState(() {
       _purchases = purchases;

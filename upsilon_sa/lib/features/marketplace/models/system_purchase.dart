@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 /// System purchase record
 class SystemPurchase {
   final String id;
@@ -43,17 +41,16 @@ class SystemPurchase {
       status: json['status'] ?? 'pending_payment',
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
-          : (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+          : DateTime.now(),
       paidAt: json['paid_at'] != null
           ? DateTime.parse(json['paid_at'])
-          : (json['paidAt'] as Timestamp?)?.toDate(),
+          : null,
       refundedAt: json['refunded_at'] != null
           ? DateTime.parse(json['refunded_at'])
-          : (json['refundedAt'] as Timestamp?)?.toDate(),
+          : null,
     );
   }
 
-  /// Converts to JSON for FastAPI (snake_case)
   Map<String, dynamic> toJson() {
     return {
       'buyer_id': buyerId,
@@ -67,23 +64,6 @@ class SystemPurchase {
       'created_at': createdAt.toIso8601String(),
       'paid_at': paidAt?.toIso8601String(),
       'refunded_at': refundedAt?.toIso8601String(),
-    };
-  }
-
-  /// Converts to JSON for Firebase (camelCase, Timestamp)
-  Map<String, dynamic> toFirebaseJson() {
-    return {
-      'buyerId': buyerId,
-      'creatorId': creatorId,
-      'systemId': systemId,
-      'systemName': systemName,
-      'price': price,
-      'platformFee': platformFee,
-      'totalAmount': totalAmount,
-      'status': status,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'paidAt': paidAt != null ? Timestamp.fromDate(paidAt!) : null,
-      'refundedAt': refundedAt != null ? Timestamp.fromDate(refundedAt!) : null,
     };
   }
 

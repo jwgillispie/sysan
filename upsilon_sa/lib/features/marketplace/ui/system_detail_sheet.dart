@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
 import 'package:upsilon_sa/features/marketplace/models/marketplace_system.dart';
-import 'package:upsilon_sa/features/marketplace/services/marketplace_service.dart';
+import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 
 /// Detailed view of a marketplace system with purchase option
 class SystemDetailSheet extends StatefulWidget {
@@ -19,8 +18,7 @@ class SystemDetailSheet extends StatefulWidget {
 }
 
 class _SystemDetailSheetState extends State<SystemDetailSheet> {
-  final MarketplaceService _service = MarketplaceService();
-  final FirebaseFunctions _functions = FirebaseFunctions.instance;
+  final MarketplaceRepository _repository = MarketplaceRepository();
 
   bool _isProcessing = false;
   bool _hasPurchased = false;
@@ -33,7 +31,7 @@ class _SystemDetailSheetState extends State<SystemDetailSheet> {
   }
 
   Future<void> _checkPurchaseStatus() async {
-    final purchased = await _service.hasPurchasedSystem(widget.system.systemId);
+    final purchased = await _repository.hasPurchasedSystem(widget.system.systemId);
     setState(() {
       _hasPurchased = purchased;
       _isLoading = false;
@@ -46,19 +44,17 @@ class _SystemDetailSheetState extends State<SystemDetailSheet> {
     setState(() => _isProcessing = true);
 
     try {
-      // Call cloud function to create payment intent
-      final callable = _functions.httpsCallable('createSystemPurchasePaymentIntent');
-      final result = await callable.call({
-        'creatorId': widget.system.creatorId,
-        'systemId': widget.system.systemId,
-        'systemName': widget.system.name,
-        'price': widget.system.price,
-      });
+      // Create payment intent via FastAPI
+      final data = await _repository.createPaymentIntent(
+        systemId: widget.system.systemId,
+        systemName: widget.system.name,
+        creatorId: widget.system.creatorId,
+        price: widget.system.price,
+      );
 
-      final data = result.data as Map<String, dynamic>;
-      final clientSecret = data['clientSecret'] as String;
-      final totalAmount = data['totalAmount'] as double;
-      final platformFee = data['platformFee'] as double;
+      final clientSecret = data['client_secret'] as String;
+      final totalAmount = (data['total_amount'] as num).toDouble();
+      final platformFee = (data['platform_fee'] as num).toDouble();
 
       if (!mounted) return;
 

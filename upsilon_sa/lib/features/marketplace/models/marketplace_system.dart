@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 /// Marketplace listing for a system
 class MarketplaceSystem {
   final String id;
@@ -64,28 +62,6 @@ class MarketplaceSystem {
     };
   }
 
-  /// Converts to JSON for Firebase (camelCase, Timestamp)
-  Map<String, dynamic> toFirebaseJson() {
-    return {
-      'id': id,
-      'creatorId': creatorId,
-      'creatorName': creatorName,
-      'systemId': systemId,
-      'name': name,
-      'description': description,
-      'price': price,
-      'sport': sport,
-      'tags': tags,
-      'isActive': isActive,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
-      'stats': stats?.toFirebaseJson(),
-      'totalPurchases': totalPurchases,
-      'averageRating': averageRating,
-      'totalReviews': totalReviews,
-    };
-  }
-
   factory MarketplaceSystem.fromJson(Map<String, dynamic> json, String docId) {
     return MarketplaceSystem(
       id: docId,
@@ -100,10 +76,10 @@ class MarketplaceSystem {
       isActive: json['is_active'] ?? json['isActive'] ?? true,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
-          : (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+          : DateTime.now(),
       updatedAt: json['updated_at'] != null
           ? DateTime.parse(json['updated_at'])
-          : (json['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+          : DateTime.now(),
       stats: json['stats'] != null ? SystemStats.fromJson(json['stats']) : null,
       totalPurchases: json['total_purchases'] ?? json['totalPurchases'] ?? 0,
       averageRating: (json['average_rating'] ?? json['averageRating'] ?? 0).toDouble(),
@@ -162,25 +138,12 @@ class SystemStats {
     required this.losses,
   });
 
-  /// Converts to JSON for FastAPI (snake_case)
   Map<String, dynamic> toJson() {
     return {
       'roi': roi,
       'win_rate': winRate,
       'total_bets': totalBets,
       'profit_loss': profitLoss,
-      'wins': wins,
-      'losses': losses,
-    };
-  }
-
-  /// Converts to JSON for Firebase (camelCase)
-  Map<String, dynamic> toFirebaseJson() {
-    return {
-      'roi': roi,
-      'winRate': winRate,
-      'totalBets': totalBets,
-      'profitLoss': profitLoss,
       'wins': wins,
       'losses': losses,
     };

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
 import 'package:upsilon_sa/features/marketplace/models/marketplace_system.dart';
-import 'package:upsilon_sa/features/marketplace/services/marketplace_service.dart';
+import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 import 'package:upsilon_sa/features/marketplace/ui/components/system_card.dart';
 import 'package:upsilon_sa/features/marketplace/ui/system_detail_sheet.dart';
 
@@ -14,7 +14,7 @@ class MarketplaceBrowsePage extends StatefulWidget {
 }
 
 class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
-  final MarketplaceService _service = MarketplaceService();
+  final MarketplaceRepository _repository = MarketplaceRepository();
   final TextEditingController _searchController = TextEditingController();
 
   List<MarketplaceSystem> _systems = [];
@@ -47,7 +47,7 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
     setState(() => _isLoading = true);
 
     try {
-      final systems = await _service.getAllSystems(
+      final systems = await _repository.getAllSystems(
         sport: _selectedSport,
         sortBy: _sortBy,
       );
@@ -75,7 +75,7 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
     setState(() => _isLoading = true);
 
     try {
-      final systems = await _service.searchSystems(query);
+      final systems = await _repository.searchSystems(query);
       setState(() {
         _systems = systems;
         _isLoading = false;
