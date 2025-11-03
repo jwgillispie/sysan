@@ -4,6 +4,7 @@ import 'package:upsilon_sa/core/widgets/ui_components.dart';
 import 'package:upsilon_sa/features/marketplace/models/marketplace_system.dart';
 import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 import 'package:upsilon_sa/features/marketplace/ui/components/system_card.dart';
+import 'package:upsilon_sa/features/marketplace/ui/components/featured_tiles.dart';
 import 'package:upsilon_sa/features/marketplace/ui/system_detail_sheet.dart';
 
 /// Marketplace browse page with filters and search
@@ -164,6 +165,14 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
             ),
 
             const SizedBox(height: 16),
+
+            // Featured tiles section
+            const FeaturedTilesSection(),
+
+            const SizedBox(height: 16),
+
+            // Promo banner (optional, can be shown conditionally)
+            // const PromoBanner(),
 
             // Filters row
             SizedBox(
