@@ -86,7 +86,7 @@ class FeaturedTilesSection extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: tile.color,
-            width: 1.5,
+            width: 0.5,
           ),
           boxShadow: [
             // Outer glow effect
@@ -136,7 +136,7 @@ class FeaturedTilesSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: tile.color.withValues(alpha: 0.3),
-                          width: 1,
+                          width: 0.5,
                         ),
                       ),
                       child: Icon(
@@ -191,7 +191,7 @@ class PromoBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: SystemsColors.primary,
-          width: 1.5,
+          width: 0.5,
         ),
         boxShadow: [
           // Glow effect
@@ -251,7 +251,7 @@ class PromoBanner extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(
                         color: SystemsColors.primary.withValues(alpha: 0.3),
-                        width: 1,
+                        width: 0.5,
                       ),
                     ),
                     child: Text(
@@ -290,7 +290,7 @@ class PromoBanner extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: SystemsColors.primary,
-                        width: 1,
+                        width: 0.5,
                       ),
                     ),
                     child: Text(
