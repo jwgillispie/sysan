@@ -240,7 +240,7 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
             ),
           ],
         ),
-      ),
+      )
     );
   }
 
