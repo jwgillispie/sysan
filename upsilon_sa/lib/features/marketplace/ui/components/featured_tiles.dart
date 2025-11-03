@@ -51,7 +51,7 @@ class FeaturedTilesSection extends StatelessWidget {
         },
       ),
       FeaturedTile(
-        title: 'Under $50',
+        title: 'Under \$50',
         subtitle: 'Budget-friendly picks',
         icon: Icons.savings,
         color: Colors.orange,
@@ -86,14 +86,14 @@ class FeaturedTilesSection extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              tile.color.withOpacity(0.8),
-              tile.color.withOpacity(0.4),
+              tile.color.withValues(alpha: 0.8),
+              tile.color.withValues(alpha: 0.4),
             ],
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: tile.color.withOpacity(0.3),
+              color: tile.color.withValues(alpha: 0.3),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -108,7 +108,7 @@ class FeaturedTilesSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -132,7 +132,7 @@ class FeaturedTilesSection extends StatelessWidget {
                   Text(
                     tile.subtitle,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 11,
                     ),
                   ),
@@ -166,7 +166,7 @@ class PromoBanner extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: SystemsColors.primary.withOpacity(0.3),
+            color: SystemsColors.primary.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -181,7 +181,7 @@ class PromoBanner extends StatelessWidget {
             child: Icon(
               Icons.query_stats,
               size: 150,
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
             ),
           ),
           // Content
@@ -194,7 +194,7 @@ class PromoBanner extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
@@ -220,7 +220,7 @@ class PromoBanner extends StatelessWidget {
                 Text(
                   '30% off all premium systems',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 14,
                   ),
                 ),
