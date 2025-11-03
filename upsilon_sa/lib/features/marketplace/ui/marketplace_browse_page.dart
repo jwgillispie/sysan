@@ -242,7 +242,6 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
         ),
       );
   }
-  }
 
   Widget _buildFilterChip({
     required String label,
