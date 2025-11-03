@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upsilon_sa/core/config/themes.dart';
+import 'package:upsilon_sa/core/widgets/ui_components.dart';
 import 'package:upsilon_sa/features/marketplace/models/marketplace_system.dart';
 import 'package:upsilon_sa/features/marketplace/repository/marketplace_repository.dart';
 import 'package:upsilon_sa/features/marketplace/ui/components/system_card.dart';
@@ -99,40 +100,33 @@ class _MarketplaceBrowsePageState extends State<MarketplaceBrowsePage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? SystemsColors.black : Colors.grey[100],
-      body: SafeArea(
-        child: Column(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Systems Shop',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? SystemsColors.white : SystemsColors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Buy winning systems from top creators',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isDark ? SystemsColors.smokyGrey : Colors.black54,
-                    ),
-                  ),
-                ],
+            const PulsingDot(),
+            const SizedBox(width: 10),
+            Text(
+              'SHOP',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 3,
               ),
             ),
-
-            // Search bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
+          ],
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          // Search bar
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: TextField(
                 controller: _searchController,
                 onChanged: _search,
                 style: TextStyle(
