@@ -333,14 +333,14 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildLeaderboardSection(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return GestureDetector(
       onTap: () => homeBloc.add(LeaderboardClickedEvent()),
       child: AnimatedBorderContainer(
         borderColor: primaryColor,
         lightColor: primaryColor,
         borderWidth: 1.0, // Match systems creation page border width
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 8),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -482,7 +482,7 @@ class _HomePageState extends State<HomePage>
       borderColor: accentColor,
       lightColor: accentColor,
       borderWidth: 1.0, // Match systems creation page border width
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 6),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -575,14 +575,14 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildSystemsSection(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    
+
     return GestureDetector(
       onTap: () => homeBloc.add(SystemsCickedEvent()),
       child: AnimatedBorderContainer(
         borderColor: primaryColor,
         lightColor: primaryColor,
         borderWidth: 1.0, // Match systems creation page border width
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 8),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -715,7 +715,7 @@ class _HomePageState extends State<HomePage>
     return AnimatedBorderContainer(
       borderColor: primaryColor,
       lightColor: primaryColor,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 8),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -989,7 +989,7 @@ class _HomePageState extends State<HomePage>
         borderColor: primaryColor,
         lightColor: primaryColor,
         borderWidth: 1.0, // Match systems creation page border width
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 8),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
